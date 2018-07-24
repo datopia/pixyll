@@ -8,18 +8,16 @@ layout: default
 {% endif %}
 
 <div class="post-header mb2">
-  <h1>{{ page.title }}</h1>
-  <span class="post-meta">{{ page.date | date: site.date_format }}</span><br>
-  {% if page.update_date %}
-    <span class="post-meta">{{ site.text.post.updated }}: {{ page.update_date | date: site.date_format }}</span><br>
+  {% if page.author %}
+    <span class="post-meta post-author">{{ page.author }}</span>
   {% endif %}
-  <span class="post-meta small">
-  {% if page.minutes %}
-    {{ page.minutes }} {{ site.text.post.minute_read }}
-  {% else %}
-    {{ minutes }} {{ site.text.post.minute_read }}
-  {% endif %}
+  <span class="post-meta">
+    {{ page.date | date: site.date_format }}
   </span>
+  <h1>{{ page.title }}</h1>
+  <div class="post-summary">
+    {{ page.summary }}
+  </div>
 </div>
 
 <article class="post-content">

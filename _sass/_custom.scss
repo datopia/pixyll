@@ -1,0 +1,93 @@
+html, body {
+    font-weight: 200;
+    background-color: $datopia-bg-light;
+}
+
+.site-header {
+    padding: 0;
+}
+
+.datopia-home-link img {
+    width: 5em;
+}
+
+.post-meta {
+    text-align: right;
+    font-style: normal;
+    font-family: $heading-font-family;
+    font-size: 90%;
+    display: block;
+}
+
+.post-link, .post-title {
+    font-weight: 300 !important;
+    color: $datopia-primary-blue !important;
+}
+
+.posts .py3:first-of-type {
+    padding-top: 0;
+}
+
+.post-header h1 {
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.post-summary {
+    text-indent: 2em;
+    display: block;
+    font-size: 90%;
+}
+
+.post-header .post-summary {
+    font-style: italic;
+    font-size: 80%;
+    margin-left: 2em;
+}
+
+blockquote {
+    border-left: 2px solid $datopia-primary-blue;
+    padding: 1rem;
+}
+
+a, a:hover {
+    background-image: none;
+    font-weight: 600;
+}
+
+.post-content > p {
+    text-indent: 2em;
+}
+
+.post-author {
+    font-size: 120%;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 300;
+}
+
+sup, .footnote {
+    font-style: italic;
+}
+
+pre {
+    background-color: transparent;
+}
+
+blockquote.literal {
+    float: right;
+    display: block;
+    max-width: 35%;
+    font-size: 80%;
+    margin-top: 0;
+    border-width: 0;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.attrib {
+    text-align: right;
+    padding-top: 0.5ex;
+    font-style: italic;
+}
