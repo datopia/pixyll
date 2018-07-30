@@ -31,38 +31,56 @@ in which the [affordable](https://medium.com/ipdb-blog/forever-isnt-free-the-cos
 set of on-chain data access patterns compares unfavourably with those of an all-nighter
 BASIC implementation?-->
 
-Consider a boardwalk lemonade stand in high season (87&deg;, limp windsock),
+<blockquote class="literal">
+“Man is certainly stark mad; he cannot make a worm, and yet he will be making gods by dozens.”<br>
+<div class="attrib">&mdash; Michel de Montaigne</div>
+</blockquote>
+
+Consider a boardwalk lemonade stand in high season,
 managed with an earnest commitment to transparency and optimization.  The price
 and provenance of every lemon, the yield of each squeeze, hourly ambient
-temperatures --- a sample of the facts these ideologues would likely want to
-structure and record into a public, immutable history --- the _memory_ underpinning
-all higher-order inferential processes.
+temperatures --- a sample of the facts that our revolutionaries may want to
+structure and record into a public, immutable history --- the _memory_ of their
+organization, and the substrate for its analytic and inferential
+processes.
 
-It is obscene and disingenuous to invoke lofty problems --- computational
-arbitration, on-chain governance --- without acknowledging that these processes
-consume and emit explosive volumes of information, even in apparently simple
-cases.  A platform without a good story around structured, transparent, cost-effective
-historic data retrieval is unsuited to all but the most comically trivial class
-of inferential problem on-chain.
+Blockchain enthusiasts invoke heady problems --- deterministic arbitration,
+on-chain governance --- while seldom acknowleding the _explosive_ volumes of
+information consumed and emitted by these processes, even within narrow domains.
+A platform without a cost-effective story around the structured retrieval of
+historic data is unsuited to all but the most comically trivial class of
+information-bound problem.  Of course, businesses solving non-trivial problems
+already know this.
 
 A
 [billion dollar market](https://www.statista.com/statistics/254266/global-big-data-market-forecast/) is
-emerging around the private, distributed processing of append-only logs.
-Clearly, databases built around mutable cells --- yesterday's value is
-obliterated by today's --- are unsuited to many of the problems faced by their
-customers.  [Immutable databases](https://www.datomic.com/) can represent
-effective and elegant alternatives --- the history of your data is _also data_,
-and perhaps ought to be be equivalently structured and interrogable.
+emerging around the private, distributed analysis of append-only logs.  Clearly,
+databases built around mutable cells --- yesterday's value is obliterated by
+today's --- are unsuited to many of the problems faced by their
+customers<sup>1</sup>.  [Immutable databases](https://www.datomic.com/) take the
+position that your data's history is data _of the same order_, and ought to be
+equivalently structured and interrogable.  While the obvious consequences of
+this approach --- auditability, read-scalability --- are valuable properties,
+our experience has been that embracing the temporality of facts confers analytic
+superpowers to application developers.
 
-The primary responsibility of a blockchain is that of securing coherent, ordered
-histories of facts, yet this _history_, the network's principal asset --- is
-often dropped on the floor in on-chain computation protocols which privilege the
-current block height and expose extremely crude mechanisms for explicit fact
-representation, via data structures which cannot efficiently be queried.
+A blockchain's fundamental responsibility is, fortuitously, that of _securing a
+coherent, ordered history of facts_ --- just the thing we need!  Unfortunately,
+this *history*, the network's principal asset --- its identity --- tends, as a
+matter of [precedent](https://www.ethereum.org/) to be dropped on the floor in
+computation protocols.  The result is a profusion of platforms with on-chain
+data access semantics that compare unfavourably in vision and expressivity with
+those of an all-nighter BASIC implementation.  Given the effort and coordination
+involved in maintaining these _histories_, to fail to leverage them is obscenely
+wasteful.
 
-Blockchains are _already_ in the immutable data storage business.  We ought to at
-least consider the trade-offs involved in structuring, exposing and interrogating
-these timelines --- rather than obscuring them.
+<div class="footnote">
+<span class="small">
+<sup>1</sup> While it's tempting to consider traditional databases the
+brainchildren of epistemological radicals, the trauma of early 70's data storage
+costs has yet to heal.
+</span>
+</div>
 
 # How We Got Here
 
@@ -74,13 +92,13 @@ these timelines --- rather than obscuring them.
 
 In the main, blockchains have tended towards composing solutions to consensus,
 [Sybil resistance](https://en.wikipedia.org/wiki/Sybil_attack) and replication
- in a manner at odds with the needs of cost-competitive, structured data storage
+ in a manner at odds with the needs of cost and feature-competitive data storage
 --- long block times and [exorbitant storage costs](https://medium.com/ipdb-blog/forever-isnt-free-the-cost-of-storage-on-a-blockchain-database-59003f63e01)
 being among the more salient consequences.
 
-Concordantly, the blockchain elevator pitch --- _a distributed, immutable ledger_ ---
-doesn't admit the possibility that ledgers are, in practice, parochial and inflexible
-databases with strict invariants.
+Concordantly, the blockchain elevator pitch --- _a distributed, immutable
+ledger_ --- has obscured the practical reality that ledgers are special-purpose
+databases.
 
 Significant progress has been made on the above technical concerns --- there are a number
 of sound, high-throughput consensus algorithms (e.g. [Avalanche](https://ipfs.io/ipfs/QmUy4jh5mGNZvLkjies1RWM4YuvJh5o2FYopNPVYwrRVGV),

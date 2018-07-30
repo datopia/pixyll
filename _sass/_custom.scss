@@ -67,8 +67,12 @@ h1, h2, h3, h4 {
     font-weight: 300;
 }
 
-sup, .footnote {
+.footnote {
     font-style: italic;
+}
+
+body sup {
+    font-family: monospace;
 }
 
 pre {
@@ -90,4 +94,12 @@ blockquote.literal {
     text-align: right;
     padding-top: 0.5ex;
     font-style: italic;
+}
+
+.footnote {
+    line-height: 1rem;
+}
+
+small, .small {
+    font-size: 0.707rem;
 }
