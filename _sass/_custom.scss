@@ -8,7 +8,7 @@ html, body {
 }
 
 .datopia-home-link img {
-    width: 5em;
+    height: 8em;
 }
 
 .post-meta {
@@ -69,6 +69,7 @@ h1, h2, h3, h4 {
 
 .footnote {
     font-style: italic;
+    margin-left: 2em;
 }
 
 body sup {
@@ -79,15 +80,22 @@ pre {
     background-color: transparent;
 }
 
-blockquote.literal {
+.literal {
     float: right;
     display: block;
     max-width: 35%;
     font-size: 80%;
     margin-top: 0;
+    margin: 0 0 4ex 4ex;
     border-width: 0;
     font-style: normal;
     font-weight: 600;
+    color: #777777;
+}
+
+.left.literal {
+    float: left;
+    margin-left: 0;
 }
 
 .attrib {
@@ -102,4 +110,64 @@ blockquote.literal {
 
 small, .small {
     font-size: 0.707rem;
+}
+
+.infobox-title {
+    color: #666666;
+    font-family: 'Lato', 'Helvetica Neue', Helvetica, sans-serif;
+    border-bottom: solid 2px $datopia-primary-blue;
+    margin-left:   90px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    font-size: 1.5rem;
+}
+
+.infobox {
+    background-image: url(/images/info.svg);
+    background-repeat: no-repeat;
+    background-position: top left;
+    background-size: 80px 80px;
+    background-opacity: .4;
+    margin: 1.5rem 0 1.5rem;
+    min-height: 90px;
+}
+
+.infobox p {
+    font-size: .8rem;
+    padding-left: 90px;
+    margin-bottom: 0px;
+    text-indent: 2em;
+}
+
+.bot-left {
+    position: relative;
+    padding: 4ex 0 4ex 4ex;
+}
+
+.bot-left:before, .bot-left:after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: -1px;
+
+}
+.bot-left:before {
+  top: -1px;
+  width: 1px;
+  background-image: -webkit-gradient(linear, 0 100%, 0 0, from($datopia-primary-blue), to(transparent));
+  background-image: -webkit-linear-gradient(transparent, $datopia-primary-blue);
+  background-image: -moz-linear-gradient(transparent, $datopia-primary-blue);
+  background-image: -o-linear-gradient(transparent, $datopia-primary-blue);
+}
+.bot-left:after {
+  right: -1px;
+  height: 1px;
+  background-image: -webkit-gradient(linear, 0 0, 100% 0, from($datopia-primary-blue), to(transparent));
+  background-image: -webkit-linear-gradient(left, $datopia-primary-blue, transparent);
+  background-image: -moz-linear-gradient(left, $datopia-primary-blue, transparent);
+  background-image: -o-linear-gradient(left, $datopia-primary-blue, transparent);
+}
+
+body pre, body code {
+    background-color: transparent;
 }
