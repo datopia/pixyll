@@ -7,6 +7,10 @@ html, body {
     padding: 0;
 }
 
+a:hover, .share-links a:hover {
+    color: darken($datopia-primary-blue, 25%);
+}
+
 .datopia-home-link img {
     height: 8em;
 }
@@ -86,7 +90,7 @@ pre {
     max-width: 35%;
     font-size: 80%;
     margin-top: 0;
-    margin: 0 0 4ex 4ex;
+    margin: 0 0 0.75ex 4ex;
     border-width: 0;
     font-style: normal;
     font-weight: 600;
@@ -136,6 +140,7 @@ small, .small {
     font-size: .8rem;
     padding-left: 90px;
     margin-bottom: 0px;
+    margin-top: 1rem;
     text-indent: 2em;
 }
 
@@ -169,5 +174,49 @@ small, .small {
 }
 
 body pre, body code {
+    background-color: transparent;
+}
+
+.thumbnail-right {
+    float: right;
+    margin-left: 1rem;
+}
+
+img.center {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+table.small, table.small td {
+    border-width: 0;
+}
+
+table.small thead {
+    font-weight: bold;
+}
+
+.share-links {
+    border: solid 2px $datopia-primary-blue;
+    border-width: 2px 0 2px 0;
+    font-size: 400%;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+body #mc_embed_signup {
+    background: transparent;
+    font-family: $heading-font-family;
+}
+
+body #mc_embed_signup .button {
+    text-transform: uppercase;
+    background-color: $datopia-primary-blue;
+}
+
+body #mc_embed_signup .button:hover {
+    background-color: darken($datopia-primary-blue, 25%);
+}
+
+body #mc_embed_signup #mc-embedded-subscribe-form div.mce_inline_error {
     background-color: transparent;
 }
