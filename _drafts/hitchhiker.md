@@ -136,19 +136,22 @@ In Figure 2 you can see a fractal combination of a B+ tree and an append log.
 > IO cost of queries.
 
 
-TODO Footnote: We would like to add here that while the amortized cost is much
-better for the fractal tree, and this is what we care about, the worst case
-insertion time is still $$O(\log N)$$, we only get a much more friendly constant
-factor as $$O( \frac{\log B}{\sqrt{B}} \log_B N)$$. We could only find an
-analysis of this on
-[Wikipedia](https://en.wikipedia.org/wiki/Fractal_tree_index), which is
-imprecise in this respect. As David has mentioned the worst case will happen
-with exponentially decreasing probability. The academic fractal tree literature
-does not seem to be very rich, it seems to be driven mostly by engineering. If
-you know interesting documentation and research, please let us know.
-
 
 ## illustrate insertion
+
+TODO Footnote: We would like to add here that while the amortized cost is much
+better for the fractal tree, and this is what we care about, the worst case
+insertion time is still $$O(\log_B N)$$. Assuming we branch with factor
+$$\sqrt{B}$$ yielding half the node-size for the B+ tree and half of it for the
+append-log we even get a worsening constant factor as $$O( \frac{\log
+B}{\sqrt{B} \log B} \log_B N)$$. The probability that this event occurs is
+astronomically small though. TODO
+
+But amortized:
+https://www.usenix.org/system/files/conference/fast15/fast15-paper-jannen_william.pdf
+Section 2.2
+
+
 
 ## illustrate query
 
