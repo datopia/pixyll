@@ -98,7 +98,7 @@ notation that this is significantly worse than the B+ tree.
 Figure: append-log ?
 
 
-## Fractal them
+## Fractal combination
 
 <div class="thumbnail-right" style="width: 100%">
 <img src="/images/hh_tree_annotated.png">
@@ -134,6 +134,9 @@ In Figure 2 you can see a fractal combination of a B+ tree and an append log.
 >
 > Thus we dramatically improve the performance of insertions without hurting the
 > IO cost of queries.
+
+
+TODO rewrite parts (?)
 
 
 
