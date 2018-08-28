@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Blockchains and Immutable Databases
+title:  Blockchains as Information Systems
 author: Moe Aboulkheir
 summary: Blockchains positioned as application deployment targets must confront the ubiquity of highly-structured information in all but the most trivial applications.  Expensive, crude or ad-hoc approaches to modelling, storing and retrieving data are typical in the blockchain space.  This need not be the case.
 ---
@@ -36,22 +36,25 @@ BASIC implementation?-->
 <div class="attrib">&mdash; Michel de Montaigne</div>
 </blockquote>
 
-Consider a boardwalk lemonade stand in high season,
-managed with an earnest commitment to transparency and optimization.  The price
-and provenance of every lemon, the yield of each squeeze, hourly ambient
-temperatures --- a sample of the _facts_ that our revolutionaries may want to
-structure and record into a public, immutable history --- the _memory_ of their
-organization, and the substrate for its analytic and inferential
-processes.
+Consider a boardwalk lemonade stand in high season, managed with an earnest
+commitment to transparency and optimization.  The price and provenance of every
+lemon, the yield of each squeeze, hourly ambient temperatures --- a sample of
+the _facts_ that our revolutionaries may want to structure and record into a
+public, immutable history --- the _memory_ of their organization, and the
+substrate for its analytic/inferential processes.
 
 Blockchain enthusiasts invoke heady problems --- deterministic arbitration,
-on-chain governance --- while seldom acknowleding the _explosive_ volumes of
+on-chain governance --- while seldom acknowledging the _explosive_ volumes of
 information consumed and emitted by these processes, even within narrow domains.
 Platforms --- blockchains, or otherwise --- without cost-effective solutions to
 structured, historic data retrieval are suited only to the most comically
 trivial class of information-bound problem: _they couldn't govern a lemonade
 stand_.  Unsurprisingly, businesses solving complex problems already know this.
 
+<blockquote class="literal left">
+“A database that updates in place is not an information system.  I'm sorry."<br>
+<div class="attrib">&mdash; Rich Hickey</div>
+</blockquote>
 A
 [billion dollar market](https://www.statista.com/statistics/254266/global-big-data-market-forecast/) is
 emerging around the private, distributed analysis of append-only logs.
@@ -67,21 +70,21 @@ read-scalability --- we're most keen on the superpowers conferred by the
 combination of structured histories
 and [declarative logic](https://en.wikipedia.org/wiki/Datalog)<sup>3,4</sup>.
 
-<blockquote class="literal left">
-“Peter had seen many tragedies, but he had forgotten them all.”
-<div class="attrib">&mdash; J.M. Barrie, Peter Pan</div>
+<blockquote class="literal"> “Peter had seen many tragedies, but he had
+forgotten them all.”  <div class="attrib">&mdash; J.M. Barrie, Peter Pan</div>
 </blockquote>
 
 Fortuitously, a blockchain's fundamental responsibility is that of securing a
-_coherent, ordered history of facts_: just the thing we need, to make
-intelligent decisions!  In a truly curious turn, this history --- the network's
-_identity_ --- tends, as a matter of [precedent](https://www.ethereum.org/), to
-be obscured from decision-making processes.  We've a
-profusion of platforms with on-chain data access semantics less expressive than
-those of an all-nighter BASIC implementation.  Given the effort and coordination
-involved in maintaining these histories, to fail to offer a _transparent_ means
-of analyzing them --- as a line, not a point --- reeks of a profligacy not seen
-since  [Elagabalus'](https://wikivisually.com/wiki/Elagabalus) biennial reign.
+_coherent, immutable, ordered history of facts_ --- the traffic of an
+information system. Just the thing we need, to make intelligent decisions!  _In
+a truly curious turn, this history --- the network's _identity_ --- tends, as a
+matter of [precedent](https://www.ethereum.org/), to be obscured from
+decision-making processes.  We've a profusion of platforms wed to data access
+semantics less expressive than those of an all-nighter BASIC implementation.
+Given the effort and coordination involved in maintaining these histories, to
+fail to offer a _transparent_ means of analyzing them --- as a line, not a point
+--- reveals a profligacy seldom seen since the brief reign of
+[Elagabalus](https://en.wikipedia.org/wiki/Elagabalus).
 
 <div class="footnote">
 <span class="small">
@@ -93,7 +96,7 @@ costs has yet to heal.
 it unlikely much of this usage is recreational.<br>
 <sup>3</sup> If you feel your eyes glazing over, resist.
 <br>
-<sup>4</sup> Not every Hadoop job is better suited to a
+<sup>4</sup> Of course, not every Hadoop job is better suited to a
 public blockchain, or a private immutable database &mdash; the broader point is the
 unsuitability of forgetful systems to inferential problems.
 </span>
@@ -113,13 +116,13 @@ replication in a manner at odds with the needs of cost and feature-competitive
 data storage --- long block times
 and
 [exorbitant storage costs](https://medium.com/ipdb-blog/forever-isnt-free-the-cost-of-storage-on-a-blockchain-database-59003f63e01) being
-among the more salient consequences.  Even the least assumuing
-ledger would benefit from the ability to transparently service queries expressed
-in terms of its data model.
+among the more salient consequences.  The pervasive use of the word _ledger_ ---
+unaccompanied by the concession that ledgers are special-purpose databases ---
+has likely shaped our reluctance to think of blockchains as _information systems_,
+in any broad sense.
 
-
-
-Significant progress has been made on the above technical concerns --- there are
+Significant progress has been made on the above technical concerns --- and we're doing
+our part to try and influence the dialogue.   As far as the former case, there exist
 a number of sound, high-throughput consensus algorithms
 (e.g. [metastable](https://ipfs.io/ipfs/QmUy4jh5mGNZvLkjies1RWM4YuvJh5o2FYopNPVYwrRVGV),
 [classical](https://tendermint.com), etc.)  composable with responsive,
@@ -130,22 +133,25 @@ Elsewhere
 ([Ethereum](https://github.com/ethereum/wiki/wiki/Sharding-FAQs),
 [Filecoin](https://drive.google.com/file/d/0ByEXXlwyI4z7VmR6ejlJeTNZN1E/view)),
 novel approaches to state distribution are required for platforms to function at
-projected demand.  We have a _vision_ problem, not a technical one.
+projected demand.  We've a _vision_ problem, not a technical one.
 
 ## First as Tragedy, Then as Farce
 
-From a developer's perspective, one of the more disappointing blockchain trends
-is the conflation of information and implementation we've committed to in our
-platforms and programming models.  We're recapitulating the [worst](https://medium.com/@brianwill/object-oriented-programming-a-personal-disaster-1b044c2383ab) of
-object-orientation --- even in systems reluctant to describe themselves as such.
-Data _isn't_ an implementation detail, and mediating its access through single-use
-DSLs<sup>1</sup> is
+From a developer's perspective, one of the more disappointing _platform_
+blockchain trends is the conflation of information and implementation at the
+center many of their programming models<sup>1</sup>.  We're structurally
+recapitulating
+the
+[worst](https://medium.com/@brianwill/object-oriented-programming-a-personal-disaster-1b044c2383ab) of
+object-orientation --- even in systems embarrassed to describe themselves as such.
+Data _isn't_ an implementation detail, and mediating its access through
+single-use DSLs<sup>1</sup> is
 a [thoroughly debased](https://www.youtube.com/watch?v=-6BsiVyC1kM) strategy at
 odds with the needs of
 sustainable, [composable](https://www.youtube.com/watch?v=3oQTSP4FngY) systems.
 
-If these seem  abstract concerns, consider that the absence of a uniform,
-direct means of data interrogation consigns contracts to the
+If these seem abstract concerns, appraise the possibility that the absence of
+a fundamental means of data interrogation consigns contracts to the
 re-implementation<sup>2</sup> of a small set of access patterns over their
 "internal state" --- whatever that means.  While it's awkward to obtain
 empirical data<sup>3</sup>, we've the suspicion that an astonishing percentage
@@ -156,7 +162,7 @@ for the shortcomings of their platforms, rather than doing anything _smart_.
 <span class="small">
 <sup>1</sup> c.f. generated getters and setters per Solidity, etc.<br>
 <sup>2</sup> It may surprise you to learn that grave mistakes are often made in these implementations.<br>
-<sup>3</sup> Expect a follow-up &mdash; much of what appears as <i>code</i> is data smeared in
+<sup>4</sup> Expect a follow-up &mdash; much of what appears as <i>code</i> is data smeared in
 carmine.
 <br>
 </span>
@@ -176,15 +182,13 @@ sufficiently expressive to serve as the foundation for a ledger, governance
 platform, etc. --- without spilling the details of those domains all over the
 core system design.
 
-While resilient, autonomous money is a deeply motivating prospect --- one we're
-realizing via systems engineered toward that specific purpose --- we see
-blockchain projects stoking ambitions better served by general approaches
-to the modelling and storage of information.  The two need not be mutually
-exclusive.  While resisting the impulse to wade into the weeds in this
-introductory post, we'll sketch a design in which the fundamental
-interaction, a _transaction_, denotes something much closer to that word's
-use in database systems.
-
+While resilient, autonomous money is a deeply motivating prospect --- one we may
+be realizing --- we see blockchain projects stoking ambitions better served by
+general approaches to the modeling and storage of information.  The two need
+not be mutually exclusive.  While resisting the impulse to wade into the weeds
+in this introductory post, we'll sketch a design in which the fundamental
+interaction, a _transaction_, denotes something much closer to that word's use
+in database systems, rather than financial ones.
 
 <!--## Why Store the Data on Chain?
 
@@ -219,7 +223,7 @@ Four triples
 
 What follows is a tedious --- but mercifully brief --- exploration of the
 requirement of a single, flexible means of structuring arbitrary data
-entrusted to the the network.  We find
+entrusted to the network.  We find
 the
 [Entity Attribute Value](https://en.wikipedia.org/wiki/Entity%E2%80%93attribute%E2%80%93value_model) model
 strikes an effective balance between open schemas and susceptibility to
@@ -240,15 +244,14 @@ abstracting incidental values (entity identifiers, in this case):
   :email          "sally@gmail.com"}]
 ```
 
-A key feature of our system is that any of the attributes referenced in the
-above graph may be schematized, to express type, cardinality, uniqueness, or,
-more interestingly --- to declaratively, logically constrain the ways in they
-may be used in transactions.  This latter facility is a general means of
-maintaining global invariants, such as those demanded by a ledger (balance
-sufficiency, zero-sum exchange, etc.) --- though far more interesting examples
-abound.  Users _deploy_ attribute schemas, and the genesis block includes some
-helpful, primitive attributes essential to maintaining the network (a native
-asset, etc.)
+A key feature of our system is that any of the attributes referenced above may
+be schematized, to express type, cardinality, uniqueness, or, more interestingly
+--- to declaratively, logically constrain the attribute's use in transactions.
+This latter facility is a general means of establishing global invariants, such
+as those demanded by a ledger (balance sufficiency, zero-sum exchange, etc.) ---
+though far more interesting examples abound.  Users will _deploy_ attribute
+schemas, and the genesis block includes some helpful, primitive attributes
+essential to maintaining the network (a native asset, etc.)
 
 Here's where it gets a little Steampunk --- we embrace the use
 of [Datalog](https://en.wikipedia.org/wiki/Datalog) (an ancient, declarative,
@@ -271,7 +274,7 @@ readability:
 
 <span class="small">
 All non <code>:keywords</code> (i.e. strings or symbols) refer either to the entities
-or values we want the query engine to unify or substitute.
+or values we want the query engine to substitute.
 </span>
 
 On transaction receipt, any attribute constraints are evaluated against an
@@ -315,7 +318,7 @@ tables to be a motivating organizational scheme.
 
 How might we flexibly support value transfer in such a system, in more detail?  As our
 fundamental interaction is the submission of arbitrary, structured data, let's
-idealize such a submission --- a vector of two facts, each concerned with its own
+idealize some --- a vector of two facts, each concerned with a distinct
 entity --- accounts, in this case:
 
 ```clojure
@@ -330,11 +333,11 @@ Here we're imagining Simoleons to be some user-defined asset, which happens to
 use the namespace `simoleon` for its qualified keywords<sup>1</sup>.  The
 `simoleon/balance` values --- in this case --- are submitted not as atoms, but
 lists representing function applications curried over the entity's
-attribute value at the point of transaction application --- we're commutatively
+attribute value at the relevant block height --- we're commutatively
 declaring something like _&lt;sender>'s `simoleon/balance` shrinks by 99.
 &lt;recipient>'s grows by 99_.
 
-To say that Simoleons are a _user-defined asset_ means only that there exists a
+To say that Simoleons are a _user-defined asset_ implies only that there exists a
 schematized attribute within the network --- `simoleon/balance` ---
 logically constraining its own use in such a way as to render inexpressible
 "unsound transfers" --- whatever that meant to the author of the attribute's definition<sup>2</sup>.
@@ -342,13 +345,13 @@ The nodes themselves have no intrinsic conception of a _transfer_ --- when it co
 transaction processing, their primary concern is the evaluation of user-defined
 invariants.
 
-Nodes --- prior to applying transactions --- synthesize additional attributes from
-low-level metadata not explicitly represented in the transaction's body
-(e.g. that its envelope was signed by `<sender>`, rather than `<recipient>` --- handy).
-It's trivial to see that the sum of this data --- along with a _pre-query_
-resulting in <i>&lt;sender></i>'s `simoleon/balance` --- would be sufficient
-inputs for a relatively brief logical declaration of the conditions
-of value transfer.
+Nodes --- prior to applying transactions --- synthesize additional attributes
+from low-level metadata not explicitly represented in the transaction's body
+(e.g. that its envelope was signed by `<sender>`, rather than `<recipient>` ---
+handy).  It's trivial to see that the sum of this data, considered alongside the
+transaction --- and a _pre-query_ resulting in <i>&lt;sender></i>'s
+`simoleon/balance` --- would be sufficient inputs for a relatively brief logical
+declaration of the conditions of value transfer.
 
 <div class="footnote">
 <span class="small">
@@ -405,10 +408,16 @@ issues queries _locally_ --- without contesting shared compute resources.
 
 # A Brief History of Time
 
-
+We've been ignoring a crucial dimension --- the temporal --- and its centrality
+in coherent information systems.  In Rich
+Hickey's [Datomic](https://www.datomic.com/)
+talk [The Database as a Value](https://www.youtube.com/watch?v=EKdV1IgAaFc),
+we're beguiled by an appeal to the virtues of an _epochal model of time_ --- an
+unambiguously ordered accretion of immutable facts --- as a more coherent basis
+for reasoning about database semantics than the prevailing mutable-cell model.
 This approach ought to be uncontroversial among blockchain enthusiasts ---
-consider a network attaining consensus over a single numerical value, _v_, for
-4 successive blocks:
+consider a network attaining consensus over a single numerical value, _v_, for 4
+successive blocks:
 
 <center>
 <img class="center" src="/images/blockchain.png">
@@ -465,11 +474,14 @@ uh, _Time_:
 </tbody>
 </table>
 
-Each row is an immutable fact --- Joe's balance at T1 doesn't invalidate,
-overwrite, or other otherwise supersede his balance at T0.  This behaviour
-extends on-chain, where we might, for example, express deterministic
-computations over the full or partial history of his balance, without having to
-explicitly maintain this history using byte arrays, or whatever it is people do.
+Each line represents an immutable fact --- Joe's balance at T1 doesn't
+invalidate, overwrite, or other otherwise supersede his balance _at T0_ ---
+which remains indefinitely available to anyone nostalgic for T0.  This behaviour
+extends on-chain, where we might --- for example --- deploy a contract partly
+concerned with transparent, deterministic computations over the full or partial
+history of his balance.  Often, we can afford not to care about the temporal
+dimension --- such as in the earlier transaction submission examples --- in
+spite of the leverage it offers us: time-travel.
 
 <!--## Read ScalabilityQ
 
@@ -485,17 +497,20 @@ with an interest in
 After each block, the deterministic root hash, and any number of the hashes covering segments in the individual indices
 will-->
 
-## Status
+# Project Status
 
-We've a functional, preliminary Clojure testnet which
-combines [Tendermint's ABCI](https://tendermint.com/) (classical consensus)
-and [Datahike](https://github.com/replikativ/datahike)<sup>1</sup>.  While our
-primary focus is the design and delivery of a trustless, permissionless
+We've a functional, preliminary Clojure testnet
+combining [Tendermint's ABCI](https://tendermint.com/) (classical consensus)
+with [Datahike](https://github.com/replikativ/datahike)<sup>1</sup>, which
+can do some --- but not yet all --- of what's described above.  While our
+primary focus is the design and delivery of a trustless, permissionless, neutral
 deployment of Datopia, we intend to encourage radically different arrangements
-of Datopia's components --- e.g. to experiment with alternative
+of its components --- e.g. to experiment with alternative
 consensus/Sybil-resistance algorithms, trusted/closed deployments, etc.
 
-
+Over the course of the next weeks and months, we intend to continue to publicly
+articulate the project's goals and technical approach, with a view to attracting
+potential contributors, advisors and investors.
 
 <div class="footnote">
 <span class="small">
@@ -505,7 +520,7 @@ consensus/Sybil-resistance algorithms, trusted/closed deployments, etc.
 
 # Subscribe to Datopia Updates
 
-If you've an interest in receiving information about the upcoming Datopia token
+If you've an interest in receiving information about an upcoming Datopia token
 sale, please enter your email address below.
 
 <!-- Begin MailChimp Signup Form -->
