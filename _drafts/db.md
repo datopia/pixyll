@@ -53,7 +53,7 @@ stand_.  Unsurprisingly, businesses solving complex problems already know this.
 
 <blockquote class="literal left">
 “A database that updates in place is not an information system.  I'm sorry."<br>
-<div class="attrib">&mdash; Rich Hickey</div>
+<div class="attrib">&mdash; Rich Hickey, The Database as a Value</div>
 </blockquote>
 A
 [billion dollar market](https://www.statista.com/statistics/254266/global-big-data-market-forecast/) is
@@ -83,7 +83,7 @@ decision-making processes.  We've a profusion of platforms wed to data access
 semantics less expressive than those of an all-nighter BASIC implementation.
 Given the effort and coordination involved in maintaining these histories, to
 fail to offer a _transparent_ means of analyzing them --- as a line, not a point
---- reveals a profligacy seldom seen since the brief reign of
+--- is symptomatic of a profligacy seldom seen since the brief reign of
 [Elagabalus](https://en.wikipedia.org/wiki/Elagabalus).
 
 <div class="footnote">
@@ -118,8 +118,8 @@ and
 [exorbitant storage costs](https://medium.com/ipdb-blog/forever-isnt-free-the-cost-of-storage-on-a-blockchain-database-59003f63e01) being
 among the more salient consequences.  The pervasive use of the word _ledger_ ---
 unaccompanied by the concession that ledgers are special-purpose databases ---
-has likely shaped our reluctance to think of blockchains as _information systems_,
-in any broad sense.
+has likely further strengthened our resolve to avoid considering blockchains as
+_information systems_, in any broad sense.
 
 Significant progress has been made on the above technical concerns --- less on the
 cultural ones.   On the solutions side, there exist
@@ -157,7 +157,7 @@ means, and however it's been jerry-rigged together.  While it's awkward to
 obtain empirical data<sup>3</sup>, we've the intuition that an astonishing
 percentage of deployed contracts are concerned with trivial, imperative data
 brokerage --- ordered sequences of assertions along the lines of _0x017b... can
-write this, 0x1f6f... can read that_ --- compensating for the shortcomings of
+write this, 0x1f6f... can read that_, --- compensating for the shortcomings of
 their platforms, not doing anything _smart_.
 
 <div class="footnote">
@@ -179,18 +179,19 @@ lighting with a Valadon projector!... My word, all it takes is a little spunk
 and initiative!"  <div class="attrib">&mdash; Courtial des Pereires</div>
 </blockquote>
 
-At a high level, our interest is in developing a trustless, immutable database
-sufficiently expressive to serve as the foundation for a ledger, governance
-platform, etc. --- without spilling the details of those domains all over the
-core system design.
+At a high level, our principal interest is in developing a trustless, immutable,
+deductive _information system_, sufficiently expressive to serve as the
+substrate for a ledger, governance platform, etc. --- without spilling the
+details of those domains all over the core system design.
 
 While resilient, autonomous money is a deeply motivating prospect --- one we may
 be realizing --- we see blockchain projects stoking ambitions better served by
-general approaches to the modeling and storage of information, and we see these
-problems yielding to a single solution.  While we'll resist the impulse to wade
-into the weeds in this introductory post, below is a sketch of a design in which
-the fundamental network interaction, a _transaction_, denotes something much
-closer to that word's use in database systems, rather than accounting ones.
+general approaches to the modeling and storage of information.  We think both
+problems can be elegantly accommodated within a single solution.  While we'll
+resist the impulse to wade into the weeds in this introductory post, below is a
+sketch of a design in which the fundamental network interaction, a
+_transaction_, denotes something much closer to that word's use in database
+systems --- rather than accounting ones.
 
 <!--## Why Store the Data on Chain?
 
@@ -253,7 +254,7 @@ This latter facility is a general means of establishing global invariants, such
 as those demanded by a ledger (balance sufficiency, zero-sum exchange, etc.) ---
 though far more interesting examples abound.  Users _deploy_ attribute schemas,
 and the genesis block includes some helpful, primitive schemas essential to
-maintaining the network (a native asset, etc.) itself.
+maintain the network itself.
 
 Here's where it gets a little Steampunk --- we embrace the use
 of [Datalog](https://en.wikipedia.org/wiki/Datalog) (an ancient, declarative,
@@ -314,8 +315,8 @@ tables to be a motivating organizational scheme.
 <br>
 <sup>2</sup> Shouts out <a href="https://en.wikipedia.org/wiki/Alain_Colmerauer">Alain Colmerauer</a>.
 <br>
-<sup>3</sup> e.g. the constraint for some <code>balance</code> attribute may declare something equivalent to <i>"I need the current <code>balance</code> for every entity referenced in the transaction,
-in order to evaluate the correctness of any use of <code>balance</code>".</i>
+<sup>3</sup> e.g. the invariant component of some <code>balance</code> attribute's schema may declare something like <i>"I need the current <code>balance</code> for every entity referenced in the transaction,
+in order to evaluate the correctness of the transaction's use of <code>balance</code>".</i>
 </span>
 </div>
 
@@ -393,7 +394,7 @@ occult monolith.
 
 <!--<blockquote class="literal left">
 “A database that updates in place is not an information system.  I'm sorry."<br>
-<div class="attrib">&mdash; Rich Hickey</div>
+<div class="attrib">&mdash; Rich Hickey, The Database as a Value</div>
 </blockquote>-->
 
 <!--In Rich Hickey's tlk on
@@ -415,14 +416,16 @@ engine in clients, and retrieve authenticated index-segments as required by quer
 authenticated subset of the network's database / history as it needs, and
 issues queries _locally_ --- without contesting shared compute resources<sup>1</sup>.
 
+<div class="footnote">
 <span class="small">
-<sup>1</sup> For network participants a need to issue queries
-which exceed to their own capacity for storage or bandwidth &mdash; embedded devices, say &mdash;
+<sup>1</sup> For network participants with a need to issue queries
+contingent on the ingestion of data which exceeds their bandwidth or storage capacity &mdash; embedded devices, say &mdash;
 little is lost.  An explicit on-chain mechanism for query evaluation exists.  For the
 truly impatient, we anticipate the development of peripheral, higher-level query execution services
-willing to expose themselves to stake forfeiture in the event that a proof oof incorrectness
+willing to expose themselves to stake forfeiture in the event that a proof of incorrectness
 is submitted to the chain by an aggrieved client.
 </span>
+</div>
 
 # A Brief History of Time
 
