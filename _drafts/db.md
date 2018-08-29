@@ -83,8 +83,8 @@ decision-making processes.  We've a profusion of platforms wed to data access
 semantics less expressive than those of an all-nighter BASIC implementation.
 Given the effort and coordination involved in maintaining these histories, to
 fail to offer a _transparent_ means of analyzing them --- as a line, not a point
---- is symptomatic of a profligacy seldom seen since the brief reign of
-[Elagabalus](https://en.wikipedia.org/wiki/Elagabalus).
+--- is symptomatic of a profligacy seldom seen since [Elagabalus'](https://en.wikipedia.org/wiki/Elagabalus)  brief reign.
+.
 
 <div class="footnote">
 <span class="small">
@@ -256,7 +256,7 @@ though far more interesting examples abound.  Users _deploy_ attribute schemas,
 and the genesis block includes some helpful, primitive schemas essential to
 maintain the network itself.
 
-Here's where it gets a little Steampunk --- we embrace the use
+Here's where it gets a little steampunk --- we embrace the use
 of [Datalog](https://en.wikipedia.org/wiki/Datalog) (an ancient, declarative,
 uncannily expressive Turing-incomplete subset
 of [Prolog](https://en.wikipedia.org/wiki/Prolog)<sup>2</sup>) as a
