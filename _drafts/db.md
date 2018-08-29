@@ -494,18 +494,18 @@ uh, _Time_:
 
 Each line represents an immutable fact --- Joe's balance at T1 doesn't
 invalidate, overwrite, or other otherwise supersede his balance _at T0_
-(indefinitely available to anyone nostalgic for T0).  This behaviour extends
-on-chain, where we might --- for example --- deploy a contract partly concerned
-with transparent, deterministic computations over the full or partial history of
-Joe's balance.  Similarly, light clients/applications, by virtue of the
-selective-replication mechanism outlined above, may express the same traversals
-off-chain.
+(indefinitely accessible to anyone nostalgic for T0).  This behaviour extends
+on-chain, where we might --- for example --- deploy a contract (or execute a
+query) partly concerned with transparent, deterministic computations over the
+full or partial history of Joe's balance.  Similarly, light
+clients/applications, by virtue of the selective-replication mechanism outlined
+above, may express identical traversals locally.
 
 Often, we can afford not to care about the temporal dimension ---
 such as in the earlier transaction submission examples --- but there are instances
 where it's the only means of solving a problem.  We can realize the database at any T,
 diff or join two databases as of different times, inspect the history of entities over
-time, etc.
+time, etc.  These are _superpowers_.
 
 <!--## Read ScalabilityQ
 
@@ -525,7 +525,7 @@ will-->
 
 We've a functional, preliminary Clojure testnet
 combining [Tendermint's ABCI](https://tendermint.com/) (classical consensus)
-with [Datahike](https://github.com/replikativ/datahike)<sup>1</sup>, which
+with [Datahike](https://github.com/replikativ/datahike)<sup>1</sup>, which, in concert,
 can do some --- but not yet all --- of what's described above.  While our
 primary focus is the design and delivery of a trustless, permissionless, neutral
 deployment of Datopia, we intend to encourage radically different arrangements
