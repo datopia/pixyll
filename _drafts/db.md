@@ -76,7 +76,7 @@ forgotten them all.”  <div class="attrib">&mdash; J.M. Barrie, Peter Pan</div>
 
 Fortuitously, a blockchain's fundamental responsibility is that of securing a
 _coherent, immutable, ordered history of facts_ --- the traffic of an
-information system. Just the thing we need, to make intelligent decisions!  _In
+information system. Just the thing we need, to make intelligent decisions!  In
 a truly curious turn, this history --- the network's _identity_ --- tends, as a
 matter of [precedent](https://www.ethereum.org/), to be obscured from
 decision-making processes.  We've a profusion of platforms wed to data access
