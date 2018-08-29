@@ -2,7 +2,7 @@
 layout: post
 title:  Blockchains as Information Systems
 author: Moe Aboulkheir
-summary: Blockchains positioned as application deployment targets must confront the ubiquity and volumme of highly-structured information in all but the most trivial applications.  Expensive, crude or ad-hoc approaches to modeling, storing and retrieving data are typical in the blockchain space.  This need not be the case.
+summary: Blockchains positioned as application deployment targets must confront the ubiquity and volume of highly-structured information in all but the most trivial applications.  Expensive, crude or ad-hoc approaches to modeling, storing and retrieving data are typical in the blockchain space.  This need not be the case.
 ---
 
 # Axioms
@@ -139,7 +139,7 @@ projected demand.  We've a _vision_ problem, not a technical one.
 
 From a developer's perspective, one of the more disappointing _platform_
 blockchain trends is the conflation of information and implementation at the
-center many of their programming models<sup>1</sup>.  We're structurally
+center of many of their programming models<sup>1</sup>.  We're structurally
 recapitulating
 the
 [worst](https://medium.com/@brianwill/object-oriented-programming-a-personal-disaster-1b044c2383ab) of
@@ -157,7 +157,7 @@ means, and however it's been jerry-rigged together.  While it's awkward to
 obtain empirical data<sup>3</sup>, we've the intuition that an astonishing
 percentage of deployed contracts are concerned with trivial, imperative data
 brokerage --- ordered sequences of assertions along the lines of _0x017b... can
-write this, 0x1f6f... can read that_, --- compensating for the shortcomings of
+write this, 0x1f6f... can read that_ --- compensating for the shortcomings of
 their platforms, not doing anything _smart_.
 
 <div class="footnote">
@@ -261,7 +261,7 @@ of [Datalog](https://en.wikipedia.org/wiki/Datalog) (an ancient, declarative,
 uncannily expressive Turing-incomplete subset
 of [Prolog](https://en.wikipedia.org/wiki/Prolog)<sup>2</sup>) as a
 domain-specific logic language for database interrogation.  Queries and
-constraints, like most everything we traffic in, are structured data.  A
+invariants, like most everything we traffic in, are structured data.  A
 trivial Datalog query over the above data, declared in
 Clojure's [literal notation](https://github.com/edn-format/edn), for
 readability:
@@ -280,14 +280,15 @@ All of the bare words / symbols (<code>?</code>-prefixed, by convention) refer t
 values for which we're seeking substitutions.
 </span>
 
-On transaction receipt, any attribute constraints are evaluated against an
+On transaction receipt, any attribute invariants are evaluated against an
 in-memory Datalog engine, containing only the _facts_ asserted by the
 transaction, conjoined with the result of an optional, arbitrary _pre-query_
 against the chain, on which the schema may declare a dependency<sup>3</sup>.  If
 the transaction is accepted, its facts are incorporated into the persistent,
 authenticated indices which comprise the network's database.  There is nothing
-mysterious about the attribute constraints, if you've some grasp of the above query
---- invariants are essentially queries required to unify for a transaction to proceed.
+mysterious about the attribute invariants, if you've some grasp of the above
+query --- invariants are just queries required to unify for a transaction to be
+considered valid.
 
 <div class="infobox">
 <div class="infobox-title">Why not SQL?</div>
@@ -339,8 +340,8 @@ entity --- accounts, in this case:
 Here we're imagining Simoleons to be some user-defined asset, which happens to
 use the namespace `simoleon` for its qualified keywords<sup>1</sup>.  The
 `simoleon/balance` values --- in this case --- are submitted not as atoms, but
-lists representing function applications curried over the entity's
-attribute value at the relevant block height --- we're commutatively
+lists representing functions curried over the entity's
+attribute value at the point of application --- we're commutatively
 declaring something like _&lt;sender>'s `simoleon/balance` shrinks by 99.
 &lt;recipient>'s grows by 99_.
 
@@ -414,12 +415,12 @@ over connection handles, or _issue_ them at all --- we embed a Datalog query
 engine in clients, and retrieve authenticated index-segments as required by queries
 (via a peer-to-peer distribution protocol).  The client maintains as large an
 authenticated subset of the network's database / history as it needs, and
-issues queries _locally_ --- without contesting shared compute resources<sup>1</sup>.
+executes queries _locally_ --- without contesting shared compute resources<sup>1</sup>.
 
 <div class="footnote">
 <span class="small">
-<sup>1</sup> For network participants with a need to issue queries
-contingent on the ingestion of data which exceeds their bandwidth or storage capacity &mdash; embedded devices, say &mdash;
+<sup>1</sup> For network participants with a need to execute queries
+contingent on the consumption of impractical volumes of data given bandwidth/storage capacity &mdash; embedded devices, say &mdash;
 little is lost.  An explicit on-chain mechanism for query evaluation exists.  For the
 truly impatient, we anticipate the development of peripheral, higher-level query execution services
 willing to expose themselves to stake forfeiture in the event that a proof of incorrectness
@@ -501,7 +502,7 @@ invalidate, overwrite, or other otherwise supersede his balance _at T0_
 on-chain, where we might --- for example --- deploy a contract (or execute a
 query) partly concerned with transparent, deterministic computations over the
 full or partial history of Joe's balance.  Similarly, light
-clients/applications, by virtue of the selective-replication mechanism outlined
+clients/applications, by virtue of the selective replication mechanism outlined
 above, may express identical traversals locally.
 
 Often, we can afford not to care about the temporal dimension ---
@@ -531,13 +532,13 @@ combining [Tendermint's ABCI](https://tendermint.com/) (classical consensus)
 with [Datahike](https://github.com/replikativ/datahike)<sup>1</sup>, which, in concert,
 can do some --- but not yet all --- of what's described above.  While our
 primary focus is the design and delivery of a trustless, permissionless, neutral
-deployment of Datopia, we intend to encourage radically different arrangements
+deployment of Datopia, we intend to encourage radical arrangements
 of its components --- e.g. to experiment with alternative
 consensus/Sybil-resistance algorithms, trusted/closed deployments, etc.
 
-Over the course of the next weeks and months, we intend to continue to publicly
-articulate the project's goals and technical approach, with a view to attracting
-potential contributors, advisors and investors.
+Over the course of the next weeks and months, we'll continue to publicly
+articulate the project's goals, and its technical approach, with a view to attracting
+potential contributors, advisors, critics and investors.
 
 <div class="footnote">
 <span class="small">
