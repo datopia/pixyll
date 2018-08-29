@@ -2,7 +2,7 @@
 layout: post
 title:  Blockchains as Information Systems
 author: Moe Aboulkheir
-summary: Blockchains positioned as application deployment targets must confront the ubiquity of highly-structured information in all but the most trivial applications.  Expensive, crude or ad-hoc approaches to modelling, storing and retrieving data are typical in the blockchain space.  This need not be the case.
+summary: Blockchains positioned as application deployment targets must confront the ubiquity and volumme of highly-structured information in all but the most trivial applications.  Expensive, crude or ad-hoc approaches to modeling, storing and retrieving data are typical in the blockchain space.  This need not be the case.
 ---
 
 # Axioms
@@ -121,8 +121,8 @@ unaccompanied by the concession that ledgers are special-purpose databases ---
 has likely shaped our reluctance to think of blockchains as _information systems_,
 in any broad sense.
 
-Significant progress has been made on the above technical concerns --- and we're doing
-our part to try and influence the dialogue.   As far as the former case, there exist
+Significant progress has been made on the above technical concerns --- less on the
+cultural ones.   On the solutions side, there exist
 a number of sound, high-throughput consensus algorithms
 (e.g. [metastable](https://ipfs.io/ipfs/QmUy4jh5mGNZvLkjies1RWM4YuvJh5o2FYopNPVYwrRVGV),
 [classical](https://tendermint.com), etc.)  composable with responsive,
@@ -150,19 +150,21 @@ a [thoroughly debased](https://www.youtube.com/watch?v=-6BsiVyC1kM) strategy at
 odds with the needs of
 sustainable, [composable](https://www.youtube.com/watch?v=3oQTSP4FngY) systems.
 
-If these seem abstract concerns, appraise the possibility that the absence of
-a fundamental means of data interrogation consigns contracts to the
-re-implementation<sup>2</sup> of a small set of access patterns over their
-"internal state" --- whatever that means.  While it's awkward to obtain
-empirical data<sup>3</sup>, we've the suspicion that an astonishing percentage
-of deployed contracts are concerned with trivial data brokerage --- compensating
-for the shortcomings of their platforms, rather than doing anything _smart_.
+These are not abstract concerns. The absence of a fundamental means of global,
+structural interrogation consigns contracts to the re-implementation<sup>2</sup>
+of a small set of access patterns over their "internal state" --- whatever that
+means, and however it's been jerry-rigged together.  While it's awkward to
+obtain empirical data<sup>3</sup>, we've the intuition that an astonishing
+percentage of deployed contracts are concerned with trivial, imperative data
+brokerage --- ordered sequences of assertions along the lines of _0x017b... can
+write this, 0x1f6f... can read that_ --- compensating for the shortcomings of
+their platforms, not doing anything _smart_.
 
 <div class="footnote">
 <span class="small">
 <sup>1</sup> c.f. generated getters and setters per Solidity, etc.<br>
 <sup>2</sup> It may surprise you to learn that grave mistakes are often made in these implementations.<br>
-<sup>4</sup> Expect a follow-up &mdash; much of what appears as <i>code</i> is data smeared in
+<sup>3</sup> Expect a follow-up &mdash; much of what appears as <i>code</i> is data smeared in
 carmine.
 <br>
 </span>
@@ -184,11 +186,11 @@ core system design.
 
 While resilient, autonomous money is a deeply motivating prospect --- one we may
 be realizing --- we see blockchain projects stoking ambitions better served by
-general approaches to the modeling and storage of information.  The two need
-not be mutually exclusive.  While resisting the impulse to wade into the weeds
-in this introductory post, we'll sketch a design in which the fundamental
-interaction, a _transaction_, denotes something much closer to that word's use
-in database systems, rather than financial ones.
+general approaches to the modeling and storage of information, and we see these
+problems yielding to a single solution.  While we'll resist the impulse to wade
+into the weeds in this introductory post, below is a sketch of a design in which
+the fundamental network interaction, a _transaction_, denotes something much
+closer to that word's use in database systems, rather than accounting ones.
 
 <!--## Why Store the Data on Chain?
 
@@ -249,9 +251,9 @@ be schematized, to express type, cardinality, uniqueness, or, more interestingly
 --- to declaratively, logically constrain the attribute's use in transactions.
 This latter facility is a general means of establishing global invariants, such
 as those demanded by a ledger (balance sufficiency, zero-sum exchange, etc.) ---
-though far more interesting examples abound.  Users will _deploy_ attribute
-schemas, and the genesis block includes some helpful, primitive attributes
-essential to maintaining the network (a native asset, etc.)
+though far more interesting examples abound.  Users _deploy_ attribute schemas,
+and the genesis block includes some helpful, primitive schemas essential to
+maintaining the network (a native asset, etc.) itself.
 
 Here's where it gets a little Steampunk --- we embrace the use
 of [Datalog](https://en.wikipedia.org/wiki/Datalog) (an ancient, declarative,
@@ -273,17 +275,18 @@ readability:
 ```
 
 <span class="small">
-All non <code>:keywords</code> (i.e. strings or symbols) refer either to the entities
-or values we want the query engine to substitute.
+All of the bare words / symbols (<code>?</code>-prefixed, by convention) refer to
+values for which we're seeking substitutions.
 </span>
 
 On transaction receipt, any attribute constraints are evaluated against an
 in-memory Datalog engine, containing only the _facts_ asserted by the
 transaction, conjoined with the result of an optional, arbitrary _pre-query_
-against the chain, on which the schema may declare a dependency
-(e.g. _retrieve the current balance for asset XYZ for every entity referenced in
-the transaction_).  If the transaction is accepted, its facts are incorporated
-into the persistent, authenticated indices which comprise the network's database.
+against the chain, on which the schema may declare a dependency<sup>3</sup>.  If
+the transaction is accepted, its facts are incorporated into the persistent,
+authenticated indices which comprise the network's database.  There is nothing
+mysterious about the attribute constraints, if you've some grasp of the above query
+--- invariants are essentially queries required to unify for a transaction to proceed.
 
 <div class="infobox">
 <div class="infobox-title">Why not SQL?</div>
@@ -310,6 +313,9 @@ it's not our idea of a good time.
 tables to be a motivating organizational scheme.
 <br>
 <sup>2</sup> Shouts out <a href="https://en.wikipedia.org/wiki/Alain_Colmerauer">Alain Colmerauer</a>.
+<br>
+<sup>3</sup> e.g. the constraint for some <code>balance</code> attribute may declare something equivalent to <i>"I need the current <code>balance</code> for every entity referenced in the transaction,
+in order to evaluate the correctness of any use of <code>balance</code>".</i>
 </span>
 </div>
 
@@ -352,6 +358,9 @@ handy).  It's trivial to see that the sum of this data, considered alongside the
 transaction --- and a _pre-query_ resulting in <i>&lt;sender></i>'s
 `simoleon/balance` --- would be sufficient inputs for a relatively brief logical
 declaration of the conditions of value transfer.
+It's [first-order logic](https://en.wikipedia.org/wiki/First-order_logic) all
+the way down --- Datopia's native asset is defined and exchanged via identical
+means.
 
 <div class="footnote">
 <span class="small">
@@ -379,8 +388,8 @@ systems at the point they develop a dependency on a database.  In the absence of
 persistence, functional transformation of _values_ is about as delightful as
 software development can get, for many of us.  Databases invite us first to
 replace these transparent inputs and outputs with result sets and opaque connection
-handles  --- all for the privilege of competing for the indulgence of a
-harried and forgetful monolith.  This is a raw deal.
+handles  --- all for the privilege of submitting strings to the whims of an
+occult monolith.
 
 <!--<blockquote class="literal left">
 “A database that updates in place is not an information system.  I'm sorry."<br>
@@ -403,13 +412,22 @@ constitute.  With an immutable architecture, participants needn't issue queries
 over connection handles, or _issue_ them at all --- we embed a Datalog query
 engine in clients, and retrieve authenticated index-segments as required by queries
 (via a peer-to-peer distribution protocol).  The client maintains as large an
-authenticated subset of the network's database as it needs, and
-issues queries _locally_ --- without contesting shared compute resources.
+authenticated subset of the network's database / history as it needs, and
+issues queries _locally_ --- without contesting shared compute resources<sup>1</sup>.
+
+<span class="small">
+<sup>1</sup> For network participants a need to issue queries
+which exceed to their own capacity for storage or bandwidth &mdash; embedded devices, say &mdash;
+little is lost.  An explicit on-chain mechanism for query evaluation exists.  For the
+truly impatient, we anticipate the development of peripheral, higher-level query execution services
+willing to expose themselves to stake forfeiture in the event that a proof oof incorrectness
+is submitted to the chain by an aggrieved client.
+</span>
 
 # A Brief History of Time
 
-We've been ignoring a crucial dimension --- the temporal --- and its centrality
-in coherent information systems.  In Rich
+For the purposes of convenience, we've been ignoring a crucial dimension --- the
+temporal --- and its centrality to coherent information systems.  In Rich
 Hickey's [Datomic](https://www.datomic.com/)
 talk [The Database as a Value](https://www.youtube.com/watch?v=EKdV1IgAaFc),
 we're beguiled by an appeal to the virtues of an _epochal model of time_ --- an
@@ -475,13 +493,19 @@ uh, _Time_:
 </table>
 
 Each line represents an immutable fact --- Joe's balance at T1 doesn't
-invalidate, overwrite, or other otherwise supersede his balance _at T0_ ---
-which remains indefinitely available to anyone nostalgic for T0.  This behaviour
-extends on-chain, where we might --- for example --- deploy a contract partly
-concerned with transparent, deterministic computations over the full or partial
-history of his balance.  Often, we can afford not to care about the temporal
-dimension --- such as in the earlier transaction submission examples --- in
-spite of the leverage it offers us: time-travel.
+invalidate, overwrite, or other otherwise supersede his balance _at T0_
+(indefinitely available to anyone nostalgic for T0).  This behaviour extends
+on-chain, where we might --- for example --- deploy a contract partly concerned
+with transparent, deterministic computations over the full or partial history of
+Joe's balance.  Similarly, light clients/applications, by virtue of the
+selective-replication mechanism outlined above, may express the same traversals
+off-chain.
+
+Often, we can afford not to care about the temporal dimension ---
+such as in the earlier transaction submission examples --- but there are instances
+where it's the only means of solving a problem.  We can realize the database at any T,
+diff or join two databases as of different times, inspect the history of entities over
+time, etc.
 
 <!--## Read ScalabilityQ
 
