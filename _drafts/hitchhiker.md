@@ -83,9 +83,11 @@ The leaf nodes are called data nodes and the nodes spanning the tree index
 nodes. This ideally allows to keep all index nodes in memory and only read the
 data nodes from disk as they are much bigger.
 
-<div class="center" style="width: 100%">
-<img src="/images/bplus_tree_annotated.png">
-<small>Figure 1: B+-Tree</small>
+<div class="center" style="width: 100%"> 
+<img src="/images/bplus_tree_annotated.png"> 
+
+<small>Figure 1: B+-Tree. The pivots help to navigate the tree to find the
+proper data nodes containing the actual key and value of an element.</small>
 </div>
 
 In Figure 1 we can see a B+ tree with a minimum branching factor of $$3$$. The
@@ -255,14 +257,14 @@ completely and yield the theoretic superiority of a fractal tree.
 # Persistence
 
 So far we have basically described the fractal tree concept, but we have already
-given a hint in Figure 1 that we have a
-[merkelized](https://en.wikipedia.org/wiki/Merkle_tree) data structure. This
-means we do not overwrite the trees in place, but in fact implement a so called
-persistent data structure that returns copies after insertion events and shares
-structure as can be seen in Figure 6. The programming language of our choice,
-[Clojure](http://clojure.org), puts this decision at the center of its design
-and therefore makes the Hitchhiker-tree implementation both straightforward and
-very robust to concurrent access.
+written a Merkle hash on each of the edges of the trees drawn. All
+hitchhiker-trees are [merkelized](https://en.wikipedia.org/wiki/Merkle_tree)
+data structures. This means we do not overwrite the trees in place, but in fact
+implement a so called persistent data structure that returns copies after
+insertion events and shares structure as can be seen in Figure 6. The
+programming language of our choice, [Clojure](http://clojure.org), puts this
+decision at the center of its design and therefore makes the Hitchhiker-tree
+implementation both straightforward and very robust to concurrent access.
 
 <div class="center" style="width: 100%"> 
 <img src="/images/persistence_annotated.png"> 
