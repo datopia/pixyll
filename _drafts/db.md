@@ -48,8 +48,8 @@ on-chain governance --- while seldom acknowledging the _explosive_ volumes of
 information consumed and emitted by these processes, even within narrow domains.
 Platforms --- blockchains, or otherwise --- without cost-effective solutions to
 structured, historic data retrieval are suited only to the most comically
-trivial class of information-bound problem: _they couldn't govern a lemonade
-stand_.  Unsurprisingly, businesses solving complex problems already know this.
+trivial class of problem: _they couldn't govern a lemonade
+stand_.  Unsurprisingly, businesses _solving_ complex problems already know this.
 
 <blockquote class="literal left">
 “A database that updates in place is not an information system.  I'm sorry."<br>
@@ -64,9 +64,9 @@ yesterday's value is obliterated by today's<sup>1</sup> --- are unsuited to many
 of the problems faced by their
 customers<sup>2</sup>.  [Immutable databases](https://www.datomic.com/) take a
 far more interesting position: your structured data's history _is data of the
-same order_ --- and ought to be equivalently structured and interrogable.  While
+same order_ ---  equivalently structured and interrogable.  While
 some powerful properties fall out of the obvious design --- auditability,
-read-scalability --- we're most keen on the superpowers conferred by the
+read-scalability --- we're most enthusiastic about the superpowers conferred by the
 combination of structured histories
 and [declarative logic](https://en.wikipedia.org/wiki/Datalog)<sup>3,4</sup>.
 
@@ -83,8 +83,8 @@ decision-making processes.  We've a profusion of platforms wed to data access
 semantics less expressive than those of an all-nighter BASIC implementation.
 Given the effort and coordination involved in maintaining these histories, to
 fail to offer a _transparent_ means of analyzing them --- as a line, not a point
---- is symptomatic of a profligacy seldom seen since [Elagabalus'](https://en.wikipedia.org/wiki/Elagabalus)  brief reign.
-.
+--- is astonishingly profligate and short-sighted.
+
 
 <div class="footnote">
 <span class="small">
@@ -139,33 +139,58 @@ projected demand.  We've a _vision_ problem, not a technical one.
 
 From a developer's perspective, one of the more disappointing _platform_
 blockchain trends is the conflation of information and implementation at the
-center of many of their programming models<sup>1</sup>.  We're structurally
-recapitulating
+center of many of their programming models.  We're recapitulating
 the
 [worst](https://medium.com/@brianwill/object-oriented-programming-a-personal-disaster-1b044c2383ab) of
-object-orientation --- even in systems embarrassed to describe themselves as such.
+object-orientation, atop systems embarrassed to describe themselves as such.
 Data _isn't_ an implementation detail, and mediating its access through
-single-use DSLs<sup>1</sup> is
+domain-specific _methods_<sup>1</sup> is
 a [thoroughly debased](https://www.youtube.com/watch?v=-6BsiVyC1kM) strategy at
 odds with the needs of
 sustainable, [composable](https://www.youtube.com/watch?v=3oQTSP4FngY) systems.
 
-These are not abstract concerns. The absence of a fundamental means of global,
-structural interrogation consigns contracts to the re-implementation<sup>2</sup>
-of a small set of access patterns over their "internal state" --- whatever that
-means, and however it's been jerry-rigged together.  While it's awkward to
-obtain empirical data<sup>3</sup>, we've the intuition that an astonishing
-percentage of deployed contracts are concerned with trivial, imperative data
-brokerage --- ordered sequences of assertions along the lines of _0x017b... can
-write this, 0x1f6f... can read that_ --- compensating for the shortcomings of
-their platforms, not doing anything _smart_.
+These aren't stylistic concerns. The absence of a fundamental means of global,
+structural interrogation/insertion consigns contracts to the
+re-implementation<sup>2</sup> of a small set of access patterns over their
+"internal state" --- whatever that means, and however it's been jerry-rigged
+together.  While it's awkward to obtain empirical data<sup>3</sup>, we've the
+intuition that an astonishing percentage of deployed contracts are concerned
+with trivial, imperative data brokerage --- ordered sequences of assertions
+along the lines of _0x017b... can write this, 0x1f6f... can read that_ ---
+compensating for the shortcomings of their platforms, not doing anything
+_smart_.  Briefly, an excerpt
+from
+[Solidity by Example](https://solidity.readthedocs.io/en/v0.4.24/solidity-by-example.html):
+
+```js
+contract Ballot {
+  ...
+  mapping(address => Voter) public voters;
+  ...
+  function giveRightToVote(address voter) public {
+    require(msg.sender == chairperson,
+            "Only chairperson can give right to vote.");
+    require(!voters[voter].voted,
+            "The voter already voted.");
+    require(voters[voter].weight == 0);
+    voters[voter].weight = 1;
+  }
+  ...
+}
+
+```
+
+This is fairly typical Solidity code --- after an imperative sequence of runtime
+assertions, the `giveRightToVote` method sets a nested, persistent property to
+`1`. All of the other methods on the `Ballot` object are in a similar line of
+work --- delicate, sequential assertions, followed by trivial data manipulation.
+This is not code, it's data disguised by blush and carmine.
 
 <div class="footnote">
 <span class="small">
 <sup>1</sup> c.f. generated getters and setters per Solidity, etc.<br>
 <sup>2</sup> It may surprise you to learn that grave mistakes are often made in these implementations.<br>
-<sup>3</sup> Expect a follow-up &mdash; much of what appears as <i>code</i> is data smeared in
-carmine.
+<sup>3</sup> Expect a follow-up.
 <br>
 </span>
 </div>
@@ -186,12 +211,12 @@ details of those domains all over the core system design.
 
 While resilient, autonomous money is a deeply motivating prospect --- one we may
 be realizing --- we see blockchain projects stoking ambitions better served by
-general approaches to the modeling and storage of information.  We think both
-problems can be elegantly accommodated within a single solution.  While we'll
-resist the impulse to wade into the weeds in this introductory post, below is a
+general approaches to the modeling and storage of information.  At Datopia, we
+see both problems yielding to a single solution.  While we'll resist the
+impulse to wade too deeply into the weeds in this introductory post, below is a
 sketch of a design in which the fundamental network interaction, a
 _transaction_, denotes something much closer to that word's use in database
-systems --- rather than accounting ones.
+systems.
 
 <!--## Why Store the Data on Chain?
 
@@ -215,46 +240,50 @@ Cloud platform providers have succeeded in projecting
 
 ## The Tyranny of Structurelessness
 
-<center>
-<img src="/images/joe-sally.png" style="max-width: 50%; padding: 2ex">
-</center>
-<span class="small">
-Four triples
- (e.g. <tt class="arrow">joe &mdash;age&#x27f6; 72</tt>), visualized as a property
- graph. <i>Sally</i> is a first-class entity &mdash; in practice, the <i>value</i> of Joe's <code>friend</code> attribute would be Sally's entity ID.
-</span>
-
 What follows is a tedious --- but mercifully brief --- exploration of the
 requirement of a single, flexible means of structuring arbitrary data
-entrusted to the network.  We find
-the
-[Entity Attribute Value](https://en.wikipedia.org/wiki/Entity%E2%80%93attribute%E2%80%93value_model) model
-strikes an effective balance between open schemas and susceptibility to
-structured interrogation.  At a high level, data is represented as global<sup>1</sup>
-triples of the form --- wait for it --- _entity_, _attribute_,
-_value_.  Like [RDF](https://www.w3.org/RDF/), without the megalomania.
-
-If you'd prefer, here's how we might represent a transaction that'd result in something
-like the above graph. The angle brackets are an ad-hoc metasyntax for the purposes of
-abstracting incidental values (entity identifiers, in this case):
+entrusted to the network.
 
 ```clojure
-[{:datopia/entity <joe>
-  :age            72
-  :balance        27
-  :friend         #:datopia/ref <sally>}
- {:datopia/entity <sally>
-  :email          "sally@gmail.com"}]
+;; The angle brackets are an ad-hoc metasyntax for the purpose of
+;; abstracting incidental values --- entity identifiers, here.
+
+{:datopia/entity <sally>
+ :email          "sally@gmail.com"}
 ```
 
+Here we've an entity --- a _thing_ --- represented as a map/dictionary, with the
+entity's attributes as its keys.  For those free of type/struct fetishes, this
+is a perfectly familiar, open (i.e. no fixed set of permissible attributes per
+entity), universal means of talking about _things_.  Let's talk about `<sally>`
+from the perspective of another entity, `<joe>`:
+
+```clojure
+{:datopia/entity <joe>
+ :age            72
+ :balance        27
+ :friend         #:datopia/ref <sally>}
+```
+
+<div class="thumbnail-right" style="width: 50%">
+<img src="/images/joe-sally.png" style="padding: 2ex">
+</div>
+
+These map representations are trivially isomorphic to
+the
+[Entity-attribute-value information model](https://en.wikipedia.org/wiki/Entity%E2%80%93attribute%E2%80%93value_model), in
+which data is typically structured as global<sup>1</sup> triples of the form
+--- wait for it --- entity, attribute, value (e.g. `<joe>, age, 72`).  Like RDF,
+without the megalomania.
+
 A key feature of our system is that any of the attributes referenced above may
-be schematized, to express type, cardinality, uniqueness, or, more interestingly
---- to declaratively, logically constrain the attribute's use in transactions.
-This latter facility is a general means of establishing global invariants, such
-as those demanded by a ledger (balance sufficiency, zero-sum exchange, etc.) ---
-though far more interesting examples abound.  Users _deploy_ attribute schemas,
-and the genesis block includes some helpful, primitive schemas essential to
-maintain the network itself.
+be (optionally) schematized, to express type, cardinality, uniqueness, or, more
+interestingly --- to declaratively, logically constrain the attribute's use in
+transactions.  This latter facility is a general means of establishing global
+invariants, such as those demanded by a ledger (balance sufficiency, zero-sum
+exchange, etc.) --- though far more interesting examples abound.  Users _deploy_
+attribute schemas, and the genesis block includes some helpful, primitive
+schemas essential to maintain the network itself.
 
 Here's where it gets a little steampunk --- we embrace the use
 of [Datalog](https://en.wikipedia.org/wiki/Datalog) (an ancient, declarative,
@@ -262,7 +291,7 @@ uncannily expressive Turing-incomplete subset
 of [Prolog](https://en.wikipedia.org/wiki/Prolog)<sup>2</sup>) as a
 domain-specific logic language for database interrogation.  Queries and
 invariants, like most everything we traffic in, are structured data.  A
-trivial Datalog query over the above data, declared in
+trivial Datalog query over our feeble ontology, declared in
 Clojure's [literal notation](https://github.com/edn-format/edn), for
 readability:
 
@@ -280,15 +309,15 @@ All of the bare words / symbols (<code>?</code>-prefixed, by convention) refer t
 values for which we're seeking substitutions.
 </span>
 
-On transaction receipt, any attribute invariants are evaluated against an
-in-memory Datalog engine, containing only the _facts_ asserted by the
-transaction, conjoined with the result of an optional, arbitrary _pre-query_
-against the chain, on which the schema may declare a dependency<sup>3</sup>.  If
+On transaction receipt, all applicable attribute invariants are evaluated against an
+in-memory Datalog engine, containing only the union of the _facts_ asserted by
+the transaction, and the result of an optional, arbitrary _pre-query_ against
+the chain state, on which the schema may declare a dependency<sup>3</sup>.  If
 the transaction is accepted, its facts are incorporated into the persistent,
-authenticated indices which comprise the network's database.  There is nothing
-mysterious about the attribute invariants, if you've some grasp of the above
-query --- invariants are just queries required to unify for a transaction to be
-considered valid.
+authenticated indices which comprise the network's database.  If you've some grasp
+of the above query, there's not much mystery to attribute invariants --- they're
+simply queries of the same form, required to unify in order for an attribute's
+usage --- and the transaction which contains it --- to be considered valid.
 
 <div class="infobox">
 <div class="infobox-title">Why not SQL?</div>
@@ -324,10 +353,10 @@ in order to evaluate the correctness of the transaction's use of <code>balance</
 
 ## Facta, non verba
 
-How might we flexibly support value transfer in such a system, in more detail?  As our
-fundamental interaction is the submission of arbitrary, structured data, let's
-idealize some --- a vector of two facts, each concerned with a distinct
-entity --- accounts, in this case:
+How might we flexibly support value transfer in such a system, in more detail?
+As our fundamental interaction is the submission of arbitrary, structured data,
+let's idealize a transaction --- in this case, a vector of two facts, each
+concerned with a distinct entity:
 
 ```clojure
 [{:simoleon/balance (- 99),
@@ -339,19 +368,19 @@ entity --- accounts, in this case:
 
 Here we're imagining Simoleons to be some user-defined asset, which happens to
 use the namespace `simoleon` for its qualified keywords<sup>1</sup>.  The
-`simoleon/balance` values --- in this case --- are submitted not as atoms, but
+`simoleon/balance` values are submitted not as atoms, but
 lists representing functions curried over the entity's
 attribute value at the point of application --- we're commutatively
 declaring something like _&lt;sender>'s `simoleon/balance` shrinks by 99.
 &lt;recipient>'s grows by 99_.
 
-To say that Simoleons are a _user-defined asset_ implies only that there exists a
-schematized attribute within the network --- `simoleon/balance` ---
-logically constraining its own use in such a way as to render inexpressible
-"unsound transfers" --- whatever that meant to the author of the attribute's definition<sup>2</sup>.
-The nodes themselves have no intrinsic conception of a _transfer_ --- when it comes to
-transaction processing, their primary concern is the evaluation of user-defined
-invariants.
+To say that Simoleons are a _user-defined asset_ implies only that there exists
+a schematized attribute within the network --- `simoleon/balance` --- logically
+constraining its own use in such a way as to render inexpressible "unsound
+transfers" --- whatever that meant to the author of the attribute's
+schema<sup>2</sup>.  Datopia nodes have no intrinsic conception of a
+_transfer_ --- when it comes to transaction processing, their primary concern is
+the evaluation of user-defined invariants.
 
 Nodes --- prior to applying transactions --- synthesize additional attributes
 from low-level metadata not explicitly represented in the transaction's body
@@ -388,10 +417,10 @@ is outside the scope of this post, and perhaps need not be a platform-level feat
 It's difficult to conceive of a less attractive transformation than undergone by
 systems at the point they develop a dependency on a database.  In the absence of
 persistence, functional transformation of _values_ is about as delightful as
-software development can get, for many of us.  Databases invite us first to
+software development can get, for many of us.  More often than not, databases invite us to
 replace these transparent inputs and outputs with result sets and opaque connection
-handles  --- all for the privilege of submitting strings to the whims of an
-occult monolith.
+handles ---  in exchange for the privilege of competing to submit strings to a distant,
+volatile authority.
 
 <!--<blockquote class="literal left">
 “A database that updates in place is not an information system.  I'm sorry."<br>
@@ -412,7 +441,7 @@ deterministic application of transactions --- and, hopefully, a larger class of
 participants issuing transactions, and interrogating the database they
 constitute.  With an immutable architecture, participants needn't issue queries
 over connection handles, or _issue_ them at all --- we embed a Datalog query
-engine in clients, and retrieve authenticated index-segments as required by queries
+engine in clients, and retrieve authenticated index segments as required by queries
 (via a peer-to-peer distribution protocol).  The client maintains as large an
 authenticated subset of the network's database / history as it needs, and
 executes queries _locally_ --- without contesting shared compute resources<sup>1</sup>.
@@ -420,7 +449,7 @@ executes queries _locally_ --- without contesting shared compute resources<sup>1
 <div class="footnote">
 <span class="small">
 <sup>1</sup> For network participants with a need to execute queries
-contingent on the consumption of impractical volumes of data given bandwidth/storage capacity &mdash; embedded devices, say &mdash;
+contingent on the consumption of data surplus to local bandwidth/storage capacity &mdash; embedded devices, say &mdash;
 little is lost.  An explicit on-chain mechanism for query evaluation exists.  For the
 truly impatient, we anticipate the development of peripheral, higher-level query execution services
 willing to expose themselves to stake forfeiture in the event that a proof of incorrectness
@@ -537,7 +566,7 @@ of its components --- e.g. to experiment with alternative
 consensus/Sybil-resistance algorithms, trusted/closed deployments, etc.
 
 Over the course of the next weeks and months, we'll continue to publicly
-articulate the project's goals, and its technical approach, with a view to attracting
+articulate the project's goals, and technical approach, with a view to attracting
 potential contributors, advisors, critics and investors.
 
 <div class="footnote">
