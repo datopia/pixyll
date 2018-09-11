@@ -14,6 +14,51 @@ summary: Blockchains positioned as application deployment targets must confront 
 </ol>
 </blockquote>
 
+# Goals
+
+<div class="literal">
+An integrated set of components for collecting, storing, and processing data and for providing information, knowledge, and digital products.
+<div class="attrib">
+&mdash; Zwass, Vladimir. "Information system." <a href="https://www.britannica.com/topic/information-system">The Encyclopedia Britannica.</a>
+</div>
+</div>
+
+In this article we'll attempt to convince you that neither traditional
+databases, nor blockchains --- as commonly realized --- represent coherent
+_information systems_.  We consider an information system to be _incoherent_
+when its approach to data retention and availability --- its epistemology --- is
+compromised by irrelevant considerations: _it's cheaper this way_,
+_you secretly want it to do this_, _we've always done it this way_, etc.
+
+We consider the structure and _transparent availability_ of exhaustive histories
+of values to be essential properties of coherent information systems.  Databases
+oughtn't forget --- blockchains don't.  In light of the latter's slavish devotion to
+the maintenance and security of _histories of facts_, we're perplexed by the
+failure of blockchains to avail their deterministic computation protocols of these
+timelines<sup>1</sup>.  Concealing this information from intelligent processes (smart
+contracts, structured, temporal queries) is a bizarre choice --- one which
+appears as an oversight, in the absence of justification.
+
+By continual, grating appeal to _immutable databases_ as a set of solutions from
+which we've plenty to learn, we hope to establish that it's both possible and
+desirable to build a permissionless, immutable _information system_. Through a
+mechanic of composable, user-declared logical constraints, we propose a generic means of
+establishing the global invariants required to support trustless value transfer,
+delegated voting, or whatever else we might expect from a _platform_ blockchain
+--- without having to special-case the implementation of each feature.  The system,
+at bottom, is an immutable, deductive database, capable of evaluating propositions
+in first-order logic when determining transaction validity.
+
+<div class="footnote">
+<span class="small">
+<sup>1</sup> Rather than, say, emulating mutable-cell semantics over the most
+recently persisted value &mdash; or requiring that histories of values be maintained
+explicitly, expensively, and in representations impervious to efficient
+interrogation.
+</span>
+</div>
+
+
 # Motivation
 
 
@@ -55,50 +100,42 @@ stand_.  Unsurprisingly, businesses _solving_ complex problems already know this
 “A database that updates in place is not an information system.  I'm sorry."<br>
 <div class="attrib">&mdash; Rich Hickey, The Database as a Value</div>
 </blockquote>
+
 A
 [billion dollar market](https://www.statista.com/statistics/254266/global-big-data-market-forecast/) is
 emerging around the private, distributed analysis of append-only logs.
 Clearly,
 [databases built atop mutable cells](http://www.infoq.com/presentations/Impedance-Mismatch) ---
-yesterday's value is obliterated by today's<sup>1</sup> --- are unsuited to many
-of the problems faced by their
-customers<sup>2</sup>.  [Immutable databases](https://www.datomic.com/) take a
+yesterday's value is obliterated by today's --- are unsuited to many of the
+problems faced by their
+customers<sup>1</sup>.  [Immutable databases](https://www.datomic.com/) take a
 far more interesting position: your structured data's history _is data of the
-same order_ ---  equivalently structured and interrogable.  While
-some powerful properties fall out of the obvious design --- auditability,
-read-scalability --- we're most enthusiastic about the superpowers conferred by the
-combination of structured histories
-and [declarative logic](https://en.wikipedia.org/wiki/Datalog)<sup>3,4</sup>.
+same order_ --- equivalently structured and interrogable. When the ancestors of
+current information systems were conceived in the early 1970s, _remember
+everything_ would've seemed a ludicrously opulent and eccentric suggestion.  Now that
+storage costs have plumetted, and we've discovered the benefits of _remembering
+everything_ (auditability, authentication, read-scalability), this decision
+shrieks for re-evaluation.
 
 <blockquote class="literal"> “Peter had seen many tragedies, but he had
 forgotten them all.”  <div class="attrib">&mdash; J.M. Barrie, Peter Pan</div>
 </blockquote>
 
 Fortuitously, a blockchain's fundamental responsibility is that of securing a
-_coherent, immutable, ordered history of facts_ --- the traffic of an
-information system. Just the thing we need, to make intelligent decisions!  In
-a truly curious turn, this history --- the network's _identity_ --- tends, as a
-matter of [precedent](https://www.ethereum.org/), to be obscured from
-decision-making processes.  We've a profusion of platforms wed to data access
-semantics less expressive than those of an all-nighter BASIC implementation.
-Given the effort and coordination involved in maintaining these histories, to
-fail to offer a _transparent_ means of analyzing them --- as a line, not a point
---- is astonishingly profligate and short-sighted.
-
+coherent, immutable, ordered history of facts --- _blockchains remember
+everything_. Just the thing we need, to make intelligent decisions!  In a truly
+curious turn, this history --- the network's _identity_ --- tends, as a matter
+of [precedent](https://www.ethereum.org/), to be obscured from decision-making
+processes.  We've a profusion of platforms wed to data access semantics less
+expressive than those of an all-nighter BASIC implementation.  Given the effort
+and coordination involved in maintaining these histories, to fail to offer a
+_transparent_ means of analyzing them --- as a line, not a point --- is
+astonishingly profligate and short-sighted.
 
 <div class="footnote">
 <span class="small">
-<sup>1</sup> While it's tempting to consider traditional databases the
-brainchildren of epistemological radicals, the trauma of early 70's data storage
-costs has yet to heal.
-<br>
-<sup>2</sup> Having a passing familiarity with some of these systems, I think
-it unlikely much of this usage is recreational.<br>
-<sup>3</sup> If you feel your eyes glazing over, resist.
-<br>
-<sup>4</sup> Of course, not every Hadoop job is better suited to a
-public blockchain, or a private immutable database &mdash; the broader point is the
-unsuitability of forgetful systems to inferential problems.
+<sup>1</sup> Having a passing familiarity with some of these systems, I think
+it unlikely much of this usage is recreational.
 </span>
 </div>
 
@@ -253,8 +290,8 @@ entrusted to the network.
 ```
 
 Here we've an entity --- a _thing_ --- represented as a map/dictionary, with the
-entity's attributes as its keys.  For those free of type/struct fetishes, this
-is a perfectly familiar, open (i.e. no fixed set of permissible attributes per
+entity's attributes as its keys.  For those unconstrained by type/struct fetishes, this
+ought to appear a perfectly familiar, open (i.e. no fixed set of permissible attributes per
 entity), universal means of talking about _things_.  Let's talk about `<sally>`
 from the perspective of another entity, `<joe>`:
 
@@ -305,19 +342,19 @@ readability:
 ```
 
 <span class="small">
-All of the bare words / symbols (<code>?</code>-prefixed, by convention) refer to
-values for which we're seeking substitutions.
+All of the bare words / symbols (<code>?</code>-prefixed, by convention) are logic
+variables for which we're seeking concrete substitutions.
 </span>
 
 On transaction receipt, all applicable attribute invariants are evaluated against an
 in-memory Datalog engine, containing only the union of the _facts_ asserted by
 the transaction, and the result of an optional, arbitrary _pre-query_ against
-the chain state, on which the schema may declare a dependency<sup>3</sup>.  If
+the chain state, on which the attribute schema may declare a dependency<sup>3</sup>.  If
 the transaction is accepted, its facts are incorporated into the persistent,
 authenticated indices which comprise the network's database.  If you've some grasp
 of the above query, there's not much mystery to attribute invariants --- they're
 simply queries of the same form, required to unify in order for an attribute's
-usage --- and the transaction which contains it --- to be considered valid.
+usage --- and any transactions containing it --- to be considered valid.
 
 <div class="infobox">
 <div class="infobox-title">Why not SQL?</div>
@@ -464,7 +501,7 @@ temporal --- and its centrality to coherent information systems.  In Rich
 Hickey's [Datomic](https://www.datomic.com/)
 talk [The Database as a Value](https://www.youtube.com/watch?v=EKdV1IgAaFc),
 we're beguiled by an appeal to the virtues of an _epochal model of time_ --- an
-unambiguously ordered accretion of immutable facts --- as a more coherent basis
+unambiguously ordered accretion of immutable facts --- as a more sound basis
 for reasoning about database semantics than the prevailing mutable-cell model.
 This approach ought to be uncontroversial among blockchain enthusiasts ---
 consider a network attaining consensus over a single numerical value, _v_, for 4
