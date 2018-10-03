@@ -30,19 +30,20 @@ when its approach to data retention and availability --- its epistemology --- is
 compromised by irrelevant considerations: _it's cheaper this way_,
 _you secretly want it to do this_, _we've always done it this way_, etc.
 
-We consider the structure and _transparent availability_ of exhaustive histories
-of values to be essential properties of coherent information systems.  Databases
-oughtn't forget --- blockchains don't.  In light of the latter's slavish devotion to
-the maintenance and security of _histories of facts_, we're perplexed by the
-failure of blockchains to avail their deterministic computation protocols of these
-timelines<sup>1</sup>.  Concealing this information from intelligent processes (smart
-contracts, structured, temporal queries) is a bizarre choice --- one which
-appears as an oversight, in the absence of justification.
+We consider the presence of a structured, interrogable history of every _fact_ to be
+_the_ essential property of coherent information systems.  Databases oughtn't
+forget --- blockchains don't.  In light of the latter's devotion to the
+maintenance and security of _histories of facts_, we're perplexed by the failure
+of blockchains to avail their deterministic computation protocols of these
+timelines<sup>1</sup>.  Concealing this information from intelligent processes
+(smart contracts, structured queries) is a bizarre choice --- one
+which appears as a staggeringly dimensioned oversight, in the absence of
+justification.
 
 By continual, grating appeal to _immutable databases_ as a set of solutions from
 which we've plenty to learn, we hope to establish that it's both possible and
-desirable to build a permissionless, immutable _information system_. Through a
-mechanic of composable, user-declared logical constraints, we propose a generic means of
+desirable to build a permissionless, immutable _information system_. Through the
+simple mechanism of composable, user-declared logical constraints, we propose a generic means of
 establishing the global invariants required to support trustless value transfer,
 delegated voting, or whatever else we might expect from a _platform_ blockchain
 --- without having to special-case the implementation of each feature.  The system,
@@ -112,10 +113,12 @@ customers<sup>1</sup>.  [Immutable databases](https://www.datomic.com/) take a
 far more interesting position: your structured data's history _is data of the
 same order_ --- equivalently structured and interrogable. When the ancestors of
 current information systems were conceived in the early 1970s, _remember
-everything_ would've seemed a ludicrously opulent and eccentric suggestion.  Now that
+everything_ was not on the table.  Now that
 storage costs have plumetted, and we've discovered the benefits of _remembering
-everything_ (auditability, authentication, read-scalability), this decision
-shrieks for re-evaluation.
+everything_ (auditability, authentication, read-scalability), it's difficult to
+imagine anybody suggesting mutable cells from a position other than desperation.
+_go into discursive detail about actual costs_.  _then in modern conversation, imagine
+someone suggesting it_.
 
 <blockquote class="literal"> “Peter had seen many tragedies, but he had
 forgotten them all.”  <div class="attrib">&mdash; J.M. Barrie, Peter Pan</div>
@@ -125,7 +128,7 @@ Fortuitously, a blockchain's fundamental responsibility is that of securing a
 coherent, immutable, ordered history of facts --- _blockchains remember
 everything_. Just the thing we need, to make intelligent decisions!  In a truly
 curious turn, this history --- the network's _identity_ --- tends, as a matter
-of [precedent](https://www.ethereum.org/), to be obscured from decision-making
+    of [precedent](https://www.ethereum.org/), to be obscured from decision-making
 processes.  We've a profusion of platforms wed to data access semantics less
 expressive than those of an all-nighter BASIC implementation.  Given the effort
 and coordination involved in maintaining these histories, to fail to offer a
@@ -290,10 +293,11 @@ entrusted to the network.
 ```
 
 Here we've an entity --- a _thing_ --- represented as a map/dictionary, with the
-entity's attributes as its keys.  For those unconstrained by type/struct fetishes, this
-ought to appear a perfectly familiar, open (i.e. no fixed set of permissible attributes per
-entity), universal means of talking about _things_.  Let's talk about `<sally>`
-from the perspective of another entity, `<joe>`:
+entity's attributes as its keys.  For those of us blissfully unconstrained by
+type and struct fetishes, this ought to appear a perfectly familiar, open (i.e. no
+fixed set of permissible attributes per entity), universal means of talking
+about _things_.  Let's talk about `<sally>` from the perspective of another
+entity, `<joe>`:
 
 ```clojure
 {:datopia/entity <joe>
@@ -356,6 +360,8 @@ of the above query, there's not much mystery to attribute invariants --- they're
 simply queries of the same form, required to unify in order for an attribute's
 usage --- and any transactions containing it --- to be considered valid.
 
+_diagram of mempool_
+
 <div class="infobox">
 <div class="infobox-title">Why not SQL?</div>
 <p>While both SQL and Datalog are rooted in similar formalisms, in practice, comparison
@@ -402,6 +408,8 @@ concerned with a distinct entity:
  {:simoleon/balance (+ 99),
   :datopia/entity   <recipient>}]
 ```
+
+_is this operational?  is there a more succint way to just indicate commutativity_
 
 Here we're imagining Simoleons to be some user-defined asset, which happens to
 use the namespace `simoleon` for its qualified keywords<sup>1</sup>.  The
@@ -562,7 +570,7 @@ uh, _Time_:
 </tbody>
 </table>
 
-Each line represents an immutable fact --- Joe's balance at T1 doesn't
+Each row is an immutable fact --- Joe's balance at T1 doesn't
 invalidate, overwrite, or other otherwise supersede his balance _at T0_
 (indefinitely accessible to anyone nostalgic for T0).  This behaviour extends
 on-chain, where we might --- for example --- deploy a contract (or execute a
