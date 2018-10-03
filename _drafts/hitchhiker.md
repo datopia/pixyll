@@ -1,92 +1,91 @@
 ---
 layout: post
-title: Hitchhiking in databases
+title: Hitchhiking in Databases
+author: Christian Weilbach
+summary: "The goal of the Hitchhiker tree is to wed three things: the query performance of a B+ tree, the write performance of an append-only log, and convenience of a functional, persistent datastructure."
 ---
 
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 # Motivation
 
-> I will, in fact, claim that the difference between a bad programmer and a good
-> one is whether he considers his code or his data structures more important.
-> Bad programmers worry about the code. Good programmers worry about data
-> structures and their relationships.
-[Linus Torvalds](https://lwn.net/Articles/193245/)
+<blockquote class="literal">
+"I will, in fact, claim that the difference between a bad programmer and a good
+ one is whether he considers his code or his data structures more important.
+Bad programmers worry about the code. Good programmers worry about data
+structures and their relationships."
+<div class="attrib">&mdash; <a href="https://lwn.net/Articles/193245/">Linus Torvalds</a></div>
+</blockquote>
 
-Following the popular insight reiterated by Linus we should ask: What is the
-optimal building block for distributed systems that need to track large and
-increasing amounts of data? What data structure do we need to build a
-distributed database like a blockchain of? 
+Following the logic of Linus' insight --- and applying it to our own use case ---
+we might inquire after the optimal data structure to place at the center of a
+distributed system serving queries across large amounts of structured data.
 
-We want to store data reliably in it as efficiently and fast as possible and
-similarly we want to be able to retrieve this as efficiently and fast as
-possible. We have to define what fast means in the context here first. The speed
-of processing in our setting is in general bound by the number of operations we
-have to perform on a high-latency and slow outside bulk storage medium. The work
-we do on the CPU and in main memory is negligible in comparison. We therefore
-strive to minimize the number of these operations and balance the size of data
-written in each operation. These operations are typically called Input/Output
-operations (IO ops) and are performed e.g. on a solid-state or hard-disk.
-
+In this article we'll be discussing optimizations/elaborations to
+the [B Tree](https://en.wikipedia.org/wiki/B-tree), family of structures --- the
+substrate of many a database index.  At the highest level, B Trees are
+attractive because they structurally facilitate  infrequent
+retrieval of leaf data --- itself presumably stored in a higher-latency medium
+than memory.
 
 In this article we lay out the general design of the
-[Hitchhiker-tree](https://github.com/datacrypt-project/hitchhiker-tree), a
-specially crafted functional data structure by David Greenberg that comes very
-close to a theoretically optimal trade-off. We furthermore elaborate on our work
-to make it distributable in the open. This then yields the foundation for our
-blockchain system.
+[Hitchhiker Tree](https://github.com/datacrypt-project/hitchhiker-tree),
+David Greenberg's functional data structure which augments [B+ trees](https://en.wikipedia.org/wiki/B%2B_tree)
+with novel, theoretically optimal trade-offs.  We also intend to
+elaborate on our own work in combining Hitchhiker Trees (HH trees) in such a way
+as to represent the backend of the inferential database at the core of Datopia.
 
+# From The Ground Up
 
-# A guide to hitchhike on trees
+In this section we first reiterate some common notions about trees and then guide
+the reader to the design of the HH tree through successive refinements.
 
-In this section we first build up some common notions about trees and then guide
-you to the design of the Hitchhiker tree. 
+## Binary Trees
 
-The simplest tree datastructure for storing a sorted collection of entries is
-the [binary tree](https://en.wikipedia.org/wiki/Binary_tree). But it is not
-optimal for data retrieval because such a tree can become arbitrarily deformed.
-In the worst case it just becomes a [linked
-list](https://en.wikipedia.org/wiki/Linked_list). A tree is hence [defined to be
-balanced](https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree) if
-all leaves have approximately the same distance to the root.
+The canonical (and simplest) _tree_ datastructure suitabble for storing sorted
+collections is the [binary tree](https://en.wikipedia.org/wiki/Binary_tree).
+It's not all good news --- binary trees are subject to abritrary structural deformation,
+and in the pathological case may degenerate into
+ [linked lists]((https://en.wikipedia.org/wiki/Linked_list)).  Setting vanilla
+binary trees aside, we'll consider only the subset of trees which
+are
+[balanced, or self-balancing](https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree) ---
+a property which dictates all leaves have approximately the same distance to the
+root.
 
-> You need the power of the logarithm. 
+## Balanced Trees
 
-[Rich Hickey: Strata Conference + Hadoop World Keynote](https://www.youtube.com/watch?v=P-NZei5ANaQ)
+<blockquote class="literal left">
+“You need the power of the logarithm.”<br>
+<div class="attrib">&mdash; <a href="https://www.youtube.com/watch?v=P-NZei5ANaQ">Rich Hickey</a></div>
+</blockquote>
 
+In a balanced tree, the distance between the root and a leaf scales logarithmically
+with the number of entries $$N$$ --- $$O(\log_2 N)$$, meaning that it takes
+$$\log_2 N$$ operations in the worst case to lookup a leaf node in the tree. For
+$$1000$$ entries it would be $$\log_2 1000 \approx 9.97$$.  Assuming a uniform
+distribution of entries in the key space this logarithmic
+lookup complexity is optimal. We can't do better. Balanced trees are
+the go to solution to build query indices in all kinds of systems, e.g.
+[PostgreSQL](https://www.postgresql.org/), [MongoDB](https://www.mongodb.com) or
+ your favorite file system.
 
-Why is this a desired property? Because for balanced trees the distance from
-leaf to root scales logarithmically with the number of entries $$N$$. This is
-analyzed with the help of the so called [big-O
-notation](https://en.wikipedia.org/wiki/Big_O_notation) and written as
-$$O(\log_2 N)$$, meaning that it takes $$\log_2 N$$ operations in the worst case
-to lookup a leaf node in the tree. For $$1000$$ entries it would be $$\log_2
-1000 \approx 9.97$$. 
+## B+ trees
 
-Assuming a uniform distribution of entries in the key space this logarithmic
-lookup complexity is optimal. You cannot do better. Balanced trees are therefore
-the go to solution to build query indices in all kinds of memory systems, e.g.
-popular databases like PostgreSQL, MongoDB or in your favorite file system.
-
-## B+ tree
-
-While binary trees scale logarithmically already, we can use trees with a higher
-branching factor to achieve a better constant factor $$B$$. Let's say on each
-node we branch into $$100$$ subbranches instead of $$2$$ then we get for our
-$$1000$$ entries: $$\log_{100} 1000 \approx 1.5$$. Practically speaking this
-factor makes a big difference, although constant factors do not change the big-O
-classification. Databases therefore use so called branching or [B+
-trees](https://en.wikipedia.org/wiki/B-tree). In fact they do one more tweak,
+While the depth of binary trees scales logarithmically, we can use trees with a higher
+branching factors to achieve a better constant factor $$B$$. Let's say on each
+node we branch $$100$$ times, rather than $$2$$ --- for our
+$$1000$$ entries: $$\log_{100} 1000 \approx 1.5$$. Practically speaking, this
+factor makes a big difference, although irrelevant to the computational
+complexity oof the operationo.. Databases therefore use so called branching or [B+
+trees](https://en.wikipedia.org/wiki/B-tree). In fact they do one more tweak:
 they only store index information in the tree and put all data to the leaf
-nodes, which is a so called [B+ tree](https://en.wikipedia.org/wiki/B%2B_tree).
-The leaf nodes are called data nodes and the nodes spanning the tree index
-nodes. This ideally allows to keep all index nodes in memory and only read the
-data nodes from disk as they are much bigger.
+nodes.
 
-<div class="center" style="width: 100%"> 
-<img src="/images/bplus_tree_annotated.png"> 
+<div class="center" style="width: 100%">
+<img src="/images/bplus_tree_annotated.png">
 
-<small>Figure 1: B+-Tree. The pivots help to navigate the tree to find the
+<small>Figure 1: B+ Tree. The pivots help to navigate the tree to find the
 proper data nodes containing the actual key and value of an element.</small>
 </div>
 
@@ -104,77 +103,76 @@ up the details about the operations in [Cormen et
 al.](https://mitpress.mit.edu/books/introduction-algorithms-third-edition) or on
 Wikipedia.
 
-## Append-log
+## Append Logs
 
-What is the fastest way to write data? Just [append it to a
-list](https://en.wikipedia.org/wiki/Linked_list) of which you know its end.
-Unsurprisingly this is called an append-log (or in its simplest form a linked
-list) and has write complexity $$O(1)$$. Unfortunately to retrieve data you have
-to walk along the linked list, so an append-log is not optimal to retrieve data
-and takes $$O(N)$$ steps to retrieve an element. Note that you can immediately
-see from the big-O notation that this is significantly worse than the B+ tree.
+What is the fastest way to write data?
+Just [append it to a list](https://en.wikipedia.org/wiki/Linked_list) of which
+you know its end.  Unsurprisingly, this arrangement is referred to as an
+append-log (or in its simplest form, a linked list) and has write complexity
+$$O(1)$$. Unfortunately to retrieve data you have to walk along the linked list,
+so an append-log is not optimal to retrieve data and takes $$O(N)$$ steps to
+retrieve an element. Note that you can immediately see from the big-O notation
+that this is significantly worse than the B+ tree.
 
+# Fractal Combination
 
-## Fractal Combination
-
-> The goal of the Hitchhiker tree is to wed three things: the query performance of
-> a B+ tree, the write performance of an append-only log, and convenience of a
-> functional, persistent datastructure. 
-
-[Hitchhiker-tree motivation](https://github.com/datacrypt-project/Hitchhiker-tree/blob/master/doc/Hitchhiker.adoc)
-
-
+<div class="infobox">
+<div class="infobox-title">What's a Fractal Tree?</div>
+<p>
+Fractal trees, in this context, can be seen as B+ trees with optimizations which
+asymptotically reduce the cost of insertions and deletions, without affecting the
+complexity of searches &mdash; via the use of <i>
+append logs</i> outlined before, to defer unnecessary I/O operations.
+</p>
+<p>
+Given our ability to independently alter the log length and ranching factor, fractal
+trees may be seen either as write-optimized B+ trees, or read-optimized append-logs.
+ he latter property is one we're interested in
+exploiting to replicate write-intensive event-logs efficiently in <a href="http://replikativ.io">replikativ</a>.
+</p>
+</div>
 
 <div class="center" style="width: 100%">
 <img src="/images/hh_tree_annotated.png">
-<small>Figure 2: Fractal-Tree with append logs in each non-leaf node of size 2</small>
+<small>Figure 2: Fractal Tree with append logs in each non-leaf node of size 2</small>
 </div>
 
 In Figure 2 you can see a fractal combination of a B+ tree and append logs. The
 append-logs are put in an overlay over the B+ tree structure. To enforce the
-logarithmic scaling of the B+ tree we have to limit the append-logs by picking a
-constant size so that the access to data still scales logarithmically with the
-tree. Whenever a log gets to big we flush it down one level to the next
-append-logs. Eventually when an element arrives at a leaf-node we insert it into
-the data node there which needs no further append-log because we now have done
-all IO ops that we would have done in the B+ tree. It transitions that way from
-the append-logs permanently into the underlying B+ tree.
+logarithmic scaling of the B+ tree we commit to fixed-length append-logs.
+Whenever a log gets too big, we flush it down one level to the next
+tier's append-logs. Eventually, when an element arrives at a leaf-node, we insert it into
+the data node   We can view this process of successive proomotions as a means approaching
+the structure of the underlying B+ tree.
 
 [David has summarized the benefits of](https://github.com/datacrypt-project/Hitchhiker-tree/blob/master/doc/Hitchhiker.adoc)
 this concept as follows:
 
+<blockquote>
+<ul>
+<li>Most inserts are a single append to the root's event log</li>
+<li>Although there are a linear number of events, nodes are exponentially less
+likely to overflow the deeper they are in the tree</li>
+<li>ll data needed for a query exists along a path of nodes between the root and
+   a specific leaf node. Since the logs are constant in size, queries still only
+   read `log(n)` nodes.</li>
+   </ul>
+</blockquote>
 
-> This process gives us several properties:
->
-> - Most inserts are a single append to the root's event log
-> - Although there are a linear number of events, nodes are exponentially less
->   likely to overflow the deeper they are in the tree
-> - All data needed for a query exists along a path of nodes between the root and
->   a specific leaf node. Since the logs are constant in size, queries still only
->   read `log(n)` nodes.
->
-> Thus we dramatically improve the performance of insertions without hurting the
-> IO cost of queries.
 
-The fractal nature of the tree is not some internal property but both append-log
-size and tree branching factor can be picked freely on creation. This means you
-can see a fractal tree either as a write-optimized B+ tree or as a read
-optimized append-log. The latter property is an interesting aspect that one can
-exploit to replicate write-intensive event-logs efficiently and we are thinking
-about doing so for [replikativ](http://replikativ.io).
-
+The fractal nature of the tree is not some internal property --- both append-log
+size and tree branching may can be picked freely on tree creation.
 
 ## Insertion
 
 <div class="center" style="width: 100%">
 <img src="/images/hh_insert1.png">
 <br/>
-<small>Figure 3: A small Hitchhiker-Tree</small>
+<small>Figure 3: A small Hitchhiker Tree</small>
 </div>
 
-
 Let's walk through an insertion example. In Figure 3 you can see a small
-Hitchhiker-tree. With the elements $$0-12$$ inserted. Note how a few of the
+HH tree. With the elements $$0-12$$ inserted. Note how a few of the
 elements are still in the append-logs ($$0, 11, 12, 13$$) because they have just
 been inserted. We will now go through two steps inserting more elements and see
 how the append-logs are flushed down to the root nodes.
@@ -192,8 +190,8 @@ right of it in the index node. But the append-log there is also full. Let's
 insert the next element $$-1$$ to the root node:
 
 
-<div class="center" style="width: 100%"> 
-<img src="/images/hh_insert3.png"> 
+<div class="center" style="width: 100%">
+<img src="/images/hh_insert3.png">
 <br/>
 <small>Figure 5: An insert causes an overflow and flushes the elements down to the leaf nodes.</small> </div>
 
@@ -266,8 +264,8 @@ programming language of our choice, [Clojure](http://clojure.org), puts this
 decision at the center of its design and therefore makes the Hitchhiker-tree
 implementation both straightforward and very robust to concurrent access.
 
-<div class="center" style="width: 100%"> 
-<img src="/images/persistence_annotated.png"> 
+<div class="center" style="width: 100%">
+<img src="/images/persistence_annotated.png">
 <br/>
 <small>Figure 6: A tree with elements 1 until 11 and a new tree after the addition of elements 12,13. </small> </div>
 
@@ -297,7 +295,7 @@ quo. We will describe this in more detail in a future post.
 
 # Conclusion
 
-I hope we have explained the background behind the Hitchhiker-Tree so that you
+I hope we have explained the background behind the Hitchhiker Tree so that you
 have an understanding why it is a theoretically and practically optimal
 datastructure to build distributed databases on top. You can also watch David
 Greenberg's [Strange Loop talk](https://www.youtube.com/watch?v=jdn617M3-P4) to
@@ -319,7 +317,3 @@ being an expert in it. We think that this focus on a [reduction in complexity is
 necessary](http://www.infoq.com/presentations/Simple-Made-Easy) to explore the
 different performance and design tradeoffs that the universe of distributed
 databases and blockchains lays in front of us. Join us!
-
-
-
-
