@@ -42,7 +42,7 @@ the reader to the design of the HH tree through successive refinements.
 
 ## Binary Trees
 
-The canonical (and simplest) _tree_ datastructure suitabble for storing sorted
+The canonical (and simplest) _tree_ datastructure suitable for storing sorted
 collections is the [binary tree](https://en.wikipedia.org/wiki/Binary_tree).
 It's not all good news --- binary trees are subject to abritrary structural deformation,
 and in the pathological case may degenerate into
@@ -60,26 +60,26 @@ root.
 <div class="attrib">&mdash; <a href="https://www.youtube.com/watch?v=P-NZei5ANaQ">Rich Hickey</a></div>
 </blockquote>
 
-In a balanced tree, the distance between the root and a leaf scales logarithmically
-with the number of entries $$N$$ --- $$O(\log_2 N)$$, meaning that it takes
-$$\log_2 N$$ operations in the worst case to lookup a leaf node in the tree. For
-$$1000$$ entries it would be $$\log_2 1000 \approx 9.97$$.  Assuming a uniform
-distribution of entries in the key space this logarithmic
-lookup complexity is optimal. We can't do better. Balanced trees are
-the go to solution to build query indices in all kinds of systems, e.g.
-[PostgreSQL](https://www.postgresql.org/), [MongoDB](https://www.mongodb.com) or
- your favorite file system.
+In a balanced tree, the distance between the root and a leaf scales
+logarithmically with the number of entries $$N$$ --- $$O(\log_2 N)$$, meaning
+that it takes $$\log_2 N$$ operations in the worst case to lookup a leaf node in
+the tree. For $$1000$$ entries it would be $$\log_2 1000 \approx 9.97$$.
+Assuming a uniform distribution of entries in the key space this logarithmic
+lookup complexity is optimal by information theory. We can't do better. Balanced
+trees are the go to solution to build query indices in all kinds of systems,
+e.g. [PostgreSQL](https://www.postgresql.org/),
+[MongoDB](https://www.mongodb.com) or your favorite file system.
 
 ## B+ trees
 
-While the depth of binary trees scales logarithmically, we can use trees with a higher
+While the depth of binary trees scales logarithmically, we can use trees with higher
 branching factors to achieve a better constant factor $$B$$. Let's say on each
 node we branch $$100$$ times, rather than $$2$$ --- for our
 $$1000$$ entries: $$\log_{100} 1000 \approx 1.5$$. Practically speaking, this
 factor makes a big difference, although irrelevant to the computational
-complexity oof the operationo.. Databases therefore use so called branching or [B+
+complexity of the operation. Databases therefore use so called branching or [B+
 trees](https://en.wikipedia.org/wiki/B-tree). In fact they do one more tweak:
-they only store index information in the tree and put all data to the leaf
+They only store index information in the tree and put all data to the leaf
 nodes.
 
 <div class="center" style="width: 100%">
@@ -105,14 +105,15 @@ Wikipedia.
 
 ## Append Logs
 
-What is the fastest way to write data?
-Just [append it to a list](https://en.wikipedia.org/wiki/Linked_list) of which
-you know its end.  Unsurprisingly, this arrangement is referred to as an
-append-log (or in its simplest form, a linked list) and has write complexity
-$$O(1)$$. Unfortunately to retrieve data you have to walk along the linked list,
-so an append-log is not optimal to retrieve data and takes $$O(N)$$ steps to
-retrieve an element. Note that you can immediately see from the big-O notation
-that this is significantly worse than the B+ tree.
+What is the fastest way to write data? Just [append it to a
+list](https://en.wikipedia.org/wiki/Linked_list) of which you know its end.
+Unsurprisingly, this arrangement is referred to as an append-log (or in its
+simplest form, a linked list) and has write complexity $$O(1)$$. Unfortunately
+to retrieve data you have to walk along the linked list, so an append-log is not
+optimal to retrieve data and takes $$O(N)$$ steps to retrieve an element. Note
+that you can immediately see from the [big-O
+expressions](https://en.wikipedia.org/wiki/Big_O_notation) that this is
+significantly worse than the B+ tree.
 
 # Fractal Combination
 
@@ -127,7 +128,7 @@ append logs</i> outlined before, to defer unnecessary I/O operations.
 <p>
 Given our ability to independently alter the log length and ranching factor, fractal
 trees may be seen either as write-optimized B+ trees, or read-optimized append-logs.
- he latter property is one we're interested in
+The latter property is one we're interested in
 exploiting to replicate write-intensive event-logs efficiently in <a href="http://replikativ.io">replikativ</a>.
 </p>
 </div>
@@ -140,9 +141,9 @@ exploiting to replicate write-intensive event-logs efficiently in <a href="http:
 In Figure 2 you can see a fractal combination of a B+ tree and append logs. The
 append-logs are put in an overlay over the B+ tree structure. To enforce the
 logarithmic scaling of the B+ tree we commit to fixed-length append-logs.
-Whenever a log gets too big, we flush it down one level to the next
+Whenever a log gets too big, we flush it completely down one level to the next
 tier's append-logs. Eventually, when an element arrives at a leaf-node, we insert it into
-the data node   We can view this process of successive proomotions as a means approaching
+the data node. We can view this process of successive promotions as a means approaching
 the structure of the underlying B+ tree.
 
 [David has summarized the benefits of](https://github.com/datacrypt-project/Hitchhiker-tree/blob/master/doc/Hitchhiker.adoc)
@@ -161,7 +162,7 @@ likely to overflow the deeper they are in the tree</li>
 
 
 The fractal nature of the tree is not some internal property --- both append-log
-size and tree branching may can be picked freely on tree creation.
+size and tree branching may be picked freely on tree creation.
 
 ## Insertion
 
@@ -255,7 +256,7 @@ completely and yield the theoretic superiority of a fractal tree.
 # Persistence
 
 So far we have basically described the fractal tree concept, but we have already
-written a Merkle hash on each of the edges of the trees drawn. All
+denoted a Merkle hash on each of the edges of the trees drawn. All
 hitchhiker-trees are [merkelized](https://en.wikipedia.org/wiki/Merkle_tree)
 data structures. This means we do not overwrite the trees in place, but in fact
 implement a so called persistent data structure that returns copies after
@@ -271,7 +272,7 @@ implementation both straightforward and very robust to concurrent access.
 
 ## Merkelized Replication
 
-Clojure's data structures can be merkelized fairly easily with
+Clojure's data structures can be merklized fairly easily with
 [hasch](https://github.com/replikativ/hasch/). We have exploited this fact and
 changed the original Hitchhiker-tree implementation to use cryptographic
 [SHA512](https://de.wikipedia.org/wiki/SHA-2) pointers to children of nodes.
@@ -285,7 +286,7 @@ today.
 
 ## Authentication
 
-Since the whole data structure is properly merkelized authentication is trivial.
+Since the whole data structure is properly merklized authentication is trivial.
 We can in fact sign the root of the database indices for our blockchain after
 each created block and replicate the index partially or in whole in a P2P
 fashion with readily available read-scaleable replication techniques. This will
@@ -300,7 +301,7 @@ have an understanding why it is a theoretically and practically optimal
 datastructure to build distributed databases on top. You can also watch David
 Greenberg's [Strange Loop talk](https://www.youtube.com/watch?v=jdn617M3-P4) to
 learn more about its motivation and some of the implementation details. In its
-merkelized version it is in our opinion a far better choice to implement high
+merklized version it is in our opinion a far better choice to implement high
 performing data storage solutions like blockchains or p2p filesystems than
 direct materialization of DAGs or chains. To make retrieval convenient we have
 furthermore build on a sound and declarative query language to leverage the
