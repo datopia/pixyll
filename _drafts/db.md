@@ -23,40 +23,28 @@ An integrated set of components for collecting, storing, and processing data and
 </div>
 </div>
 
-In this article we'll attempt to convince you that neither traditional
-databases, nor blockchains --- as commonly realized --- represent coherent
-_information systems_.  We consider an information system to be _incoherent_
-when its approach to data retention and availability --- its epistemology --- is
-compromised by irrelevant considerations: _it's cheaper this way_,
-_you secretly want it to do this_, _we've always done it this way_, etc.
-
-We consider the presence of a structured, interrogable history of every _fact_ to be
-_the_ essential property of coherent information systems.  Databases oughtn't
-forget --- blockchains don't.  In light of the latter's devotion to the
-maintenance and security of _histories of facts_, we're perplexed by the failure
-of blockchains to avail their deterministic computation protocols of these
-timelines<sup>1</sup>.  Concealing this information from intelligent processes
-(smart contracts, structured queries) is a bizarre choice --- one
-which appears as a staggeringly dimensioned oversight, in the absence of
-justification.
+Below, we'll attempt to convince you that neither traditional databases, nor
+blockchains, represent epistemologically coherent _information systems_ --- the
+former forgets, the latter is often reluctant to remember when it
+counts<sup>1</sup>.  More consequentially, we'll demonstate that sound
+information systems are a prerequisite for solving many of the problems that
+engage us as a community.
 
 By continual, grating appeal to _immutable databases_ as a set of solutions from
 which we've plenty to learn, we hope to establish that it's both possible and
-desirable to build a permissionless, immutable _information system_. Through the
-simple mechanism of composable, user-declared logical constraints, we propose a generic means of
-establishing the global invariants required to support trustless value transfer,
-delegated voting, or whatever else we might expect from a _platform_ blockchain
---- without having to special-case the implementation of each feature.  The system,
-at bottom, is an immutable, deductive database, capable of evaluating propositions
-in first-order logic when determining transaction validity.
+desirable to build a sound, permissionless information system. Through the
+mechanism of composable, user-declared logical constraints, we propose a generic
+means of facilitating trustless value transfer, user-defined assets, delegated
+voting --- or whatever else we might expect from an advanced blockchain --- without
+having to consider each feature in the network's design, or delegate it to brittle,
+imperative code.
 
 <div class="footnote">
 <span class="small">
-<sup>1</sup> Rather than, say, emulating mutable-cell semantics over the most
-recently persisted value &mdash; or requiring that histories of values be maintained
-explicitly, expensively, and in representations impervious to efficient
-interrogation.
-</span>
+<sup>1</sup> By, say, performing on-chain evaluation atop an emulation of
+mutable-cell semantics, in which we obscure all but the most recently committed
+values &mdash; requiring that histories be
+maintained explicitly, expensively, and in inefficiently interrogable data structures.</span>
 </div>
 
 
@@ -82,20 +70,20 @@ BASIC implementation?-->
 <div class="attrib">&mdash; Michel de Montaigne</div>
 </blockquote>
 
-Consider a boardwalk lemonade stand in high season, managed with an earnest
-commitment to transparency and optimization.  The price and provenance of every
-lemon, the yield of each squeeze, hourly ambient temperatures --- a sample of
-the _facts_ that our revolutionaries may want to structure and record into a
-public, immutable history --- the _memory_ of their organization, and the
-substrate for its analytic/inferential processes.
+Consider a boardwalk lemonade stand in high season, managed with a commitment to
+transparency and self-optimization.  The price and provenance of every lemon,
+the yield of each squeeze, hourly ambient temperatures --- a sample of the
+_facts_ that our revolutionaries may want to structure and record into a public,
+immutable history --- the _memory_ of their organization, and the substrate for
+its analytic/inferential processes.
 
 Blockchain enthusiasts invoke heady problems --- deterministic arbitration,
 on-chain governance --- while seldom acknowledging the _explosive_ volumes of
 information consumed and emitted by these processes, even within narrow domains.
 Platforms --- blockchains, or otherwise --- without cost-effective solutions to
 structured, historic data retrieval are suited only to the most comically
-trivial class of problem: _they couldn't govern a lemonade
-stand_.  Unsurprisingly, businesses _solving_ complex problems already know this.
+trivial class of problem: _they couldn't govern a lemonade stand_.
+Unsurprisingly, businesses solving complex problems already know this.
 
 <blockquote class="literal left">
 “A database that updates in place is not an information system.  I'm sorry."<br>
@@ -111,34 +99,33 @@ yesterday's value is obliterated by today's --- are unsuited to many of the
 problems faced by their
 customers<sup>1</sup>.  [Immutable databases](https://www.datomic.com/) take a
 far more interesting position: your structured data's history _is data of the
-same order_ --- equivalently structured and interrogable. When the ancestors of
-current information systems were conceived in the early 1970s, _remember
-everything_ was not on the table.  Now that
-storage costs have plumetted, and we've discovered the benefits of _remembering
-everything_ (auditability, authentication, read-scalability), it's difficult to
-imagine anybody suggesting mutable cells from a position other than desperation.
-_go into discursive detail about actual costs_.  _then in modern conversation, imagine
-someone suggesting it_.
+same order_ --- equivalently structured and interrogable. When the architectural
+predecessors of contemporary databases were conceived in the early 1970s, this
+approach would've
+been
+[comedically unrealistic](https://www.computerworld.com/article/3182207/data-storage/cw50-data-storage-goes-from-1m-to-2-cents-per-gigabyte.html) by
+virtue of its storage requirements.  Fortunately, storage has gotten cheaper<sup>2</sup>.
 
 <blockquote class="literal"> “Peter had seen many tragedies, but he had
 forgotten them all.”  <div class="attrib">&mdash; J.M. Barrie, Peter Pan</div>
 </blockquote>
 
 Fortuitously, a blockchain's fundamental responsibility is that of securing a
-coherent, immutable, ordered history of facts --- _blockchains remember
-everything_. Just the thing we need, to make intelligent decisions!  In a truly
-curious turn, this history --- the network's _identity_ --- tends, as a matter
-    of [precedent](https://www.ethereum.org/), to be obscured from decision-making
-processes.  We've a profusion of platforms wed to data access semantics less
-expressive than those of an all-nighter BASIC implementation.  Given the effort
-and coordination involved in maintaining these histories, to fail to offer a
-_transparent_ means of analyzing them --- as a line, not a point --- is
-astonishingly profligate and short-sighted.
+coherent, immutable, ordered history of facts. Just the thing we need, to make
+intelligent decisions!  In a truly curious turn, this history --- the network's
+_identity_ --- tends, as a matter of [precedent](https://www.ethereum.org/), to
+be obscured from decision-making processes.  We've a profusion of platforms wed
+to data access semantics less expressive than those of an all-nighter BASIC
+implementation.  Given the effort and coordination involved in maintaining these
+histories, to fail to offer a _transparent_ means of analyzing them --- as a
+line, not a point --- is astonishingly profligate and short-sighted.
 
 <div class="footnote">
 <span class="small">
 <sup>1</sup> Having a passing familiarity with some of these systems, I think
 it unlikely much of this usage is recreational.
+<br>
+<sup>2</sup> In late 2018, we can get for <a href="https://www.amazon.com/Elements-Portable-External-Drive-WDBU6Y0020BBK-WESN-x/dp/B0713WPGLL/ref=sr_1_1_sspa">$99</a> what would've cost three quarters of a billion dollars in the early 70s.
 </span>
 </div>
 
@@ -158,8 +145,8 @@ and
 [exorbitant storage costs](https://medium.com/ipdb-blog/forever-isnt-free-the-cost-of-storage-on-a-blockchain-database-59003f63e01) being
 among the more salient consequences.  The pervasive use of the word _ledger_ ---
 unaccompanied by the concession that ledgers are special-purpose databases ---
-has likely further strengthened our resolve to avoid considering blockchains as
-_information systems_, in any broad sense.
+has likely cemented our aversion to considering blockchains as _information
+systems_, in any broad sense.
 
 Significant progress has been made on the above technical concerns --- less on the
 cultural ones.   On the solutions side, there exist
@@ -175,9 +162,10 @@ Elsewhere
 novel approaches to state distribution are required for platforms to function at
 projected demand.  We've a _vision_ problem, not a technical one.
 
+
 ## First as Tragedy, Then as Farce
 
-From a developer's perspective, one of the more disappointing _platform_
+From a developer's perspective, one of the more disappointing _compute_
 blockchain trends is the conflation of information and implementation at the
 center of many of their programming models.  We're recapitulating
 the
@@ -293,7 +281,7 @@ entrusted to the network.
 ```
 
 Here we've an entity --- a _thing_ --- represented as a map/dictionary, with the
-entity's attributes as its keys.  For those of us blissfully unconstrained by
+entity's attributes as its keys.  For those of us  unrestrained by
 type and struct fetishes, this ought to appear a perfectly familiar, open (i.e. no
 fixed set of permissible attributes per entity), universal means of talking
 about _things_.  Let's talk about `<sally>` from the perspective of another
@@ -360,8 +348,6 @@ of the above query, there's not much mystery to attribute invariants --- they're
 simply queries of the same form, required to unify in order for an attribute's
 usage --- and any transactions containing it --- to be considered valid.
 
-_diagram of mempool_
-
 <div class="infobox">
 <div class="infobox-title">Why not SQL?</div>
 <p>While both SQL and Datalog are rooted in similar formalisms, in practice, comparison
@@ -408,8 +394,6 @@ concerned with a distinct entity:
  {:simoleon/balance (+ 99),
   :datopia/entity   <recipient>}]
 ```
-
-_is this operational?  is there a more succint way to just indicate commutativity_
 
 Here we're imagining Simoleons to be some user-defined asset, which happens to
 use the namespace `simoleon` for its qualified keywords<sup>1</sup>.  The
@@ -498,7 +482,7 @@ contingent on the consumption of data surplus to local bandwidth/storage capacit
 little is lost.  An explicit on-chain mechanism for query evaluation exists.  For the
 truly impatient, we anticipate the development of peripheral, higher-level query execution services
 willing to expose themselves to stake forfeiture in the event that a proof of incorrectness
-is submitted to the chain by an aggrieved client.
+is submitted to the chain by an aggrieved or suspicious client.
 </span>
 </div>
 
@@ -570,14 +554,14 @@ uh, _Time_:
 </tbody>
 </table>
 
-Each row is an immutable fact --- Joe's balance at T1 doesn't
-invalidate, overwrite, or other otherwise supersede his balance _at T0_
-(indefinitely accessible to anyone nostalgic for T0).  This behaviour extends
-on-chain, where we might --- for example --- deploy a contract (or execute a
-query) partly concerned with transparent, deterministic computations over the
-full or partial history of Joe's balance.  Similarly, light
-clients/applications, by virtue of the selective replication mechanism outlined
-above, may express identical traversals locally.
+Each row is an immutable fact --- Joe's balance at T1 doesn't invalidate,
+overwrite, or other otherwise supersede his balance _at T0_ (indefinitely
+accessible to anyone nostalgic for T0).  This behaviour extends on-chain, where
+we might --- for example --- deploy a contract (or execute a query) partly
+concerned with transparent, deterministic computations over the full or partial
+history of Joe's balance.  Similarly, light clients/applications may express
+identical traversals locally, via the selective replication mechanism outlined
+above.
 
 Often, we can afford not to care about the temporal dimension ---
 such as in the earlier transaction submission examples --- but there are instances
@@ -619,36 +603,3 @@ potential contributors, advisors, critics and investors.
 <sup>1</sup> An authenticated <a href="https://github.com/datacrypt-project/hitchhiker-tree">Hitchhiker tree</a> (write-optimized B+ tree) capable of satisfying Datalog queries.
 </span>
 </div>
-
-# Subscribe to Datopia Updates
-
-If you've an interest in receiving information about an upcoming Datopia token
-sale, please enter your email address below.
-
-<!-- Begin MailChimp Signup Form -->
-<link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-	#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
-	/* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
-	   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
-</style>
-
-<div id="mc_embed_signup">
-<form action="https://datopia.us19.list-manage.com/subscribe/post?u=9018b6830ac0d1f293f7fce3a&amp;id=94422b43d8" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-    <div id="mc_embed_signup_scroll">
-<div class="mc-field-group">
-	<label for="mce-EMAIL">Email Address  <span class="asterisk">*</span>
-</label>
-	<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
-</div>
-	<div id="mce-responses" class="clear">
-		<div class="response" id="mce-error-response" style="display:none"></div>
-		<div class="response" id="mce-success-response" style="display:none"></div>
-	</div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_9018b6830ac0d1f293f7fce3a_94422b43d8" tabindex="-1" value=""></div>
-    <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
-    </div>
-</form>
-</div>
-<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script><script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
-<!--End mc_embed_signup-->
