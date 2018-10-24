@@ -38,8 +38,7 @@ as to constitute the storage backend for Datopia's inferential database.
 # From The Ground Up
 
 Let's briefly revise the properties of simpler, related tree structures, before
-guiding the reader through the design of the Hitchiker tree via successive
-refinements.
+guiding the reader through the design of the Hitchiker tree.
 
 ## Binary Trees
 
@@ -107,29 +106,30 @@ required to walk to the respective leaf prior to insertion<sup>1</sup>.
 <div class="infobox-title">What's a Fractal Tree?</div>
 <p>
 Fractal trees, in this context, can be seen as optimized B+ trees which
-asymptotically reduce the cost of insertions and deletions, without affecting the
-complexity of searches &mdash; via the use of <i>append logs</i> --- linked lists ---
-to defer unnecessary I/O operations.
+asymptotically reduce the cost of insertions and deletions, without affecting
+the complexity of searches &mdash; via the use of <i>append logs</i> (linked
+lists) to defer unnecessary I/O operations.
 </p>
 <p>
 Given our ability to independently alter the log length and branching factor,
-fractal
-trees may be seen either as write-optimized B+ trees, or read-optimized append logs.
-The latter property is one we're interested in
-exploiting to efficiently replicate write-intensive event-logs in <a href="http://replikativ.io">replikativ</a>.
+fractal trees may be seen either as write-optimized B+ trees, or read-optimized
+append logs.  The latter property is one we're interested in exploiting to
+efficiently replicate write-intensive event-logs in <a
+href="http://replikativ.io">replikativ</a>.
 </p>
 </div>
 
 <div class="center diag" style="width: 100%">
 <img src="/images/hh_tree_annotated.png">
-<span class="small">Figure 2: Fractal Tree with append logs in each non-leaf node of size 2</span>
+<span class="small">
+Figure 2: Fractal Tree with append logs in each non-leaf node of size 2
+</span>
 </div>
 
 In _Figure 2_ we see a fractal combination of a B+ tree, with a fixed-length
 append log associated with each inner (index) node.  If we attempt to append a
-write to a full log, we flush it downwards one level to the next tier's
-logs. Eventually, an element arrives at a leaf node and is inserted it into the
-data
+write to a full log, we flush it downwards a level to the next tier. Eventually,
+an element arrives at a leaf node and is inserted it into the data
 node. Per
 [Greenberg's](https://github.com/datacrypt-project/Hitchhiker tree/blob/master/doc/Hitchhiker.adoc) summary
 of the benefits of this approach:
@@ -153,11 +153,11 @@ size and tree branching may be picked freely on tree creation.
 <span class="small">Figure 3: A small Hitchhiker Tree</span>
 </div>
 
-Let's walk through an insertion example. In _Figure 3_ you can see a small HH
-tree. With the elements 0-12 inserted. Note how a few of the elements are still
-in the append logs (0, 11, 12, 13) because they have just been inserted. We will
-now go through two steps inserting more elements and see how the append logs are
-flushed down to the root nodes.
+In _Figure 3_ you can see a small HH
+tree, containing the data nodes 0-12. Note how a few of the elements remain in
+the append logs (0, 11, 12, 13) --- let's walk through the insertion of further
+elements to develop our intuitions around  how the append logs are flushed down
+the tree.
 
 <div class="center diag" style="width: 100%">
 <img src="/images/hh_insert2.png">
@@ -165,19 +165,17 @@ flushed down to the root nodes.
 <span class="small">Figure 4: Elements propagate first to fill up append logs of hitchhiking-elements that wait for an event to propagate them down the tree.</span>
 </div>
 
-First we insert 14 and observe that it just requires one write operation to the
-root node as can be seen in _Figure 4_. But observe that the root node's append
-log is now full. Where will the elements go in the next step? To the right of it
-in the index node. But the append log there is also full. Let's insert the next
-element $$-1$$ to the root node:
+First we insert 14, observing that it requires a single write operation on the
+root node's log per _Figure 4_ --- leaving the root's append log at capacity.
+Let's tempt fate and attempt to insert another element, -1:
 
 <div class="center diag" style="width: 100%">
 <img src="/images/hh_insert3.png">
 <br/>
 <span class="small">Figure 5: An insert causes an overflow and flushes the elements down to the leaf nodes.</span> </div>
 
-The append log will overflow and the elements 13 and 14 go to the right, causing
-another flush there as can be seen in _Figure 5_. This triggers their insertion
+The root's append log overflows, and the elements 13 and 14 move rightwards, causing
+another flush per _Figure 5_. This triggers their insertion
 into the data node of the B+ tree on the lowest level. Note how this operation
 on the B+ tree also causes the B+ tree index node split. Critical for the
 reduction in I/O costs is the fact that the newly inserted element -1 only
@@ -186,33 +184,31 @@ append log is filled up.
 
 ## Query
 
-But what about query? If we just consider the B+ tree part of the Hitchhiker
+But what about queries? If we  consider the B+ tree part of the Hitchhiker
 tree we will definitely miss the elements still waiting in the append logs. We
 therefore project them down the tree during our query operation and insert them
-in memory after we have loaded the data nodes. In that sense they hitchhike with
-the query operator to their proper position. This does not require any
-additional IO operation, only additional CPU work of sorting a few elements in
+in memory after we have loaded the data nodes. In that sense they _hitchhike_ with
+the query operator to their appropriate position. This does not require any
+additional I/O operation, only additional CPU work of sorting a few elements in
 the nodes. For range queries we further ensure that we only project the elements
-down that belong onto a particular path which requires a bit more bookkeeping.
-
+down that belong on a particular path.
 
 ## Asymptotic Costs
 
-Since the Hitchhiker tree is a fractal tree, we will use the same denotation
-here. When a normal B+ tree has a fanout of $$B$$, that is each node has at
-least $$B$$ children then a fractal $$B^{\epsilon}$$ tree has $$B^{\epsilon}$$
-children. E.g. for $$\epsilon = \frac{1}{2}$$ that is $$\sqrt{B}$$ children. You
-can think of this as the fraction of the tree that belongs to the B+ tree. Each
-node has still $$B$$ elements, but $$B^\epsilon$$ are pointers for the tree
-while the rest belongs to the append log.
+Since the Hitchhiker tree is fractal, we'll use the same notation
+here. When a normal B+ tree has a fanout of $$B$$ --- each node has at
+least $$B$$ children --- a fractal $$B^{\epsilon}$$ tree has $$B^{\epsilon}$$
+children (e.g. $$\sqrt{B}$$ children for $$\epsilon = \frac{1}{2}$$). You
+can think of this as the fraction of the tree that belongs to the B+ tree:eEach
+node has $$B$$ elements, though $$B^\epsilon$$ are navigational pointers
+while the remainder belongs to the append log.
 
-To calculate the amortized insertion cost informally we can say that we have to
-flush an element $$\log_B N$$ times to the leaf. But on each flush we move
+To calculate the amortized insertion cost informally, we can say that we have to
+flush an element $$\log_B N$$ times to the leaf. On each flush we move
 $$(B-B^\epsilon)/B^\epsilon \approx B^{1-\epsilon}$$ elements down to each
-children. For a detailed explanation see also Section
+children. For a detailed explanation see Section
 2.2. of
 [Jannen et al.](https://www.usenix.org/system/files/conference/fast15/fast15-paper-jannen_william.pdf)
-
 
 
 | Cost (IO ops) | B+ tree               | HH tree                                          |
@@ -225,12 +221,11 @@ children. For a detailed explanation see also Section
 B+ tree and a HH tree.</span>
 
 
-Note that while the query costs go slightly up by $$\frac{1}{\epsilon}$$, we can
-pick larger node sizes because they are not rewritten as often as is the case
-for a B+ tree. If we consider $$\epsilon$$ as a fixed constant, e.g.
-$$\frac{1}{2}$$ then it vanishes from the asymptotic cost expressions completely
-and yield the theoretic superiority of a fractal tree.
-
+Note that while the query cost increases slightly by $$\frac{1}{\epsilon}$$, we
+can target larger node sizes, as they're not rewritten as often as is the case
+for a B+ tree. If we consider $$\epsilon$$ as a fixed constant (e.g.
+$$\frac{1}{2}$$), it's eliminated from the asymptotic cost expressions and
+yields the theoretic superiority of a fractal tree.
 
 # Persistence
 
@@ -257,9 +252,9 @@ and changed the original Hitchhiker tree implementation to use
 cryptographic [SHA512](https://de.wikipedia.org/wiki/SHA-2) pointers to children
 of nodes.  Replicating an immutable data structure that way is fairly easy and
 our experience with [replikativ](http://replikativ.io) has allowed us to make
-the Hitchhiker tree readily available in our stack. Importantly replication is
-also bounded by the same logarithmic properties of the tree, i.e. no element
-takes more than $$O(\log_B N)$$ steps to replicate and in aggregate
+the Hitchhiker tree readily available in our stack. Importantly, replication is
+ bounded by the same logarithmic properties of the tree --- i.e. no element
+takes more than $$O(\log_B N)$$ steps to replicate and, in aggregate,
 synchronization behaves more like range queries. This is unachievable by most
 blockchain systems today.
 
@@ -268,33 +263,30 @@ blockchain systems today.
 Since the whole data structure is properly merklized authentication is trivial.
 We can in fact sign the root of the database indices for our blockchain after
 each created block and replicate the index partially or in whole in a P2P
-fashion with readily available read-scaleable replication techniques. This will
+fashion with readily available read-scalable replication techniques. This will
 allow light-client query flexibility and speed that goes far beyond the status
 quo. We will describe this in more detail in a future post.
 
 
 # Conclusion
 
-I hope we have explained the background behind the Hitchhiker Tree so that you
-have an understanding why it is a theoretically and practically optimal
-datastructure to build distributed databases on top. You can also watch David
-Greenberg's [Strange Loop talk](https://www.youtube.com/watch?v=jdn617M3-P4) to
-learn more about its motivation and some of the implementation details. In its
-merklized version it is in our opinion a far better choice to implement high
-performing data storage solutions like blockchains or p2p filesystems than
-direct materialization of DAGs or chains. To make retrieval convenient we have
-furthermore build on a sound and declarative query language to leverage the
-strengths of the Hitchhiker tree. For this reason we have ported
-a [datalog engine](https://github.com/tonsky/datascript/) on top of it
-with [datahike](https://github.com/replikativ/datahike).
+I hope we've explained the Hitchhiker tree's background sufficiently to
+communicate its attraction to us as a building block for distributed
+databases. We believe authenticated HH to be a far better choice for
+high-performance data storage solutions (blockchains, P2P filesystems) than
+direct materialization of DAGs or chains. To facilitate structured retrieval,
+we've incorporated a sound and declarative query language ---
+a [Datalog engine](https://github.com/tonsky/datascript/)<sup>1</sup> --- to
+leverage the strengths of the underlying structure.
 
+If these ideas interest you, or you're motivated by the composition of
+clearly-delineated components
+into
+[surprisingly powerful systems](http://www.infoq.com/presentations/Simple-Made-Easy),
+consider joining us!
 
-The Hitchhiker tree is not only the basis for datopia, our Blockchain database.
-Making the right decision on the datastructure-level facilitates optimization
-and integration between the technologies of our ecosystem and makes composition
-of them a breeze. The port of the datalog engine took one of us a week without
-being an expert in it. We think that this focus on
-a
-[reduction in complexity is necessary](http://www.infoq.com/presentations/Simple-Made-Easy) to
-explore the different performance and design tradeoffs that the universe of
-distributed databases and blockchains lays in front of us. Join us!
+<div class="footnote">
+<span class="small">
+<sup>1</sup> See <a href="https://github.com/replikativ/datahike">Datahike</a> for more details.
+</span>
+</div>
