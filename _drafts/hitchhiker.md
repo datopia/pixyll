@@ -75,6 +75,13 @@ to yield a more favourable base for the logarithm.  The B tree family of
 structures can be understood as self-balancing generalizations of the BST,
 leveraging the logarithm for practical gain.
 
+In _B+ trees_, specifically, we've an ordered layer of data nodes ---
+ a linked list --- beneath layers of inner/_index_ nodes, maintaining
+indexical information about the location of key values in the data layer.  In
+practice, B+ trees are often used with greater branching factors than can be
+coherently visualized --- we'll stick with smaller numbers, for the sake of the
+diagrams.
+
 <div class="center diag" style="width: 100%">
 <img src="/images/bplus_tree_annotated.png">
 
@@ -84,9 +91,12 @@ proper data nodes containing the actual key and value of an element.</span>
 
 So, there's a lot going on here.  We've got a B+ tree containing the integer
 keys 1-29, with a minimum branching factor --- $$B$$ --- of 3.  Each index node
-has between 3 ($$B$$) and 5 ($$2B-1$$) children --- excepting the root,
-which may have fewer.  Navigating via the pivot values is straightforward:
-the greatest (rightmost) value in any subtree is its parent's pivot.
+has between 3 ($$B$$) and 5 ($$2B-1$$) children --- excepting the root, which
+may have fewer.  When an operation would otherwise violate these bounds, the
+tree maintains balance by joining or splitting index nodes.  Navigating via the
+pivot values is straightforward: the greatest (rightmost) value in any subtree
+is its parent's pivot.
+
 
 # Write Optimization
 
@@ -95,7 +105,9 @@ write-optimal --- an insert or deletion _also_ costs $$O(\log_B N)$$, as we're
 required to walk to the respective leaf prior to operating on it<sup>1</sup>.
 The Hitchhiker tree attempts to asymptotically improve upon this, by buffering
 write operations in fixed-length append logs associated with each index (inner)
-node --- an optimization common to fractal and B<sup>&#949;</sup> trees.
+node --- an optimization common to fractal and B<sup>&#949;</sup> trees.  While
+append log length is configurable, we're using a maximum of two entries per index
+node in the below examples.
 
 <div class="center diag" style="width: 100%">
 <img src="/images/hh_tree_annotated.png">
@@ -136,11 +148,11 @@ in [replikativ](http://replikativ.io), an associated project.
 <div class="center diag" style="width: 100%">
 <img src="/images/hh_insert1.png">
 <br/>
-<span class="small">Figure 3: A small Hitchhiker Tree</span>
+<span class="small">Figure 3: A small Hitchhiker Tree.</span>
 </div>
 
 In _Figure 3_ you can see a small HH
-tree, containing the data nodes 0-12. Note how a few of the elements remain in
+tree, containing the keys 0-12. Note how a few of the elements remain in
 the append logs (0, 11, 12, 13) --- let's walk through the insertion of further
 elements to develop our intuitions around  how the append logs are flushed down
 the tree.
@@ -148,7 +160,7 @@ the tree.
 <div class="center diag" style="width: 100%">
 <img src="/images/hh_insert2.png">
 <br/>
-<span class="small">Figure 4: Elements propagate first to fill up append logs of hitchhiking-elements that wait for an event to propagate them down the tree.</span>
+<span class="small">Figure 4: We get off easily, via a vacancy in the root's log.</span>
 </div>
 
 First we insert 14, observing that it requires a single write operation on the
