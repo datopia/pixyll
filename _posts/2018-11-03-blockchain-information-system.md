@@ -26,7 +26,7 @@ An integrated set of components for collecting, storing, and processing data and
 Below, we'll attempt to convince you that neither traditional databases, nor
 blockchains, represent epistemologically coherent _information systems_ --- the
 former forgets, the latter is often reluctant to remember when it
-counts<sup>1</sup>.  More consequentially, we'll demonstate that sound
+counts<sup>1</sup>.  More consequentially, we'll suggest that sound
 information systems are a prerequisite for solving many of the problems that
 engage us as a community.
 
@@ -50,20 +50,6 @@ maintained explicitly, expensively, and in inefficiently interrogable data struc
 
 # Motivation
 
-
-<!--
-This article is focused on the consequences of the above two banalities, when
-considered in concert.
-There appears to be a widespread determination to avoid considering the
-synthesis of the above two banalities --- even among those aspiring to
-solve problems as expansive and history-bound as computational arbitration and
-on-chain governance.
-
-What kind of power and _reach_ do we expect will
-emerge from [computation protocols](http://ethdocs.org/en/latest/introduction/what-is-ethereum.html)
-in which the [affordable](https://medium.com/ipdb-blog/forever-isnt-free-the-cost-of-storage-on-a-blockchain-database-59003f63e01)
-set of on-chain data access patterns compares unfavourably with those of an all-nighter
-BASIC implementation?-->
 
 <blockquote class="literal">
 “Man is certainly stark mad; he cannot make a worm, and yet he will be making gods by dozens.”<br>
@@ -246,26 +232,6 @@ sketch of a design in which the fundamental network interaction, a
 _transaction_, denotes something much closer to that word's use in database
 systems.
 
-<!--## Why Store the Data on Chain?
-
-As a result of cost and expressivity constraints in many existing systems ---
-and, no doubt, the irrational attachments of developers and speculators to
-flawed or immature platforms --- we anticipate increased adoption of hybrid
-approaches<sup>1</sup>.  Established blockchains will serve as audit logs of
-cryptographic hashes over datasets stored elsewhere.  No doubt, these types of
-solutions have their place, but we believe there are tangible benefits to
-storing the data itself on-chain.
-
-Cloud platform providers have succeeded in projecting
-
-
-<div class="footnote">
-<span class="small">
-<sup>1</sup> An emerging business model, if I ever saw one.
-</span>
-</div>-->
-
-
 ## The Tyranny of Structurelessness
 
 What follows is a tedious --- but mercifully brief --- exploration of the
@@ -320,7 +286,7 @@ uncannily expressive Turing-incomplete subset
 of [Prolog](https://en.wikipedia.org/wiki/Prolog)<sup>2</sup>) as a
 domain-specific logic language for database interrogation.  Queries and
 invariants, like most everything we traffic in, are structured data.  A
-trivial Datalog query over our feeble ontology, declared in
+trivial Datalog query over our example data, declared in
 Clojure's [literal notation](https://github.com/edn-format/edn), for
 readability:
 
@@ -339,7 +305,7 @@ variables for which we're seeking concrete substitutions.
 </span>
 
 On transaction receipt, all applicable attribute invariants are evaluated against an
-in-memory Datalog engine, containing only the union of the _facts_ asserted by
+in-memory Datalog engine, containifng only the union of the _facts_ asserted by
 the transaction, and the result of an optional, arbitrary _pre-query_ against
 the chain state, on which the attribute schema may declare a dependency<sup>3</sup>.  If
 the transaction is accepted, its facts are incorporated into the persistent,
@@ -397,9 +363,8 @@ concerned with a distinct entity:
 
 Here we're imagining Simoleons to be some user-defined asset, which happens to
 use the namespace `simoleon` for its qualified keywords<sup>1</sup>.  The
-`simoleon/balance` values are submitted not as atoms, but
-lists representing functions curried over the entity's
-attribute value at the point of application --- we're commutatively
+`simoleon/balance` values are submitted not as absolute values, but relative ones
+--- we're
 declaring something like _&lt;sender>'s `simoleon/balance` shrinks by 99.
 &lt;recipient>'s grows by 99_.
 
@@ -451,20 +416,6 @@ replace these transparent inputs and outputs with result sets and opaque connect
 handles ---  in exchange for the privilege of competing to submit strings to a distant,
 volatile authority.
 
-<!--<blockquote class="literal left">
-“A database that updates in place is not an information system.  I'm sorry."<br>
-<div class="attrib">&mdash; Rich Hickey, The Database as a Value</div>
-</blockquote>-->
-
-<!--In Rich Hickey's tlk on
-[Datomic](https://www.datomic.com/), [The Database as a Value](https://www.youtube.com/watch?v=EKdV1IgAaFc),
-we hear an appeals to the intuitive properties of an _epochal model of time_ --- an
-unambiguously ordered accretion of immutable facts --- as a more coherent basis
-for reasoning about database semantics than the prevailing mutable-cell model.
-While [MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control) is
-used pervasively in (cell-based) relational databases for read scaling and snapshot isolation,
-immutable databases are multi-version _all the way down_.-->
-
 Imagine a network in which we've a class of nodes responsible, in turns, for the
 deterministic application of transactions --- and, hopefully, a larger class of
 participants issuing transactions, and interrogating the database they
@@ -489,15 +440,15 @@ is submitted to the chain by an aggrieved or suspicious client.
 # A Brief History of Time
 
 For the purposes of convenience, we've been ignoring a crucial dimension --- the
-temporal --- and its centrality to coherent information systems.  In Rich
-Hickey's [Datomic](https://www.datomic.com/)
+temporal --- and its centrality to coherent information systems.  But no longer!
+In Rich Hickey's [Datomic](https://www.datomic.com/)
 talk [The Database as a Value](https://www.youtube.com/watch?v=EKdV1IgAaFc),
 we're beguiled by an appeal to the virtues of an _epochal model of time_ --- an
-unambiguously ordered accretion of immutable facts --- as a more sound basis
-for reasoning about database semantics than the prevailing mutable-cell model.
-This approach ought to be uncontroversial among blockchain enthusiasts ---
-consider a network attaining consensus over a single numerical value, _v_, for 4
-successive blocks:
+unambiguously ordered accretion of immutable facts --- as a more sound basis for
+reasoning about database semantics than the prevailing mutable-cell model.  This
+approach ought to be uncontroversial among blockchain enthusiasts --- consider a
+network attaining consensus over a single numerical value, _v_, for 4 successive
+blocks:
 
 <center>
 <img class="center" src="/images/blockchain.png">
@@ -568,20 +519,6 @@ such as in the earlier transaction submission examples --- but there are instanc
 where it's the only means of solving a problem.  We can realize the database at any T,
 diff or join two databases as of different times, inspect the history of entities over
 time, etc.  These are _superpowers_.
-
-<!--## Read ScalabilityQ
-
-In Datopia, consensus is attained
-over a collection of
-[authenticated index structures](https://www.cs.utah.edu/~lifeifei/papers/sigmod06-btree.pdf) ---
-effectively [Merkle](https://en.wikipedia.org/wiki/Merkle_tree) [B+ trees](https://en.wikipedia.org/wiki/B%2B_tree).
-As the deterministic root hash changes each block, an incentivised peer-to-peer distribution mechanism is used to
-promulgate all new index segments, identfied by hash, to any interested parties --- light clients, etc.  In order
-to query the network, a node need only have access to some
-
-with an interest in
-After each block, the deterministic root hash, and any number of the hashes covering segments in the individual indices
-will-->
 
 # Project Status
 

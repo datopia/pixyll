@@ -181,7 +181,7 @@ the append log is filled up.
 
 ## Query
 
-When querying a Hitchiker tree, we have to downwardly project unincorporated
+When querying a Hitchhiker tree, we have to downwardly project unincorporated
 append log values --- interpolating them in memory after loading the required
 data nodes. In that sense, the appended values _hitchhike_ with the query
 operation to their appropriate position. This doesn't require any additional
@@ -196,7 +196,7 @@ Clojure's data structures are trivial
 to [structurally hash](https://github.com/replikativ/hasch/), and arbitrary data
 structures may be [authenticated](https://www.cs.umd.edu/~mwh/papers/gpads.pdf)
 without difficulty.  We've exploited these facts to _merkelize_ (urgh) the
-Hitchiker tree, by indirecting parent-child relationships with
+Hitchhiker tree, by indirecting parent-child relationships with
 recursive [SHA512](https://en.wikipedia.org/wiki/SHA-2) subtree hashes, yielding
 a write-optimized Merkle B+ tree.
 
