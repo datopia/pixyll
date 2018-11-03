@@ -5,8 +5,6 @@ author: Christian Weilbach
 summary: "The goal of the Hitchhiker tree is to wed three things: the query performance of a B+ tree, the write performance of an append-only log, and convenience of a functional, persistent data structure."
 ---
 
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
 # Motivation
 
 <blockquote class="literal left">
