@@ -1,10 +1,15 @@
 <header class="site-header px2 px-responsive">
   <div class="mt2 wrap">
     <div class="measure">
-      <a href="{{ site.url }}" class="site-title">{{ site.title }}</a>
-      <nav class="site-nav">
+      <div><a href="https://datopia.io">&#8593; datopia.io</a></div>
+      <center>
+        <a href="{{ site.url }}" class="datopia-home-link">
+          <img src="/images/header.svg">
+        </a>
+      </center>
+      <!--<nav class="site-nav">
         {% include navigation.html %}
-      </nav>
+      </nav>-->
       <div class="clearfix"></div>
       {% if site.show_social_icons %}
         {% include social_links.html %}
