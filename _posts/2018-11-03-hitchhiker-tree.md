@@ -73,12 +73,19 @@ to yield a more favourable base for the logarithm.  The B tree family of
 structures can be understood as self-balancing generalizations of the BST,
 leveraging the logarithm for practical gain.
 
-In _B+ trees_, specifically, we've an ordered layer of data nodes ---
- a linked list --- beneath layers of inner/_index_ nodes, maintaining
-indexical information about the location of key values in the data layer.  In
-practice, B+ trees are often used with greater branching factors than can be
-coherently visualized --- we'll stick with smaller numbers, for the sake of the
-diagrams.
+In _B+ trees_, specifically, we've a sorted layer of data nodes --- likely
+implemented as a contiguous/linked list --- beneath sorted layers of _index_
+nodes, through which we route key lookups.  On each descent we logarithmically
+search the sorted pivot values, locating the appropriate subtree --- or,
+terminally, the data node --- for the input key.
+
+<div class="infobox">
+<p>
+In practice, B+ trees tend to be impressively shallow &mdash; they're realized with
+far greater branching factors than may coherently be depicted.  We'll stick with
+smaller numbers, for the sake of the diagrams.
+</p>
+</div>
 
 <div class="center diag" style="width: 100%">
 <img src="/images/bplus_tree_annotated.png">
@@ -91,10 +98,10 @@ So, there's a lot going on here.  We've got a B+ tree containing the integer
 keys 1-29, with a minimum branching factor --- $$B$$ --- of 3.  Each index node
 has between 3 ($$B$$) and 5 ($$2B-1$$) children --- excepting the root, which
 may have fewer.  When an operation would otherwise violate these bounds, the
-tree maintains balance by joining or splitting index nodes.  Navigating via the
-pivot values is straightforward: the greatest (rightmost) value in any subtree
-is its parent's pivot.
-
+tree maintains balance via unsurprising internal manipulations
+(joining/splitting nodes. etc.)  Navigating via the pivot values is
+straightforward: the greatest (rightmost) value in any subtree is its parent's
+pivot.
 
 # Write Optimization
 
@@ -117,7 +124,7 @@ Figure 2: Hitchhiker tree with append logs in each non-leaf node of size 2
 In _Figure 2_ we see such a tree, with the append logs rendered vertically
 at the rightmost of each index node.  If we attempt to append a
 write to a full log, the contents are flushed downwards a level. Eventually,
-an element arrives at a leaf and is inserted it into the data
+an element arrives at a leaf and is inserted into the data
 node. Per
 [Greenberg's](https://github.com/datacrypt-project/Hitchhiker tree/blob/master/doc/Hitchhiker.adoc) summary
 of the benefits of this approach:
@@ -149,10 +156,11 @@ in [replikativ](http://replikativ.io), an associated project.
 <span class="small">Figure 3: A small Hitchhiker Tree.</span>
 </div>
 
-In _Figure 3_ you can see a small HH
-tree, containing the keys 0-12. Note how a few of the elements remain in
-the append logs (0, 11, 12, 13) --- let's walk through the insertion of further
-elements to develop our intuitions around  how the append logs are flushed down
+In _Figure 3_ you can see a small HH tree --- specifically a _2-3_ B+ tree ($$B
+= 2$$, so $$2 <= children <= 3$$ per index node) with append logs of
+length 2 --- containing the keys 0-12. Note how a few of the elements remain in
+the  logs (0, 11, 12, 13) --- let's walk through the insertion of further
+elements, to develop our intuitions around how the append logs are flushed down
 the tree.
 
 <div class="center diag" style="width: 100%">
@@ -221,8 +229,7 @@ consider joining us!
 <a name="cost"></a>
 # Appendix: Asymptotic Costs
 
-It's clarifying to discuss complexity in the notation of B<sup>&#949;</sup> trees.
-here. While a B+ tree has a fanout of $$B$$ --- each node has at least $$B$$
+It's perhaps clarifying to discuss complexity in the notation of B<sup>&#949;</sup> trees. While a B+ tree has a fanout of $$B$$ --- each node has at least $$B$$
 children --- a $$B^{\epsilon}$$ tree has $$B^{\epsilon}$$ children
 (e.g. $$\sqrt{B}$$ children for $$\epsilon = \frac{1}{2}$$). Each node has $$B$$
 elements: $$B^\epsilon$$ are navigational pointers while the remainder belong to
@@ -231,7 +238,7 @@ the append log.
 To calculate the amortized insertion cost informally, we can say that we have to
 flush an element $$\log_B N$$ times to the leaf. On each flush we move
 $$(B-B^\epsilon)/B^\epsilon \approx B^{1-\epsilon}$$ elements down to each
-children. For a detailed explanation see Section
+child. For a detailed explanation see Section
 2.2. of
 [Jannen et al.](https://www.usenix.org/system/files/conference/fast15/fast15-paper-jannen_william.pdf)
 

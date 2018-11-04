@@ -27,7 +27,7 @@ Below, we'll attempt to convince you that neither traditional databases, nor
 blockchains, represent epistemologically coherent _information systems_ --- the
 former forgets, the latter is often reluctant to remember when it
 counts<sup>1</sup>.  More consequentially, we'll suggest that sound
-information systems are a prerequisite for solving many of the problems that
+information systems are a prerequisite for solving many of the problems which
 engage us as a community.
 
 By continual, grating appeal to _immutable databases_ as a set of solutions from
@@ -41,10 +41,8 @@ imperative code.
 
 <div class="footnote">
 <span class="small">
-<sup>1</sup> By, say, performing on-chain evaluation atop an emulation of
-mutable-cell semantics, in which we obscure all but the most recently committed
-values &mdash; requiring that histories be
-maintained explicitly, expensively, and in inefficiently interrogable data structures.</span>
+<sup>1</sup> By, say, emulating "mutable cell" storage semantics in on-chain compuation protocols, surfacing only the most recently committed value for each cell &mdash; requiring that histories be
+maintained explicitly, expensively, and in data structures immune to efficient or expressive interrogation.</span>
 </div>
 
 
@@ -83,14 +81,15 @@ Clearly,
 [databases built atop mutable cells](http://www.infoq.com/presentations/Impedance-Mismatch) ---
 yesterday's value is obliterated by today's --- are unsuited to many of the
 problems faced by their
-customers<sup>1</sup>.  [Immutable databases](https://www.datomic.com/) take a
-far more interesting position: your structured data's history _is data of the
+customers.  [Immutable databases](https://www.datomic.com/) take a
+far more interesting position: your structured data's history is data _of the
 same order_ --- equivalently structured and interrogable. When the architectural
 predecessors of contemporary databases were conceived in the early 1970s, this
 approach would've
 been
-[comedically unrealistic](https://www.computerworld.com/article/3182207/data-storage/cw50-data-storage-goes-from-1m-to-2-cents-per-gigabyte.html) by
-virtue of its storage requirements.  Fortunately, storage has gotten cheaper<sup>2</sup>.
+[ostentatious](https://www.computerworld.com/article/3182207/data-storage/cw50-data-storage-goes-from-1m-to-2-cents-per-gigabyte.html) by
+virtue of its storage requirements.  Fortunately, an _awful_ lot has happened to
+the price of storage media in the intervening decades<sup>1</sup>.
 
 <blockquote class="literal"> “Peter had seen many tragedies, but he had
 forgotten them all.”  <div class="attrib">&mdash; J.M. Barrie, Peter Pan</div>
@@ -108,10 +107,7 @@ line, not a point --- is astonishingly profligate and short-sighted.
 
 <div class="footnote">
 <span class="small">
-<sup>1</sup> Having a passing familiarity with some of these systems, I think
-it unlikely much of this usage is recreational.
-<br>
-<sup>2</sup> In late 2018, we can get for <a href="https://www.amazon.com/Elements-Portable-External-Drive-WDBU6Y0020BBK-WESN-x/dp/B0713WPGLL/ref=sr_1_1_sspa">$99</a> what would've cost three quarters of a billion dollars in the early 70s.
+<sup>1</sup> In late 2018, we can get for <a href="https://www.amazon.com/Elements-Portable-External-Drive-WDBU6Y0020BBK-WESN-x/dp/B0713WPGLL/ref=sr_1_1_sspa">$99</a> what would've cost three quarters of a billion dollars in the early 70s.
 </span>
 </div>
 
@@ -153,11 +149,11 @@ projected demand.  We've a _vision_ problem, not a technical one.
 
 From a developer's perspective, one of the more disappointing _compute_
 blockchain trends is the conflation of information and implementation at the
-center of many of their programming models.  We're recapitulating
+center of many of the emerging programming models.  We're recapitulating
 the
 [worst](https://medium.com/@brianwill/object-oriented-programming-a-personal-disaster-1b044c2383ab) of
 object-orientation, atop systems embarrassed to describe themselves as such.
-Data _isn't_ an implementation detail, and mediating its access through
+Data isn't an implementation detail, and mediating its access through
 domain-specific _methods_<sup>1</sup> is
 a [thoroughly debased](https://www.youtube.com/watch?v=-6BsiVyC1kM) strategy at
 odds with the needs of
@@ -169,8 +165,7 @@ re-implementation<sup>2</sup> of a small set of access patterns over their
 "internal state" --- whatever that means, and however it's been jerry-rigged
 together.  While it's awkward to obtain empirical data<sup>3</sup>, we've the
 intuition that an astonishing percentage of deployed contracts are concerned
-with trivial, imperative data brokerage --- ordered sequences of assertions
-along the lines of _0x017b... can write this, 0x1f6f... can read that_ ---
+with trivial, imperative data brokerage ---
 compensating for the shortcomings of their platforms, not doing anything
 _smart_.  Briefly, an excerpt
 from
@@ -273,9 +268,9 @@ without the megalomania.
 
 A key feature of our system is that any of the attributes referenced above may
 be (optionally) schematized, to express type, cardinality, uniqueness, or, more
-interestingly --- to declaratively, logically constrain the attribute's use in
+interestingly --- to logically constrain the attribute's use in
 transactions.  This latter facility is a general means of establishing global
-invariants, such as those demanded by a ledger (balance sufficiency, zero-sum
+invariants, such as demanded by a ledger (balance sufficiency, zero-sum
 exchange, etc.) --- though far more interesting examples abound.  Users _deploy_
 attribute schemas, and the genesis block includes some helpful, primitive
 schemas essential to maintain the network itself.
@@ -305,7 +300,7 @@ variables for which we're seeking concrete substitutions.
 </span>
 
 On transaction receipt, all applicable attribute invariants are evaluated against an
-in-memory Datalog engine, containifng only the union of the _facts_ asserted by
+in-memory Datalog engine, containing only the union of the _facts_ asserted by
 the transaction, and the result of an optional, arbitrary _pre-query_ against
 the chain state, on which the attribute schema may declare a dependency<sup>3</sup>.  If
 the transaction is accepted, its facts are incorporated into the persistent,
@@ -380,7 +375,7 @@ Nodes --- prior to applying transactions --- synthesize additional attributes
 from low-level metadata not explicitly represented in the transaction's body
 (e.g. that its envelope was signed by `<sender>`, rather than `<recipient>` ---
 handy).  It's trivial to see that the sum of this data, considered alongside the
-transaction --- and a _pre-query_ resulting in <i>&lt;sender></i>'s
+transaction --- and a _pre-query_ resulting in `<sender>`'s
 `simoleon/balance` --- would be sufficient inputs for a relatively brief logical
 declaration of the conditions of value transfer.
 It's [first-order logic](https://en.wikipedia.org/wiki/First-order_logic) all
@@ -429,23 +424,19 @@ executes queries _locally_ --- without contesting shared compute resources<sup>1
 <div class="footnote">
 <span class="small">
 <sup>1</sup> For network participants with a need to execute queries
-contingent on the consumption of data surplus to local bandwidth/storage capacity &mdash; embedded devices, say &mdash;
-little is lost.  An explicit on-chain mechanism for query evaluation exists.  For the
-truly impatient, we anticipate the development of peripheral, higher-level query execution services
-willing to expose themselves to stake forfeiture in the event that a proof of incorrectness
-is submitted to the chain by an aggrieved or suspicious client.
+contingent on the consumption of data surplus to local bandwidth/storage capacity &mdash; embedded devices, say &mdash; a generic mechanism for on-chain query evaluation is planned.
 </span>
 </div>
 
 # A Brief History of Time
 
 For the purposes of convenience, we've been ignoring a crucial dimension --- the
-temporal --- and its centrality to coherent information systems.  But no longer!
+temporal --- and its centrality to coherent information systems.  No longer!
 In Rich Hickey's [Datomic](https://www.datomic.com/)
 talk [The Database as a Value](https://www.youtube.com/watch?v=EKdV1IgAaFc),
 we're beguiled by an appeal to the virtues of an _epochal model of time_ --- an
 unambiguously ordered accretion of immutable facts --- as a more sound basis for
-reasoning about database semantics than the prevailing mutable-cell model.  This
+reasoning about database semantics than the prevailing mutable cell model.  This
 approach ought to be uncontroversial among blockchain enthusiasts --- consider a
 network attaining consensus over a single numerical value, _v_, for 4 successive
 blocks:
