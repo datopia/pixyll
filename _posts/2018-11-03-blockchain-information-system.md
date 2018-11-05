@@ -23,25 +23,37 @@ An integrated set of components for collecting, storing, and processing data and
 </div>
 </div>
 
-Below, we'll attempt to convince you that neither traditional databases, nor
-blockchains, represent epistemologically coherent _information systems_ --- the
-former forgets, the latter is often reluctant to remember when it
-counts<sup>1</sup>.  More consequentially, we'll suggest that sound
-information systems are a prerequisite for solving many of the problems which
-engage us as a community.
+Below, we'll attempt to convince you that neither traditional databases nor
+blockchains represent epistemologically robust _information systems_ --- the
+former forgets, the latter is often unable to remember when it
+counts<sup>1</sup>.  More consequentially, we'll suggest that sound information
+systems are a prerequisite for solving many of the problems which engage us as a
+community.
 
-By continual, grating appeal to _immutable databases_ as a set of solutions from
-which we've plenty to learn, we hope to establish that it's both possible and
-desirable to build a sound, permissionless information system. Through the
-mechanism of composable, user-declared logical constraints, we propose a generic
-means of facilitating trustless value transfer, user-defined assets, delegated
-voting --- or whatever else we might expect from an advanced blockchain --- without
-having to consider each feature in the network's design, or delegate it to brittle,
-imperative code.
+Through unceasing appeal
+to
+[immutable databases](http://scale-out-blog.blogspot.com/2014/02/why-arent-all-data-immutable.html) as
+solution space from which we've plenty to learn, we hope to establish that it's
+both possible and necessary to offer comparable facilities in a permissionless,
+distributed information system.  In parallel, we'll suggest that "smart
+contracts" often function in practice as gatekeepers for data, which may
+otherwise be directly read or conditionally written --- if only there existed a
+generic mechanism for modelling, interrogating, permissioning and storing
+_structured histories of values_.
+
+Finally, we'll make a case that user-schematized attributes --- with optional,
+logical constraints over their usage --- may represent a simpler and more
+expressive means of talking about data than ad-hoc key value stores and serial
+imperatives.  By enforcing write constraints, apparently fundamental logical
+invariants (those around asset transfer, say) may be excised from the core of
+the system, while being trivially implementable atop it.  Our contention is that
+the resulting environment --- in which data is collaboratively modelled, freely
+shared and uniformly accessed --- approaches an ideal substrate for
+transparently tackling complex analytic and inferential problems.
 
 <div class="footnote">
 <span class="small">
-<sup>1</sup> By, say, emulating "mutable cell" storage semantics in on-chain compuation protocols, surfacing only the most recently committed value for each cell &mdash; requiring that histories be
+<sup>1</sup> By, say, emulating "mutable cell" storage semantics in on-chain computation protocols, surfacing only the most recently committed value for each cell &mdash; requiring that histories be
 maintained explicitly, expensively, and in data structures immune to efficient or expressive interrogation.</span>
 </div>
 
@@ -99,9 +111,8 @@ Fortuitously, a blockchain's fundamental responsibility is that of securing a
 coherent, immutable, ordered history of facts. Just the thing we need, to make
 intelligent decisions!  In a truly curious turn, this history --- the network's
 _identity_ --- tends, as a matter of [precedent](https://www.ethereum.org/), to
-be obscured from decision-making processes.  We've a profusion of platforms wed
-to data access semantics less expressive than those of an all-nighter BASIC
-implementation.  Given the effort and coordination involved in maintaining these
+be obscured from on-chain computation protocols determined to privilege the
+present.  Given the effort and coordination involved in maintaining these
 histories, to fail to offer a _transparent_ means of analyzing them --- as a
 line, not a point --- is astonishingly profligate and short-sighted.
 
@@ -130,12 +141,12 @@ unaccompanied by the concession that ledgers are special-purpose databases ---
 has likely cemented our aversion to considering blockchains as _information
 systems_, in any broad sense.
 
-Significant progress has been made on the above technical concerns --- less on the
-cultural ones.   On the solutions side, there exist
-a number of sound, high-throughput consensus algorithms
+Significant progress has been made on the above technical concerns --- less on
+the cultural ones.  On the solutions side, there exist a number of sound,
+high-throughput consensus algorithms
 (e.g. [metastable](https://ipfs.io/ipfs/QmUy4jh5mGNZvLkjies1RWM4YuvJh5o2FYopNPVYwrRVGV),
-[classical](https://tendermint.com), etc.)  composable with responsive,
-intuitive mechanisms for Sybil resistance
+[classical](https://tendermint.com), etc.) composable with responsive, intuitive
+mechanisms for Sybil resistance
 (POS,
 [DPOS](https://bitshares.org/technology/delegated-proof-of-stake-consensus/)).
 Elsewhere
@@ -149,7 +160,7 @@ projected demand.  We've a _vision_ problem, not a technical one.
 
 From a developer's perspective, one of the more disappointing _compute_
 blockchain trends is the conflation of information and implementation at the
-center of many of the emerging programming models.  We're recapitulating
+center of the dominant programming model.  We're recapitulating
 the
 [worst](https://medium.com/@brianwill/object-oriented-programming-a-personal-disaster-1b044c2383ab) of
 object-orientation, atop systems embarrassed to describe themselves as such.
@@ -216,12 +227,7 @@ and initiative!"  <div class="attrib">&mdash; Courtial des Pereires</div>
 At a high level, our principal interest is in developing a trustless, immutable,
 deductive _information system_, sufficiently expressive to serve as the
 substrate for a ledger, governance platform, etc. --- without spilling the
-details of those domains all over the core system design.
-
-While resilient, autonomous money is a deeply motivating prospect --- one we may
-be realizing --- we see blockchain projects stoking ambitions better served by
-general approaches to the modeling and storage of information.  At Datopia, we
-see both problems yielding to a single solution.  While we'll resist the
+details of those domains all over the core system design.  While we'll resist the
 impulse to wade too deeply into the weeds in this introductory post, below is a
 sketch of a design in which the fundamental network interaction, a
 _transaction_, denotes something much closer to that word's use in database
@@ -323,7 +329,7 @@ structural query representation, per the above example.</p>
 <p>
 The EAV data model is well suited to domains in which a voluminous set of attributes
 are sparsely associated with entities &mdash; e.g. an open system with user-defined attribute
-schemas.  While it's certainly possible to use SQL to interrogate EAV-style ontologies,
+schemas.  While it's certainly possible to use SQL to interrogate EAV-spaces,
 it's not our idea of a good time.
 </p>
 </div>
