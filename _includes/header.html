@@ -1,19 +1,27 @@
 <header class="site-header px2 px-responsive">
-  <div class="mt2 wrap">
-    <div class="measure">
-      <div><a href="https://datopia.io">&#8593; datopia.io</a></div>
-      <center>
-        <a href="{{ site.url }}" class="datopia-home-link">
-          <img src="/images/header.svg">
-        </a>
-      </center>
-      <!--<nav class="site-nav">
-        {% include navigation.html %}
-      </nav>-->
-      <div class="clearfix"></div>
-      {% if site.show_social_icons %}
-        {% include social_links.html %}
-      {% endif %}
-    </div>
+  <div class="measure">
+  <table cellspacing="0" cellpadding="0" style="border-width: 0; width: 100%" class="mini-nav">
+    <tbody>
+      <tr>
+        <td><a href="https://datopia.io">&#8593;&nbsp;datopia.io</a></td>
+        <td style="width: 100%">&nbsp;</td>
+        <td><a href="https://twitter.com/datopians?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @datopians</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <center>
+            <a href="{{ site.url }}" class="datopia-home-link">
+              <img src="/images/header.svg">
+            </a>
+          </center>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   </div>
+
+  <div class="clearfix"></div>
+  {% if site.show_social_icons %}
+  {% include social_links.html %}
+  {% endif %}
 </header>

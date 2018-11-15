@@ -3,6 +3,7 @@ layout: post
 title:  Blockchains as Information Systems
 author: Moe Aboulkheir
 summary: Blockchains positioned as application deployment targets must confront the ubiquity and volume of highly-structured information in all but the most trivial applications.  Expensive, crude or ad-hoc approaches to modeling, storing and retrieving data are typical in the blockchain space.  This need not be the case.
+tags: blockchain database vision
 ---
 
 # Axioms
@@ -99,8 +100,7 @@ same order_ --- equivalently structured and interrogable. When the architectural
 predecessors of contemporary databases were conceived in the early 1970s, this
 approach would've
 been
-[ostentatious](https://www.computerworld.com/article/3182207/data-storage/cw50-data-storage-goes-from-1m-to-2-cents-per-gigabyte.html) by
-virtue of its storage requirements.  Fortunately, an _awful_ lot has happened to
+[ostentatious in the extreme](https://www.computerworld.com/article/3182207/data-storage/cw50-data-storage-goes-from-1m-to-2-cents-per-gigabyte.html).  Fortunately, an _awful_ lot has happened to
 the price of storage media in the intervening decades<sup>1</sup>.
 
 <blockquote class="literal"> “Peter had seen many tragedies, but he had
@@ -262,7 +262,7 @@ entity, `<joe>`:
 ```
 
 <div class="thumbnail-right" style="width: 50%">
-<img src="/images/joe-sally.png" style="padding: 2ex">
+<img src="{{ site.url }}{{ site.baseurl }}/images/joe-sally.png" style="padding: 2ex">
 </div>
 
 These map representations are trivially isomorphic to
@@ -281,13 +281,13 @@ exchange, etc.) --- though far more interesting examples abound.  Users _deploy_
 attribute schemas, and the genesis block includes some helpful, primitive
 schemas essential to maintain the network itself.
 
-Here's where it gets a little steampunk --- we embrace the use
-of [Datalog](https://en.wikipedia.org/wiki/Datalog) (an ancient, declarative,
+Here's where it gets a little steampunk --- we really
+like [Datalog](https://en.wikipedia.org/wiki/Datalog) (an ancient, declarative,
 uncannily expressive Turing-incomplete subset
 of [Prolog](https://en.wikipedia.org/wiki/Prolog)<sup>2</sup>) as a
 domain-specific logic language for database interrogation.  Queries and
-invariants, like most everything we traffic in, are structured data.  A
-trivial Datalog query over our example data, declared in
+invariants, like most everything we traffic in, are structured data.  A trivial
+Datalog query over our example data, declared in
 Clojure's [literal notation](https://github.com/edn-format/edn), for
 readability:
 
@@ -324,7 +324,7 @@ is confounded by
  drastically alter the properties of a given system.  Assuming some SQL
  implementation capable of recursive queries, we'd first
 appeal to Datalog on the basis of expressive power: it's far less <i>operational</i>
-(<i>what</i>, rather than <i>how</i>), inferentially succint, and amenable to
+(<i>what</i>, rather than <i>how</i>), inferentially more succint, and amenable to
 structural query representation, per the above example.</p>
 <p>
 The EAV data model is well suited to domains in which a voluminous set of attributes
@@ -452,7 +452,7 @@ blocks:
 </center>
 
 <div class="thumbnail-right" style="width: 300px">
-<img src="/images/immutable.png">
+<img src="{{ site.url }}{{ site.baseurl }}/images/immutable.png">
 </div>
 
 It doesn't require a philosopher's wit to surmise there's little to discuss
@@ -503,7 +503,7 @@ uh, _Time_:
 </table>
 
 Each row is an immutable fact --- Joe's balance at T1 doesn't invalidate,
-overwrite, or other otherwise supersede his balance _at T0_ (indefinitely
+overwrite, or  otherwise supersede his balance _at T0_ (indefinitely
 accessible to anyone nostalgic for T0).  This behaviour extends on-chain, where
 we might --- for example --- deploy a contract (or execute a query) partly
 concerned with transparent, deterministic computations over the full or partial

@@ -3,6 +3,7 @@ layout: post
 title: An Introduction to the Hitchhiker Tree
 author: Christian Weilbach
 summary: "The goal of the Hitchhiker tree is to wed three things: the query performance of a B+ tree, the write performance of an append-only log, and convenience of a functional, persistent data structure."
+tags: internals hitchhiker replication clojure data-structures
 ---
 
 # Motivation
@@ -51,7 +52,7 @@ right).  While simple, an _unbalanced_ BST is vulnerable to structural
 deformation --- if, say, entries are inserted in sorted order --- and may
 degenerate into an approximation of a linked list.  Accordingly, we'll set
 unbalanced trees aside, and focus only  on the [balanced, or self-balancing](https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree) subset of trees ---
-those in which all leaves are approximately distant from the root.
+those in which all leaves are approximately equidistant from the root.
 
 In any balanced tree, the distance between the root and a leaf scales
 logarithmically with the number of entries.  In a balanced BST having $$N$$ entries,
@@ -88,7 +89,7 @@ smaller numbers, for the sake of the diagrams.
 </div>
 
 <div class="center diag" style="width: 100%">
-<img src="/images/bplus_tree_annotated.png">
+<img src="{{ site.url }}{{ site.baseurl }}/images/bplus_tree_annotated.png">
 
 <span class="small">Figure 1: B+ Tree. The pivots help to navigate the tree to find the
 proper data nodes containing the actual key and value of an element.</span>
@@ -115,7 +116,7 @@ append log length is configurable, we're using a maximum of two entries per inde
 node in the below examples.
 
 <div class="center diag" style="width: 100%">
-<img src="/images/hh_tree_annotated.png">
+<img src="{{ site.url }}{{ site.baseurl }}/images/hh_tree_annotated.png">
 <span class="small">
 Figure 2: Hitchhiker tree with append logs in each non-leaf node of size 2
 </span>
@@ -151,7 +152,7 @@ in [replikativ](http://replikativ.io), an associated project.
 ## Insertion
 
 <div class="center diag" style="width: 100%">
-<img src="/images/hh_insert1.png">
+<img src="{{ site.url }}{{ site.baseurl }}/images/hh_insert1.png">
 <br/>
 <span class="small">Figure 3: A small Hitchhiker Tree.</span>
 </div>
@@ -164,7 +165,7 @@ elements, to develop our intuitions around how the append logs are flushed down
 the tree.
 
 <div class="center diag" style="width: 100%">
-<img src="/images/hh_insert2.png">
+<img src="{{ site.url }}{{ site.baseurl }}/images/hh_insert2.png">
 <br/>
 <span class="small">Figure 4: We get off easily, via a vacancy in the root's log.</span>
 </div>
@@ -174,7 +175,7 @@ root node's log per _Figure 4_ --- leaving the root's append log at capacity.
 Let's tempt fate and attempt to insert another element, -1:
 
 <div class="center diag" style="width: 100%">
-<img src="/images/hh_insert3.png">
+<img src="{{ site.url }}{{ site.baseurl }}/images/hh_insert3.png">
 <br/>
 <span class="small">Figure 5: An insert causes an overflow and flushes the elements down to the leaf nodes.</span> </div>
 
