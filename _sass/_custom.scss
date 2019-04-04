@@ -1,5 +1,5 @@
 html, body {
-    font-weight: 200;
+    font-weight: 300;
     background-color: $datopia-bg-light;
 }
 
@@ -23,9 +23,13 @@ a:hover, .share-links a:hover {
     display: block;
 }
 
-.post-link, .post-title {
-    font-weight: 300 !important;
+a.post-link, .post-title {
+    font-weight: 900 !important;
     color: $datopia-primary-blue !important;
+}
+
+.post-link .post-summary {
+    font-weight: 300;
 }
 
 .posts .py3:first-of-type {
@@ -56,7 +60,7 @@ blockquote {
 
 a, a:hover {
     background-image: none;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .post-content > p {
@@ -93,7 +97,7 @@ pre {
     margin: 0 0 0.75ex 4ex;
     border-width: 0;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 700;
     color: #777777;
 }
 
