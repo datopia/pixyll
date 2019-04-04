@@ -4,6 +4,7 @@ title:  Building Your First Clojure Blockchain
 author: Moe Aboulkheir
 summary: We'll use Clojure to build a simple, distributed key-value store atop Tendermint.
 tags: blockchain clojure tendermint tutorial code
+date: 2019-04-04 11:46:00
 ---
 
 # Blockchain Basics
@@ -13,18 +14,18 @@ Alternatively, <a href="#impl">jump to the annotated implementation.</a>
 ## What?
 
 Blockchains are networks which periodically serialize events into _blocks_,
-cryptographically linking each block to its predecessor, forming a _chain_.
-While these events are often referred to as _transactions_ (in the financial
-sense) they may just as well
+cryptographically linking each <b>block</b> to its predecessor, forming a
+<b>chain</b>.  While these events --- the entries in each block --- are often
+assumed to be _transactions_ (in the financial sense) they may just as well
 be
 [database transactions](https://blog.datopia.io/2018/11/03/blockchain-information-system/),
-log entries, or anything a network might be interested in maintaining
-immutable, ordered records of.
+[function invocations](https://ethereum.org), or anything a network might be
+interested in maintaining immutable, sequential records of.
 
 ## Why?
 
-We're mostly concerned with public, or _open_ blockchains, and find them
-compelling for many the same reasons all peer-to-peer networks are --- they have
+We're mostly concerned with public/_open_ blockchains, and find them
+compelling for many of the same reasons all peer-to-peer networks are --- they have
 no owner.  Blockchains can
 maintain
 [consistency guarantees](http://hackingdistributed.com/2016/03/01/bitcoin-guarantees-strong-not-eventual-consistency/) which
@@ -126,7 +127,6 @@ which is discussed in outline below.
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [io.datopia/abci     "0.1.1"]
                  [io.nervous/sputter  "0.1.0"]]
-  :profiles     {:kv  {:main abci.example.kv}}
   :aliases      {"kv" ["with-profile" "+kv" "run" "-m" "abci.example.kv"]})
 ```
 
@@ -505,8 +505,8 @@ services:
 
 ## Tying the Knot
 
-In addition to starting the Tendermint containers, we also want
-to start 3 JVMs, each hosting `abci.example.kv`, exposed on the
+In addition to starting the Tendermint containers, we  want
+ 3 JVMs, each hosting `abci.example.kv`, exposed on the
 3 ports we supplied to `--proxy_app`, above (26658, 26659, 26660);
 
 ```sh
