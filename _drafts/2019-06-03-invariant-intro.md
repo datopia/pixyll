@@ -2,13 +2,12 @@
 layout: post
 title:  Invariants as the essence of smart contracts
 author: Christian Weilbach
-summary: TODO
+summary: Expressing invariants with datalog provides a powerful smart contract system.
 tags: blockchain clojure code datalog
-date: 2019-06-03 12:00:00
+date: 2019-09-01 12:00:00
 ---
 
 
-# Invariants
 
 <blockquote class="literal left"> "The principle of least action is the basic
 variational principle of particle and continuum systems. In Hamilton's
@@ -18,7 +17,7 @@ trajectories that the system could conceivably take, computing the action (a
 functional of the trajectory) for each of these trajectories, and selecting one
 that makes the action locally stationary (traditionally called "least"). True
 trajectories are those that have least action." 
-[Principle of Least Action, Scholarpedia](http://www.scholarpedia.org/article/Principle_of_least_action)
+Principle of Least Action, Scholarpedia
 </blockquote>
 
 Every complicated modern application uses one or multiple databases to manage
@@ -44,16 +43,15 @@ client without any additional server functionality.
 But what about adding new facts to datopia and changing the database? To supply
 an interface to the user with similar ease as the query interface, we would have
 to constrain it in a similar way. What if... we would use datalog also as a
-language to just attach an invariant to each attribute to hold after the change?
-On each transaction we can then check (in parallel) that the invariant for each
-attribute hold after it. Since datalog is guaranteed to halt, compact to express
-against a database of structured fact triples and in general considered powerful
-enough to do most application logic, we can expose our `invariant` library
-through the datomic or datahike transactor to the internet and let users deploy
-invariants to the database that way similarly to smart contract systems like
-Ethereum. To be sensible we of course also need to add a public-private key
-based identification system and a cost model for the submission of transaction
-data, which we will address briefly below.
+language to just attach an invariant to each relation to hold after the change?
+Since datalog is guaranteed to halt, compact to express against a database of
+structured fact triples and in general considered powerful enough to do most
+application logic, we can expose our `invariant` library through the datomic or
+datahike transactor to the internet and let users deploy invariants to the
+database that way similarly to smart contract systems like Ethereum. To be
+sensible we of course also need to add a public-private key based identification
+system and a cost model for the submission of transaction data, which we will
+address briefly below.
 
 Why is this not possible with off-the-shelf PostgresSQL, CouchDB, MongoDB
 datomic/datahike transactor functions or your favorite database? These databases
