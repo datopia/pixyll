@@ -7,8 +7,6 @@ tags: blockchain clojure code datalog
 date: 2019-09-01 12:00:00
 ---
 
-
-
 <blockquote class="literal left"> "The principle of least action is the basic
 variational principle of particle and continuum systems. In Hamilton's
 formulation, a true dynamical trajectory of a system between an initial and
@@ -17,25 +15,39 @@ trajectories that the system could conceivably take, computing the action (a
 functional of the trajectory) for each of these trajectories, and selecting one
 that makes the action locally stationary (traditionally called "least"). True
 trajectories are those that have least action." 
-Principle of Least Action, Scholarpedia
+Principle of Least Action describing invariants in physics, Scholarpedia
 </blockquote>
+
+We have described in a [prior
+blogpost](/2018/11/03/blockchain-information-system/) the appeal of a datalog
+based database in a typical blockchain setting with the addition of access to a
+versioned history of it. In this blog post we will talk about how datopia can be
+managed by a novel, yet simple, datalog based transaction system that is, in our
+opinion, much more fit for smart contract purposes than all other approaches
+known to us.
 
 Every complicated modern application uses one or multiple databases to manage
 its internal state. These databases often carry powerful relational logic
 engines like SQL or datalog for the user. Usually these query languages do much
 of the hard work to extract information about a request from the large body of
 accumulated knowledge efficiently, while the rest is glue code to expose the
-information from the database to the surroundings. For this reason we will
-provide light-client facility to selectively load index segments from the p2p
-cloud directly into the client-side query engine. A current datahike prototype
-is working with the help of the dat project, but we think other variants on IPFS
-or [BitTorrent](http://www.bittorrent.org/) are also possible. TODO It is even
+information from the database to the surroundings. Since our database technology
+stores immutable facts, datopia instead provides support to selectively load
+index segments from the P2P cloud directly into the client-side query engine.
+Datopia will therefore automatically provide a straightforward extended datalog
+dialect to extract information on the client without the need for any
+intermediary server or client functionality. The programming model to read from
+the database is elegantly established that way.
+
+
+Footnote: A datahike client replication prototype is working with the help of
+the [dat project](https://dat.foundation/) because of its publish and subscribe
+system, but we think other variants on [IPFS](https://ipfs.io/) or
+[BitTorrent](http://www.bittorrent.org/) are also possible. It is even
 conceivable with technologies like [3df](https://github.com/sixthnormal/clj-3df)
 that soon most user interfaces can be directly filled through an incrementally
 updating materialized view on a client of the database. We are having a
-collaboration working on support for 3df in datahike. Datopia will therefore
-provide a straightforward extended datalog dialect to extract information on the
-client without any additional server functionality.
+collaboration working on support for 3df in datahike. 
  
 
 # The change we need
