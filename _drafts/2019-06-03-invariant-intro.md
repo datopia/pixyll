@@ -294,10 +294,10 @@ distribution of each attribute and these should cluster as well as they do for
 conventional applications. In other words each client will only download the
 data it needs from the giant database (plus an approximately constant size
 overhead). Additionally we will gain the same expressivity as for the original
-query language and at benefit from all optimizations to the query planner.
+query language with the benefit from all optimizations to the query planner.
 
 
-We want this interface to be wildly available. In fact it is a middleware for
+We want this interface to be widely available. In fact it is a middleware for
 both datomic and datahike right now and can be combined with different
 transactor implementations based on Cosmos/Tendermint, a proof-of-work based
 transactor or a managed, privileged set of servers. In other words datopia can
