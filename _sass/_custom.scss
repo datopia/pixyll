@@ -1,156 +1,156 @@
 html, body {
-    font-weight: 300;
-    background-color: $datopia-bg-light;
+  font-weight: 300;
+  background-color: $datopia-bg-light;
 }
 
 .site-header {
-    padding: 0;
+  padding: 0;
 }
 
 a:hover, .share-links a:hover {
-    color: darken($datopia-primary-blue, 25%);
+  color: darken($datopia-primary-blue, 25%);
 }
 
 .datopia-home-link img {
-    height: 8em;
+  height: 8em;
 }
 
 .post-meta {
-    text-align: right;
-    font-style: normal;
-    font-family: $heading-font-family;
-    font-size: 90%;
-    display: block;
+  text-align: right;
+  font-style: normal;
+  font-family: $heading-font-family;
+  font-size: 90%;
+  display: block;
 }
 
 a.post-link, .post-title {
-    font-weight: 900 !important;
-    color: $datopia-primary-blue !important;
+  font-weight: 900 !important;
+  color: $datopia-primary-blue !important;
 }
 
 .post-link .post-summary {
-    font-weight: 300;
+  font-weight: 300;
 }
 
 .posts .py3:first-of-type {
-    padding-top: 0;
+  padding-top: 0;
 }
 
 .post-header h1 {
-    padding-top: 0;
-    margin-top: 0;
+  padding-top: 0;
+  margin-top: 0;
 }
 
 .post-summary {
-    text-indent: 2em;
-    display: block;
-    font-size: 90%;
+  text-indent: 2em;
+  display: block;
+  font-size: 90%;
 }
 
 .post-header .post-summary {
-    font-style: italic;
-    font-size: 80%;
-    margin-left: 2em;
+  font-style: italic;
+  font-size: 80%;
+  margin-left: 2em;
 }
 
 blockquote {
-    border-left: 2px solid $datopia-primary-blue;
-    padding: 1rem;
+  border-left: 2px solid $datopia-primary-blue;
+  padding: 1rem;
 }
 
 a, a:hover {
-    background-image: none;
-    font-weight: 700;
+  background-image: none;
+  font-weight: 700;
 }
 
 .post-content > p {
-    text-indent: 2em;
+  text-indent: 2em;
 }
 
 .post-author {
-    font-size: 120%;
+  font-size: 120%;
 }
 
 h1, h2, h3, h4 {
-    font-weight: 300;
+  font-weight: 300;
 }
 
 .footnote {
-    font-style: italic;
-    margin-left: 2em;
+  font-style: italic;
+  margin-left: 2em;
 }
 
 body sup {
-    font-family: monospace;
+  font-family: monospace;
 }
 
 pre {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .literal {
-    float: right;
-    display: block;
-    max-width: 35%;
-    font-size: 80%;
-    margin-top: 0;
-    margin: 0 0 0.75ex 4ex;
-    border-width: 0;
-    font-style: normal;
-    font-weight: 700;
-    color: #777777;
+  float: right;
+  display: block;
+  max-width: 35%;
+  font-size: 80%;
+  margin-top: 0;
+  margin: 0 0 0.75ex 4ex;
+  border-width: 0;
+  font-style: normal;
+  font-weight: 700;
+  color: #777777;
 }
 
 .left.literal {
-    float: left;
-    margin-left: 0;
+  float: left;
+  margin-left: 0;
 }
 
 .attrib {
-    text-align: right;
-    padding-top: 0.5ex;
-    font-style: italic;
+  text-align: right;
+  padding-top: 0.5ex;
+  font-style: italic;
 }
 
 .footnote {
-    line-height: 1rem;
+  line-height: 1rem;
 }
 
 small, .small {
-    font-size: 0.707rem;
+  font-size: 0.707rem;
 }
 
 .infobox-title {
-    color: #666666;
-    font-family: 'Lato', 'Helvetica Neue', Helvetica, sans-serif;
-    border-bottom: solid 2px $datopia-primary-blue;
-    margin-left:   90px;
-    margin-bottom: 8px;
-    padding-bottom: 8px;
-    font-size: 1.5rem;
+  color: #666666;
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, sans-serif;
+  border-bottom: solid 2px $datopia-primary-blue;
+  margin-left:   90px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  font-size: 1.5rem;
 }
 
 .infobox {
-    background-image: url(/images/info.svg);
-    background-repeat: no-repeat;
-    background-position: top left;
-    background-size: 80px 80px;
-    background-opacity: .4;
-    margin: 1.5rem 0 1.5rem;
-    min-height: 90px;
+  background-image: url(/images/info.svg);
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-size: 80px 80px;
+  background-opacity: .4;
+  margin: 1.5rem 0 1.5rem;
+  min-height: 90px;
 }
 
 .infobox p {
-    font-size: .8rem;
-    padding-left: 90px;
-    margin-bottom: 0px;
-    margin-top: 1rem;
-    text-indent: 2em;
+  font-size: .8rem;
+  padding-left: 90px;
+  margin-bottom: 0px;
+  margin-top: 1rem;
+  text-indent: 2em;
 }
 
 .bot-left {
-    position: relative;
-    padding: 4ex 0 4ex 4ex;
+  position: relative;
+  padding: 4ex 0 4ex 4ex;
 }
 
 .bot-left:before, .bot-left:after {
@@ -178,69 +178,100 @@ small, .small {
 }
 
 body pre, body code {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .thumbnail-right {
-    float: right;
-    margin-left: 1rem;
+  float: right;
+  margin-left: 1rem;
 }
 
 img.center {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 table.small, table.small td {
-    border-width: 0;
+  border-width: 0;
 }
 
 table.small thead {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .share-links {
-    border: solid 2px $datopia-primary-blue;
-    border-width: 2px 0 2px 0;
-    font-size: 400%;
-    text-align: center;
-    margin-top: 2rem;
+  border: solid 2px $datopia-primary-blue;
+  border-width: 2px 0 2px 0;
+  font-size: 400%;
+  text-align: center;
+  margin-top: 2rem;
 }
 
 body #mc_embed_signup {
-    background: transparent;
-    font-family: $heading-font-family;
+  background: transparent;
+  font-family: $heading-font-family;
 }
 
 body #mc_embed_signup .button {
-    text-transform: uppercase;
-    background-color: $datopia-primary-blue;
+  text-transform: uppercase;
+  background-color: $datopia-primary-blue;
 }
 
 body #mc_embed_signup .button:hover {
-    background-color: darken($datopia-primary-blue, 25%);
+  background-color: darken($datopia-primary-blue, 25%);
 }
 
 body #mc_embed_signup #mc-embedded-subscribe-form div.mce_inline_error {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .diag {
-    padding-bottom: 1ex;
+  padding-bottom: 1ex;
 }
-
 
 table {
-    border-collapse: collapse;
+  border-collapse: collapse;
 }
 th, td {
-    padding: 0;
+  padding: 0;
 }
 
 .twitter-top {
-    float: right;
+  float: right;
 }
 
 .mini-nav td {
-    border-width: 0;
+  border-width: 0;
+}
+
+sup > a.footnote {
+  margin-left: 0;
+  margin-right: 1em;
+}
+
+div.footnotes ol {
+  counter-reset: footnote;
+  margin: 0 0 1.5em 2em;
+  padding: 0;
+}
+
+div.footnotes ol > li {
+  counter-increment: footnote;
+  margin: 0 0 1em;
+  padding: 0 0 0 2em;
+  text-indent: -2em;
+  list-style-type: none;
+}
+
+div.footnotes ol > li::before {
+  font-weight: bold;
+  content: counter(footnote) ".";
+  display: inline-block;
+  text-align: right;
+  width: 1em;
+  padding-right: 0.5em;
+}
+
+div.footnotes ol > li > p {
+  display: inline;
 }

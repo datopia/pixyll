@@ -20,7 +20,7 @@ final configuration in a specified time is found by imagining all possible
 trajectories that the system could conceivably take, computing the action (a
 functional of the trajectory) for each of these trajectories, and selecting one
 that makes the action locally stationary (traditionally called "least"). True
-trajectories are those that have least action." 
+trajectories are those that have least action."
 Principle of Least Action about the fundamental role of invariants in Physics, Scholarpedia
 </blockquote>
 
@@ -73,7 +73,7 @@ automatically provide a straightforward extended Datalog dialect to extract
 information on the client without the need for any intermediary server or client
 functionality. Since indices are managed by [immutable data
 structures](https://blog.datopia.io/2018/11/03/hitchhiker-tree/) this reading
-pattern is totally decoupled and arbitrarily read scalable. [^1]
+pattern is totally decoupled and arbitrarily read scalable.[^1]
 
 <!--- Motivation from blockchain angle -->
 
@@ -83,10 +83,10 @@ pattern is totally decoupled and arbitrarily read scalable. [^1]
     is working on top of the [dat project](https://dat.foundation/) using its
     publish and subscribe system, but other variants on [IPFS](https://ipfs.io/)
     or [BitTorrent](http://www.bittorrent.org/) are also possible.
- 
+
 
 # Adding facts to Datopia
- 
+
 But what about adding new facts to Datopia and changing the database? To supply
 an interface to the user with similar ease as the query interface, we would have
 to constrain it in a similar way. What if... we would use Datalog also as a
@@ -117,7 +117,7 @@ simpler but almost equally expressive means have barely been explored so far in
 a smart contract setting. Arguably a lot of the current effort is trying to
 reduce most of these more expressive semantics to something that looks a lot
 like Datalog, but is still harder to reason about than a simple language like
-Datalog. [^2]
+Datalog.[^2]
 
 [^2]: What if you could use SQL to check transactions into the same SQL
     database? You should be able to build a similar library to `invariant` then. But
@@ -127,7 +127,7 @@ Datalog. [^2]
     by user-defined rules...
 
 
-## Desiderata 
+## Desiderata
 
 Let's define a minimal set of requirements that each `invariant` query needs to
 satisfy:
@@ -145,7 +145,7 @@ satisfy:
    database.
 6. Access to the system must be operable in a permissionless setting, i.e.
    potentially anybody can register, deploy invariants and add transactions for
-   a fee. 
+   a fee.
 7. The schema for the database is extendable by each user for themselves through
    public-private key cryptography.
 
@@ -232,16 +232,16 @@ either Datomic of Datahike like so
 ~~~
 
 and detect, as expected, that the resulting database has three elements
-participating in the cycle. This allows us to reject the transaction outright
+participating in the cycle. This alLowsg us to reject the transaction outright
 without it even passing into the transactor.
 
- 
+
 # Accounting example
 
 Let's move on to the more complex example of accounting.
 [Accounting](https://en.wikipedia.org/wiki/Accounting) is a fundamental form of
-bookkeeping that has been around since humans have tracked their possessions
-[^3] For simplicity we will model an asset we call `datacoin`. To deploy our
+bookkeeping that has been around since humans have tracked their possessions.[^3]
+For simplicity we will model an asset we call `datacoin`. To deploy our
 contract we use our public key prefix `0x64703/datacoin`.
 
 [^3]: An opinionated, but interesting, perspective of different monetary devices
@@ -275,8 +275,8 @@ The full invariant for `0x64703/datacoin` then looks like:
  :in $before $after $empty+txs $txs
  :where
  ;; run the sub-query
- [(subquery [:find (sum ?balance-before) 
-                   (sum ?balance-after) 
+ [(subquery [:find (sum ?balance-before)
+                   (sum ?balance-after)
                    (sum ?balance-change)
              :with ?affected-account
              :in $before $after $empty+txs $txs
@@ -334,7 +334,7 @@ as an exercise to the reader :).
 
 -->
 
-# Design aspects 
+# Design aspects
 
 ## Cost model for Datopia
 
@@ -363,12 +363,12 @@ sure that the deployed code does not harm the system we parse it and check that
 it only uses our supported set of Datalog clauses and aggregates. Since these
 are not able to affect the environment and are guaranteed to halt, every
 provider of the system should feel fine to accept them if a (profitable)
-deployment fee is provided. 
+deployment fee is provided.
 
 Since adding an invariant is just another form of transaction and its addition
 happens under the namespace of a public-key id of the sender, we need not
 constrain users from supplying invariants. We can just ask to pay a consistent fee
-for the IO operations that it costs to add one or a bunch of such contracts. 
+for the IO operations that it costs to add one or a bunch of such contracts.
 
 
 ## Optimal interface
@@ -376,7 +376,7 @@ for the IO operations that it costs to add one or a bunch of such contracts.
 
 While in most blockchain systems users need to fetch all data transacted to read
 arbitrarily from the blockchain, in Datopia it is enough to follow the Merkle
-proof to the leafs of each index tree[^4] We are confident that with most
+proof to the leafs of each index tree[^4]. We are confident that with most
 meaningful contracts and apps, the partition in index fragments will be almost
 information theoretically optimal for clients, because the query plan will be
 minimized by detailed statistics of the distribution of each attribute and these
@@ -410,13 +410,9 @@ the ideas around Datopia and are happy about your feedback! (TODO link
 communication channel)
 
 
-# Try it out
+## Try it out
 
 You can find the code in our [invariant
 repository](https://github.com/datopia/invariant).
 
-
-
-
- 
-
+# Footnotes
