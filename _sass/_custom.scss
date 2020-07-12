@@ -256,6 +256,9 @@ sup > a.footnote {
 
 ol {
   counter-reset: item;
+}
+
+ol, dl {
   margin: 0 0 1.5em 2em;
   padding: 0 0 0 1em;
   border-left: 1px dashed $datopia-primary-blue;
@@ -269,6 +272,11 @@ ol > li {
   list-style-type: none;
 }
 
+dd {
+  margin-bottom: 1em;
+  font-style: italic;
+}
+
 ol > li:before {
   font-weight: bold;
   content: counter(item) ".";
@@ -280,4 +288,8 @@ ol > li:before {
 
 div.footnotes ol > li > p {
   display: inline;
+}
+
+dt {
+  font-weight: bold;
 }

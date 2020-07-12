@@ -84,8 +84,7 @@ pattern is totally decoupled and arbitrarily read scalable.[^1]
     publish and subscribe system, but other variants on [IPFS](https://ipfs.io/)
     or [BitTorrent](http://www.bittorrent.org/) are also possible.
 
-
-# Adding facts to Datopia
+# Adding Facts to Datopia
 
 But what about adding new facts to Datopia and changing the database? To supply
 an interface to the user with similar ease as the query interface, we would have
@@ -125,7 +124,6 @@ Datalog.[^2]
     compact implicit joins instead of throwing in another bunch of where clauses to
     join over multiple "tables"? Datalog is so much more concise and easy to extend
     by user-defined rules...
-
 
 ## Desiderata
 
@@ -173,10 +171,10 @@ reasons. We also want to note that almost all interesting laws can be expressed
 as invariants, e.g. energy conservation in physics. In case some primitives will
 be missing, it is as easy to add additional primitives as adding a pure function
 to the Datopia runtime and whitelisting it. Extensions with safe forms of
-λ-calculus similar to [datafun](https://github.com/rntz/datafun) are possible as
+λ-calculus similar to [Datafun](https://github.com/rntz/datafun) are possible as
 well.
 
-# Warmup example
+# Warmup Example
 
 We start with a simple illustrative example. Let us assume we are storing
 ancestor information, e.g. about family trees. To ensure that we really store
@@ -187,7 +185,7 @@ people who participate in cycles.
 
 ~~~clojure
 [:find (count ?a) .
- :in $after %
+ :in   $after %
  :where
  ($after ancestor ?a ?b)
  [(= ?a ?b)]]
@@ -197,11 +195,11 @@ Let us assume we attempt to introduce a cycle by adding the following three
 entities as a `transaction`,
 
 ~~~clojure
-[{:db/id 1
+[{:db/id    1
   :ancestor 2}
- {:db/id 2
+ {:db/id    2
   :ancestor 3}
- {:db/id 3
+ {:db/id    3
   :ancestor 1}]
 ~~~
 
@@ -232,11 +230,10 @@ either Datomic of Datahike like so
 ~~~
 
 and detect, as expected, that the resulting database has three elements
-participating in the cycle. This alLowsg us to reject the transaction outright
+participating in the cycle. This allows us to reject the transaction outright
 without it even passing into the transactor.
 
-
-# Accounting example
+# Accounting Example
 
 Let's move on to the more complex example of accounting.
 [Accounting](https://en.wikipedia.org/wiki/Accounting) is a fundamental form of
@@ -249,8 +246,6 @@ contract we use our public key prefix `0x64703/datacoin`.
     mechanisms are [accounted for by Nick
     Szabo](https://nakamotoinstitute.org/shelling-out/#evolution-cooperation-and-collectibles). [This lecture of Robert Sapolsky](https://www.youtube.com/watch?v=NNnIGh9g6fA) describes the evolutionary background in more depth.
 
-
-
 We do not need to describe how to do an asset transfer, we only need to describe
 what properties need to be fulfilled for it to be valid. The submitter of the
 transaction data can use any program to generate the transaction data that will
@@ -259,43 +254,53 @@ senders, e.g. by public-private key cryptography that is provided by the system,
 we need at least the following three invariants to have a contract in place that
 I would risk putting money in:
 
-1. Zero-Sum
-2. Positivity of Accounts
-3. Sender is spending
+Zero-Sum
+: Maintain a constant global asset sum; transfers can't inflate/deflate supply.
 
-Zero-Sum means that after each transaction the total sum of assets in the system
-should not change. Positivity of accounts means that you cannot overdraft your
-account into a negative balance. Finally only a signing sender can spend money
-in a transaction.
+Balance Positivity
+: No overdrafts; balances bottom-out at zero.
 
-The full invariant for `0x64703/datacoin` then looks like:
+Sender spends
+: Expenditure is restricted to the signing sender/s of the transaction.
+
+## Full Invariant
 
 ~~~clojure
 [:find ?matches .
- :in $before $after $empty+txs $txs
+ :in   $before $after $empty+txs $txs
  :where
- ;; run the sub-query
- [(subquery [:find (sum ?balance-before)
-                   (sum ?balance-after)
-                   (sum ?balance-change)
-             :with ?affected-account
-             :in $before $after $empty+txs $txs
-             :where
-             ;; Unify data from databases and transactions with affected-account
-             [$after      ?affected-account         :0x64703.account/balance    ?balance-after]
-             [$empty+txs  ?affected-account         :0x64703.account/balance    ?balance-change]
-             [(get-else $before ?affected-account :0x64703.account/balance 0) ?balance-before]
+ [(subquery
+   [:find (sum ?balance-before)
+          (sum ?balance-after)
+          (sum ?balance-change)
+    :with ?affected-account
+    :in   $before $after $empty+txs $txs
+    :where
+    ;; Unify data from databases and transactions with affected-account
+    [$after
+     ?affected-account
+     :0x64703.account/balance
+     ?balance-after]
 
-             ;; 2. Positivity
-             [(>= ?balance-after 0)]
+    [$empty+txs
+     ?affected-account
+     :0x64703.account/balance
+     ?balance-change]
 
-             ;; 3. Sender spending
-             [$txs _ _ :transaction/signed-by ?sender]
-             [(= ?sender ?affected-account) ?is-sender]
-             [(>= ?balance-change 0) ?pos-change]
-             [(or ?is-sender ?pos-change)]]
-            $before $after $empty+txs $txs)
+    [(get-else $before ?affected-account :0x64703.account/balance 0)
+     ?balance-before]
+
+    ;; 2. Positivity
+    [(>= ?balance-after 0)]
+
+    ;; 3. Sender spending
+    [$txs _ _ :transaction/signed-by ?sender]
+    [(= ?sender ?affected-account) ?is-sender]
+    [(>= ?balance-change 0) ?pos-change]
+    [(or ?is-sender ?pos-change)]]
+   $before $after $empty+txs $txs)
   [[?sum-before ?sum-after ?sum-change]]]
+
  ;; 1. Zero-Sum aggregated
  [(= ?sum-before ?sum-after)]
  [(= ?sum-change sum-change-expected) ?matches]]
@@ -334,9 +339,9 @@ as an exercise to the reader :).
 
 -->
 
-# Design aspects
+# Design Aspects
 
-## Cost model for Datopia
+## Datopia Cost Model
 
 Reading from Datopia will not cost anything as the database is replicated over a
 peer to peer network freely. Writing to the database costs the execution of
@@ -371,7 +376,7 @@ constrain users from supplying invariants. We can just ask to pay a consistent f
 for the IO operations that it costs to add one or a bunch of such contracts.
 
 
-## Optimal interface
+## Optimal Interface
 
 
 While in most blockchain systems users need to fetch all data transacted to read
@@ -392,14 +397,12 @@ optimizations to the query planner.
     whether a block is valid by following the global sequence and checking the
     majority validation of the root.
 
-
 We want this interface to be widely available. In fact it is a middleware for
 both Datomic and Datahike right now and can be combined with different
 transactor implementations based on Cosmos/Tendermint, a proof-of-work based
 transactor or a managed, privileged set of servers. In other words Datopia can
 run in any combination with a transaction mechanism. It is demonstrating one way
 to expose the query language to the transactor to achieve our objectives.
-
 
 # Conclusion
 
@@ -409,8 +412,7 @@ requirements often identified in smart contract systems. We are still evolving
 the ideas around Datopia and are happy about your feedback! (TODO link
 communication channel)
 
-
-## Try it out
+## Try It Out
 
 You can find the code in our [invariant
 repository](https://github.com/datopia/invariant).
