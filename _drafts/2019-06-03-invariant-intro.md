@@ -13,16 +13,17 @@ Target audience: Technical, CTOs, programming expertise (non-functional), Datalo
 Novelty: describe concept well enough for Datalog interests
 -->
 
-<blockquote class="literal left"> "The principle of least action is the basic
+# Goals
+{% quote Principle of Least Action, Scholarpedia|http://www.scholarpedia.org/article/Principle_of_least_action) %}
+The principle of least action is the basic
 variational principle of particle and continuum systems. In Hamilton's
 formulation, a true dynamical trajectory of a system between an initial and
 final configuration in a specified time is found by imagining all possible
 trajectories that the system could conceivably take, computing the action (a
 functional of the trajectory) for each of these trajectories, and selecting one
 that makes the action locally stationary (traditionally called "least"). True
-trajectories are those that have least action."
-Principle of Least Action about the fundamental role of invariants in Physics, Scholarpedia
-</blockquote>
+trajectories are those that have least action.
+{% endquote %}
 
 <!--
 TODO link equational reasoning with variational principle
@@ -40,7 +41,6 @@ technologies, then describe its implementation with a simple example and a
 real-world accounting contract and finally look at design aspects like cost
 models. Since our concept is useful both in Datomic and Datahike, we provide it
 as a light-weight, open-source library that is used by Datopia instances.
-
 
 # Motivation
 
