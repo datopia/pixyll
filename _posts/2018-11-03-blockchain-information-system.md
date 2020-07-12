@@ -8,12 +8,8 @@ tags: blockchain database vision
 
 # Axioms
 
-<blockquote>
-<ol>
-<li>A blockchain is a history of facts.</li>
-<li>Inference is the application of reason to histories of facts.</li>
-</ol>
-</blockquote>
+1. A blockchain is a history of facts.
+2. Inference is the application of reason to histories of facts.
 
 # Goals
 

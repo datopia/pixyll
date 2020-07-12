@@ -114,8 +114,7 @@ blockquote.literal.left {
 .attrib {
   text-align: right;
   padding-top: 0.5ex;
-  font-style: italic;
-  font-weight: 700;
+  font-style: normal;
 }
 
 .footnote {
@@ -255,23 +254,24 @@ sup > a.footnote {
   margin-right: 1em;
 }
 
-div.footnotes ol {
-  counter-reset: footnote;
+ol {
+  counter-reset: item;
   margin: 0 0 1.5em 2em;
-  padding: 0;
+  padding: 0 0 0 1em;
+  border-left: 1px dashed $datopia-primary-blue;
 }
 
-div.footnotes ol > li {
-  counter-increment: footnote;
-  margin: 0 0 1em;
+ol > li {
+  counter-increment: item;
+  margin: 0 0 1em 0;
   padding: 0 0 0 2em;
   text-indent: -2em;
   list-style-type: none;
 }
 
-div.footnotes ol > li:before {
+ol > li:before {
   font-weight: bold;
-  content: counter(footnote) ".";
+  content: counter(item) ".";
   display: inline-block;
   text-align: right;
   width: 1em;
