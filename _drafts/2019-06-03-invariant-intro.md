@@ -13,16 +13,17 @@ Target audience: Technical, CTOs, programming expertise (non-functional), Datalo
 Novelty: describe concept well enough for Datalog interests
 -->
 
-<blockquote class="literal left"> "The principle of least action is the basic
+# Goals
+{% quote Principle of Least Action, Scholarpedia|http://www.scholarpedia.org/article/Principle_of_least_action) %}
+The principle of least action is the basic
 variational principle of particle and continuum systems. In Hamilton's
 formulation, a true dynamical trajectory of a system between an initial and
 final configuration in a specified time is found by imagining all possible
 trajectories that the system could conceivably take, computing the action (a
 functional of the trajectory) for each of these trajectories, and selecting one
 that makes the action locally stationary (traditionally called "least"). True
-trajectories are those that have least action." 
-Principle of Least Action about the fundamental role of invariants in Physics, Scholarpedia
-</blockquote>
+trajectories are those that have least action.
+{% endquote %}
 
 <!--
 TODO link equational reasoning with variational principle
@@ -40,7 +41,6 @@ technologies, then describe its implementation with a simple example and a
 real-world accounting contract and finally look at design aspects like cost
 models. Since our concept is useful both in Datomic and Datahike, we provide it
 as a light-weight, open-source library that is used by Datopia instances.
-
 
 # Motivation
 
@@ -73,7 +73,7 @@ automatically provide a straightforward extended Datalog dialect to extract
 information on the client without the need for any intermediary server or client
 functionality. Since indices are managed by [immutable data
 structures](https://blog.datopia.io/2018/11/03/hitchhiker-tree/) this reading
-pattern is totally decoupled and arbitrarily read scalable. [^1]
+pattern is totally decoupled and arbitrarily read scalable.[^1]
 
 <!--- Motivation from blockchain angle -->
 
@@ -83,10 +83,9 @@ pattern is totally decoupled and arbitrarily read scalable. [^1]
     is working on top of the [dat project](https://dat.foundation/) using its
     publish and subscribe system, but other variants on [IPFS](https://ipfs.io/)
     or [BitTorrent](http://www.bittorrent.org/) are also possible.
- 
 
-# Adding facts to Datopia
- 
+# Adding Facts to Datopia
+
 But what about adding new facts to Datopia and changing the database? To supply
 an interface to the user with similar ease as the query interface, we would have
 to constrain it in a similar way. What if... we would use Datalog also as a
@@ -117,7 +116,7 @@ simpler but almost equally expressive means have barely been explored so far in
 a smart contract setting. Arguably a lot of the current effort is trying to
 reduce most of these more expressive semantics to something that looks a lot
 like Datalog, but is still harder to reason about than a simple language like
-Datalog. [^2]
+Datalog.[^2]
 
 [^2]: What if you could use SQL to check transactions into the same SQL
     database? You should be able to build a similar library to `invariant` then. But
@@ -126,8 +125,7 @@ Datalog. [^2]
     join over multiple "tables"? Datalog is so much more concise and easy to extend
     by user-defined rules...
 
-
-## Desiderata 
+## Desiderata
 
 Let's define a minimal set of requirements that each `invariant` query needs to
 satisfy:
@@ -145,7 +143,7 @@ satisfy:
    database.
 6. Access to the system must be operable in a permissionless setting, i.e.
    potentially anybody can register, deploy invariants and add transactions for
-   a fee. 
+   a fee.
 7. The schema for the database is extendable by each user for themselves through
    public-private key cryptography.
 
@@ -173,10 +171,10 @@ reasons. We also want to note that almost all interesting laws can be expressed
 as invariants, e.g. energy conservation in physics. In case some primitives will
 be missing, it is as easy to add additional primitives as adding a pure function
 to the Datopia runtime and whitelisting it. Extensions with safe forms of
-λ-calculus similar to [datafun](https://github.com/rntz/datafun) are possible as
+λ-calculus similar to [Datafun](https://github.com/rntz/datafun) are possible as
 well.
 
-# Warmup example
+# Warmup Example
 
 We start with a simple illustrative example. Let us assume we are storing
 ancestor information, e.g. about family trees. To ensure that we really store
@@ -187,7 +185,7 @@ people who participate in cycles.
 
 ~~~clojure
 [:find (count ?a) .
- :in $after %
+ :in   $after %
  :where
  ($after ancestor ?a ?b)
  [(= ?a ?b)]]
@@ -197,11 +195,11 @@ Let us assume we attempt to introduce a cycle by adding the following three
 entities as a `transaction`,
 
 ~~~clojure
-[{:db/id 1
+[{:db/id    1
   :ancestor 2}
- {:db/id 2
+ {:db/id    2
   :ancestor 3}
- {:db/id 3
+ {:db/id    3
   :ancestor 1}]
 ~~~
 
@@ -235,21 +233,18 @@ and detect, as expected, that the resulting database has three elements
 participating in the cycle. This allows us to reject the transaction outright
 without it even passing into the transactor.
 
- 
-# Accounting example
+# Accounting Example
 
 Let's move on to the more complex example of accounting.
 [Accounting](https://en.wikipedia.org/wiki/Accounting) is a fundamental form of
-bookkeeping that has been around since humans have tracked their possessions
-[^3] For simplicity we will model an asset we call `datacoin`. To deploy our
+bookkeeping that has been around since humans have tracked their possessions.[^3]
+For simplicity we will model an asset we call `datacoin`. To deploy our
 contract we use our public key prefix `0x64703/datacoin`.
 
 [^3]: An opinionated, but interesting, perspective of different monetary devices
     to account for fairness and facilitate the co-evolution of game theoretic
     mechanisms are [accounted for by Nick
     Szabo](https://nakamotoinstitute.org/shelling-out/#evolution-cooperation-and-collectibles). [This lecture of Robert Sapolsky](https://www.youtube.com/watch?v=NNnIGh9g6fA) describes the evolutionary background in more depth.
-
-
 
 We do not need to describe how to do an asset transfer, we only need to describe
 what properties need to be fulfilled for it to be valid. The submitter of the
@@ -259,43 +254,53 @@ senders, e.g. by public-private key cryptography that is provided by the system,
 we need at least the following three invariants to have a contract in place that
 I would risk putting money in:
 
-1. Zero-Sum
-2. Positivity of Accounts
-3. Sender is spending
+Zero-Sum
+: Maintain a constant global asset sum; transfers can't inflate/deflate supply.
 
-Zero-Sum means that after each transaction the total sum of assets in the system
-should not change. Positivity of accounts means that you cannot overdraft your
-account into a negative balance. Finally only a signing sender can spend money
-in a transaction.
+Balance Positivity
+: No overdrafts; balances bottom-out at zero.
 
-The full invariant for `0x64703/datacoin` then looks like:
+Sender spends
+: Expenditure is restricted to the signing sender/s of the transaction.
+
+## Full Invariant
 
 ~~~clojure
 [:find ?matches .
- :in $before $after $empty+txs $txs
+ :in   $before $after $empty+txs $txs
  :where
- ;; run the sub-query
- [(subquery [:find (sum ?balance-before) 
-                   (sum ?balance-after) 
-                   (sum ?balance-change)
-             :with ?affected-account
-             :in $before $after $empty+txs $txs
-             :where
-             ;; Unify data from databases and transactions with affected-account
-             [$after      ?affected-account         :0x64703.account/balance    ?balance-after]
-             [$empty+txs  ?affected-account         :0x64703.account/balance    ?balance-change]
-             [(get-else $before ?affected-account :0x64703.account/balance 0) ?balance-before]
+ [(subquery
+   [:find (sum ?balance-before)
+          (sum ?balance-after)
+          (sum ?balance-change)
+    :with ?affected-account
+    :in   $before $after $empty+txs $txs
+    :where
+    ;; Unify data from databases and transactions with affected-account
+    [$after
+     ?affected-account
+     :0x64703.account/balance
+     ?balance-after]
 
-             ;; 2. Positivity
-             [(>= ?balance-after 0)]
+    [$empty+txs
+     ?affected-account
+     :0x64703.account/balance
+     ?balance-change]
 
-             ;; 3. Sender spending
-             [$txs _ _ :transaction/signed-by ?sender]
-             [(= ?sender ?affected-account) ?is-sender]
-             [(>= ?balance-change 0) ?pos-change]
-             [(or ?is-sender ?pos-change)]]
-            $before $after $empty+txs $txs)
+    [(get-else $before ?affected-account :0x64703.account/balance 0)
+     ?balance-before]
+
+    ;; 2. Positivity
+    [(>= ?balance-after 0)]
+
+    ;; 3. Sender spending
+    [$txs _ _ :transaction/signed-by ?sender]
+    [(= ?sender ?affected-account) ?is-sender]
+    [(>= ?balance-change 0) ?pos-change]
+    [(or ?is-sender ?pos-change)]]
+   $before $after $empty+txs $txs)
   [[?sum-before ?sum-after ?sum-change]]]
+
  ;; 1. Zero-Sum aggregated
  [(= ?sum-before ?sum-after)]
  [(= ?sum-change sum-change-expected) ?matches]]
@@ -334,9 +339,9 @@ as an exercise to the reader :).
 
 -->
 
-# Design aspects 
+# Design Aspects
 
-## Cost model for Datopia
+## Datopia Cost Model
 
 Reading from Datopia will not cost anything as the database is replicated over a
 peer to peer network freely. Writing to the database costs the execution of
@@ -363,20 +368,20 @@ sure that the deployed code does not harm the system we parse it and check that
 it only uses our supported set of Datalog clauses and aggregates. Since these
 are not able to affect the environment and are guaranteed to halt, every
 provider of the system should feel fine to accept them if a (profitable)
-deployment fee is provided. 
+deployment fee is provided.
 
 Since adding an invariant is just another form of transaction and its addition
 happens under the namespace of a public-key id of the sender, we need not
 constrain users from supplying invariants. We can just ask to pay a consistent fee
-for the IO operations that it costs to add one or a bunch of such contracts. 
+for the IO operations that it costs to add one or a bunch of such contracts.
 
 
-## Optimal interface
+## Optimal Interface
 
 
 While in most blockchain systems users need to fetch all data transacted to read
 arbitrarily from the blockchain, in Datopia it is enough to follow the Merkle
-proof to the leafs of each index tree[^4] We are confident that with most
+proof to the leafs of each index tree[^4]. We are confident that with most
 meaningful contracts and apps, the partition in index fragments will be almost
 information theoretically optimal for clients, because the query plan will be
 minimized by detailed statistics of the distribution of each attribute and these
@@ -392,14 +397,12 @@ optimizations to the query planner.
     whether a block is valid by following the global sequence and checking the
     majority validation of the root.
 
-
 We want this interface to be widely available. In fact it is a middleware for
 both Datomic and Datahike right now and can be combined with different
 transactor implementations based on Cosmos/Tendermint, a proof-of-work based
 transactor or a managed, privileged set of servers. In other words Datopia can
 run in any combination with a transaction mechanism. It is demonstrating one way
 to expose the query language to the transactor to achieve our objectives.
-
 
 # Conclusion
 
@@ -409,14 +412,9 @@ requirements often identified in smart contract systems. We are still evolving
 the ideas around Datopia and are happy about your feedback! (TODO link
 communication channel)
 
-
-# Try it out
+## Try It Out
 
 You can find the code in our [invariant
 repository](https://github.com/datopia/invariant).
 
-
-
-
- 
-
+# Footnotes

@@ -8,21 +8,17 @@ tags: blockchain database vision
 
 # Axioms
 
-<blockquote>
-<ol>
-<li>A blockchain is a history of facts.</li>
-<li>Inference is the application of reason to histories of facts.</li>
-</ol>
-</blockquote>
+1. A blockchain is a history of facts.
+2. Inference is the application of reason to histories of facts.
 
 # Goals
 
-<div class="literal">
+<blockquote class="literal">
 An integrated set of components for collecting, storing, and processing data and for providing information, knowledge, and digital products.
 <div class="attrib">
 &mdash; Zwass, Vladimir. "Information system." <a href="https://www.britannica.com/topic/information-system">The Encyclopedia Britannica.</a>
 </div>
-</div>
+</blockquote>
 
 Below, we'll attempt to convince you that neither traditional databases nor
 blockchains represent epistemologically robust _information systems_ --- the
@@ -197,7 +193,6 @@ contract Ballot {
   }
   ...
 }
-
 ```
 
 This is fairly typical Solidity code --- after an imperative sequence of runtime
