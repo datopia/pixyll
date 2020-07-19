@@ -68,6 +68,10 @@ a, a:hover {
   text-indent: 2em;
 }
 
+.post-content > p.notpara {
+  text-indent: 0;
+}
+
 .post-author {
   font-size: 120%;
 }
@@ -102,12 +106,12 @@ blockquote.literal {
   border-style: dashed;
   border-width: 0 0 0 1px;
   border-color: $datopia-lighter-blue;
-  padding: 1.25rem;
+  padding: 0.75rem 1.25rem 0.75rem 1.25rem;
 }
 
 blockquote.literal.left {
   float: left;
-  margin: 0 3ex 1ex 0;
+  margin: 0 2ex 1ex 0;
   border-width: 0 1px 0 0;
 }
 
@@ -182,8 +186,16 @@ small, .small {
   background-image: -o-linear-gradient(left, $datopia-primary-blue, transparent);
 }
 
+article > p > code, article dt code, article code.highlighter-rouge {
+  color: black;
+}
+
 body pre, body code {
   background-color: transparent;
+}
+
+body div.highlight pre .c1 {
+  color: black;
 }
 
 .thumbnail-right {
@@ -251,7 +263,7 @@ th, td {
 
 sup > a.footnote {
   margin-left: 0;
-  margin-right: 1em;
+  margin-right: 0px;
 }
 
 ol {
